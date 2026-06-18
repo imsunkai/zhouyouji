@@ -1,0 +1,598 @@
+<template>
+	<view class="page">
+		<view class="search-row">
+			<view class="search-box">
+				<text class="search-icon">⌕</text>
+				<input class="search-input" placeholder="搜索商品名称" placeholder-class="placeholder" />
+			</view>
+			<view class="search-btn" @tap="showComing('搜索')">
+				<text class="btn-text">搜索</text>
+			</view>
+		</view>
+
+		<view class="hero-card" @tap="goCategory">
+			<image class="hero-image" src="/static/zy/mall-hero.jpg" mode="aspectFill" />
+		</view>
+
+		<view class="category-row">
+			<view class="category-item" v-for="(item, idx) in categories" :key="idx" @tap="goCategory">
+				<image class="category-image" :src="item.image" mode="aspectFill" />
+				<text :class="idx == 0 ? 'category-title active-title' : 'category-title'">{{item.title}}</text>
+				<view v-if="idx == 0" class="category-line"></view>
+			</view>
+		</view>
+
+		<view class="guarantee-row">
+			<view class="guarantee-item" v-for="(item, idx) in guarantees" :key="idx">
+				<text class="guarantee-icon">{{item.icon}}</text>
+				<view class="guarantee-copy">
+					<text class="guarantee-title">{{item.title}}</text>
+					<text class="guarantee-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="promo-row">
+			<view class="flash-card">
+				<view class="promo-head">
+					<view>
+						<text class="promo-title">限时秒杀</text>
+						<text class="promo-sub">每日好物 限时抢购</text>
+					</view>
+					<text class="countdown">02:18:36</text>
+				</view>
+				<view class="flash-list">
+					<view class="flash-item" v-for="(item, idx) in flashProducts" :key="idx">
+						<image class="flash-image" :src="item.image" mode="aspectFill" />
+						<text class="flash-name">{{item.name}}</text>
+						<text class="flash-price">¥{{item.price}}</text>
+					</view>
+				</view>
+			</view>
+			<view class="new-card" @tap="goCategory">
+				<text class="promo-title">新品推荐</text>
+				<text class="promo-sub">发现舟山好物</text>
+				<image class="new-image" src="/static/zy/abalone.jpg" mode="aspectFill" />
+				<text class="new-more">查看更多 ›</text>
+			</view>
+		</view>
+
+		<view class="sort-row">
+			<text class="sort active-sort">推荐</text>
+			<text class="sort">销量</text>
+			<text class="sort">价格 ↕</text>
+			<text class="sort">新品</text>
+		</view>
+
+		<view class="product-grid">
+			<view class="product-card" v-for="(item, idx) in products" :key="idx" @tap="goProductDetail">
+				<image class="product-image" :src="item.image" mode="aspectFill" />
+				<view class="product-info">
+					<view class="label-row">
+						<text class="label label-blue">{{item.labelA}}</text>
+						<text class="label label-green">{{item.labelB}}</text>
+					</view>
+					<text class="product-name">{{item.name}}</text>
+					<text class="product-desc">{{item.desc}}</text>
+					<view class="price-row">
+						<text class="product-price">¥{{item.price}}</text>
+						<text class="sold">已售 {{item.sold}}</text>
+						<view class="cart-btn" @tap.stop="addCart(item.name, item.price)">
+							<text class="btn-text">+</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="float-cart" @tap="goCategory">
+			<text class="cart-icon">🛒</text>
+			<text class="cart-price">¥{{cartTotal}}</text>
+			<view v-if="cartCount > 0" class="cart-badge">
+				<text class="cart-badge-text">{{cartCount}}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+const cartCount = ref(0)
+const cartTotal = ref(0)
+
+// TODO: 商城接口建议拆为 banner、分类、营销位、商品列表和购物车摘要。
+const categories = ref([
+	{ title: '海鲜水产', image: '/static/zy/crab.jpg' },
+	{ title: '食品特产', image: '/static/zy/fish.jpg' },
+	{ title: '文创精品', image: '/static/zy/mall-hero.jpg' },
+	{ title: '礼盒专区', image: '/static/zy/abalone.jpg' },
+	{ title: '全部分类', image: '/static/zy/mall-hero.jpg' }
+])
+
+const guarantees = ref([
+	{ icon: '验', title: '品质保证', desc: '严格品控 放心选购' },
+	{ icon: '产', title: '产地直供', desc: '源头直供 新鲜到家' },
+	{ icon: '冷', title: '冷链配送', desc: '全程冷链 锁住鲜度' },
+	{ icon: '售', title: '售后无忧', desc: '7天无理由退换' }
+])
+
+const flashProducts = ref([
+	{ image: '/static/zy/fish.jpg', name: '舟山带鱼段', price: 59.9 },
+	{ image: '/static/zy/abalone.jpg', name: '野生大黄鱼', price: 69.9 },
+	{ image: '/static/zy/snail.jpg', name: '舟山小鲍鱼', price: 39.9 }
+])
+
+const products = ref([
+	{ image: '/static/zy/crab.jpg', labelA: '新鲜捕捞', labelB: '顺丰包邮', name: '舟山梭子蟹（鲜活）', desc: '膏肥肉满 鲜活直达', price: 138, sold: 1286 },
+	{ image: '/static/zy/shrimp.jpg', labelA: '冷链配送', labelB: '坏单包赔', name: '舟山野生大虾', desc: '肉质紧实 营养美味', price: 168, sold: 856 },
+	{ image: '/static/zy/abalone.jpg', labelA: '顺丰包邮', labelB: '源头直供', name: '舟山活鲍鱼', desc: '鲜活捕捞 个大肥美', price: 68, sold: 632 },
+	{ image: '/static/zy/fish.jpg', labelA: '新鲜捕捞', labelB: '本地好物', name: '舟山大黄鱼', desc: '鲜嫩美味 肉质细腻', price: 69.9, sold: 742 },
+	{ image: '/static/zy/squid.jpg', labelA: '冷链配送', labelB: '新鲜直达', name: '舟山鲜鱿鱼', desc: '口感脆嫩 新鲜直达', price: 48, sold: 512 },
+	{ image: '/static/zy/snail.jpg', labelA: '顺丰包邮', labelB: '满减好价', name: '舟山花蛤', desc: '鲜活无沙 肉质鲜美', price: 28, sold: 398 }
+])
+
+function addCart(name: string, price: number) {
+	cartCount.value = cartCount.value + 1
+	cartTotal.value = cartTotal.value + price
+	uni.showToast({
+		title: name + '已加入购物车',
+		icon: 'none'
+	})
+}
+
+function goCategory() {
+	uni.navigateTo({
+		url: '/pages/category/category'
+	})
+}
+
+function goProductDetail() {
+	uni.navigateTo({
+		url: '/pages/mall/detail'
+	})
+}
+
+function showComing(name: string) {
+	uni.showToast({
+		title: name + '功能即将上线',
+		icon: 'none'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 22rpx 26rpx 120rpx;
+	background: #f5f7fa;
+}
+
+.search-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-box {
+	flex: 1;
+	height: 58rpx;
+	padding: 0 22rpx;
+	border-radius: 999rpx;
+	background: #eef0f4;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-icon {
+	color: #9aa2af;
+	font-size: 28rpx;
+}
+
+.search-input {
+	flex: 1;
+	margin-left: 12rpx;
+	font-size: 23rpx;
+	color: #101828;
+}
+
+.placeholder {
+	color: #9aa2af;
+}
+
+.search-btn {
+	width: 118rpx;
+	height: 56rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	margin-left: 12rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 24rpx;
+	font-weight: 700;
+	flex: 0 0 118rpx;
+	overflow: hidden;
+}
+
+.hero-card {
+	margin-top: 22rpx;
+	height: 304rpx;
+	border-radius: 14rpx;
+	overflow: hidden;
+	box-shadow: 0 12rpx 26rpx rgba(0,64,130,0.14);
+}
+
+.hero-image {
+	width: 100%;
+	height: 304rpx;
+}
+
+.category-row {
+	padding: 28rpx 0 16rpx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.category-item {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.category-image {
+	width: 82rpx;
+	height: 82rpx;
+	border-radius: 50%;
+	background: #eef5ff;
+}
+
+.category-title {
+	margin-top: 14rpx;
+	color: #172033;
+	font-size: 23rpx;
+	font-weight: 700;
+}
+
+.active-title {
+	color: #1677ff;
+}
+
+.category-line {
+	margin-top: 10rpx;
+	width: 72rpx;
+	height: 4rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+}
+
+.guarantee-row {
+	margin: 0 -26rpx;
+	padding: 22rpx 24rpx;
+	background: #ffffff;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.guarantee-item {
+	width: 25%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.guarantee-icon {
+	width: 38rpx;
+	height: 38rpx;
+	line-height: 38rpx;
+	border-radius: 50%;
+	text-align: center;
+	background: #eef6ff;
+	color: #123967;
+	font-size: 20rpx;
+	font-weight: 800;
+}
+
+.guarantee-copy {
+	margin-left: 8rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.guarantee-title {
+	color: #111827;
+	font-size: 20rpx;
+	font-weight: 800;
+}
+
+.guarantee-desc {
+	margin-top: 4rpx;
+	color: #7c8797;
+	font-size: 16rpx;
+}
+
+.promo-row {
+	margin-top: 18rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.flash-card,
+.new-card {
+	background: #ffffff;
+	border-radius: 14rpx;
+	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
+}
+
+.flash-card {
+	flex: 1;
+	padding: 20rpx;
+	background: linear-gradient(135deg, #fff4eb 0%, #ffffff 100%);
+}
+
+.new-card {
+	width: 238rpx;
+	margin-left: 18rpx;
+	padding: 20rpx;
+	background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+	position: relative;
+}
+
+.promo-head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.promo-title {
+	color: #07152d;
+	font-size: 28rpx;
+	font-weight: 800;
+	display: block;
+}
+
+.promo-sub {
+	margin-top: 8rpx;
+	color: #6f7b8f;
+	font-size: 20rpx;
+	display: block;
+}
+
+.countdown {
+	padding: 4rpx 8rpx;
+	border-radius: 6rpx;
+	background: #ff3b30;
+	color: #ffffff;
+	font-size: 18rpx;
+	font-weight: 700;
+}
+
+.flash-list {
+	margin-top: 18rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.flash-item {
+	width: 33.33%;
+	margin-right: 10rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.flash-image {
+	width: 118rpx;
+	height: 74rpx;
+	border-radius: 8rpx;
+}
+
+.flash-name {
+	margin-top: 8rpx;
+	color: #111827;
+	font-size: 18rpx;
+	font-weight: 700;
+}
+
+.flash-price {
+	margin-top: 4rpx;
+	color: #ff3b30;
+	font-size: 20rpx;
+	font-weight: 700;
+}
+
+.new-image {
+	width: 190rpx;
+	height: 118rpx;
+	margin-top: 16rpx;
+	border-radius: 10rpx;
+}
+
+.new-more {
+	position: absolute;
+	right: 18rpx;
+	top: 74rpx;
+	color: #7b8494;
+	font-size: 19rpx;
+}
+
+.sort-row {
+	margin: 28rpx 10rpx 18rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.sort {
+	color: #21324d;
+	font-size: 27rpx;
+}
+
+.active-sort {
+	color: #1677ff;
+	font-weight: 800;
+	border-bottom: 4rpx solid #1677ff;
+	padding-bottom: 12rpx;
+}
+
+.product-grid {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.product-card {
+	width: 340rpx;
+	margin-bottom: 18rpx;
+	border-radius: 14rpx;
+	overflow: hidden;
+	background: #ffffff;
+	box-shadow: 0 8rpx 20rpx rgba(30,48,84,0.08);
+}
+
+.product-image {
+	width: 340rpx;
+	height: 212rpx;
+	background: #edf2f8;
+}
+
+.product-info {
+	padding: 16rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.label-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.label {
+	margin-right: 8rpx;
+	padding: 4rpx 8rpx;
+	border-radius: 6rpx;
+	color: #ffffff;
+	font-size: 18rpx;
+}
+
+.label-blue {
+	background: #2f80ed;
+}
+
+.label-green {
+	background: #52c41a;
+}
+
+.product-name {
+	margin-top: 12rpx;
+	color: #111827;
+	font-size: 25rpx;
+	font-weight: 800;
+}
+
+.product-desc {
+	margin-top: 8rpx;
+	color: #7c8797;
+	font-size: 22rpx;
+}
+
+.price-row {
+	margin-top: 16rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.product-price {
+	color: #ff3b30;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.sold {
+	margin-left: 14rpx;
+	color: #858f9f;
+	font-size: 20rpx;
+}
+
+.cart-btn {
+	width: 48rpx;
+	height: 48rpx;
+	min-width: 48rpx;
+	max-width: 48rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	margin-left: auto;
+	border-radius: 50%;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 28rpx;
+	font-weight: 700;
+	padding: 0;
+	flex: 0 0 48rpx;
+	overflow: hidden;
+}
+
+.float-cart {
+	position: fixed;
+	right: 30rpx;
+	bottom: 128rpx;
+	width: 112rpx;
+	height: 112rpx;
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow: 0 12rpx 32rpx rgba(22,43,72,0.16);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+}
+
+.cart-icon {
+	font-size: 34rpx;
+}
+
+.cart-price {
+	margin-top: 4rpx;
+	color: #0c1b33;
+	font-size: 20rpx;
+}
+
+.cart-badge {
+	position: absolute;
+	right: 12rpx;
+	top: 10rpx;
+	width: 34rpx;
+	height: 34rpx;
+	border-radius: 50%;
+	background: #ff3b30;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cart-badge-text {
+	color: #ffffff;
+	font-size: 18rpx;
+	font-weight: 800;
+}
+</style>

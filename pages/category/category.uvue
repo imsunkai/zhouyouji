@@ -1,0 +1,492 @@
+<template>
+	<view class="page">
+		<view class="search-box">
+			<text class="search-icon">⌕</text>
+			<input class="search-input" placeholder="搜索商品名称" placeholder-class="placeholder" />
+		</view>
+
+		<view class="layout">
+			<scroll-view class="side-nav" scroll-y show-scrollbar="false">
+				<view
+					v-for="(item, idx) in categories"
+					:key="idx"
+					:class="activeCategory == idx ? 'nav-item active' : 'nav-item'"
+					@tap="selectCategory(idx)"
+				>
+					<text class="nav-icon">{{item.icon}}</text>
+					<text class="nav-title">{{item.title}}</text>
+				</view>
+			</scroll-view>
+
+			<scroll-view class="content" scroll-y show-scrollbar="false">
+				<image class="banner" src="/static/zy/mall-hero.jpg" mode="aspectFill" />
+
+				<view class="service-row">
+					<view class="service-item" v-for="(item, idx) in guaranteeTags" :key="idx">
+						<text class="service-icon">{{item.icon}}</text>
+						<text class="service-title">{{item.title}}</text>
+					</view>
+				</view>
+
+				<view class="filter-row">
+					<text class="filter active-filter">全部</text>
+					<text class="filter">鱼类</text>
+					<text class="filter">虾蟹类</text>
+					<text class="filter">贝类</text>
+					<text class="filter">海产干货</text>
+					<text class="filter">筛选 ♢</text>
+				</view>
+
+				<view class="product-grid">
+					<view
+						class="product-shell"
+						v-for="(item, idx) in products"
+						:key="idx"
+					>
+						<view class="product-card" v-if="activeCategory == 0 || activeCategory == 4 || item.category == activeCategory" @tap="goProductDetail">
+							<image class="product-image" :src="item.image" mode="aspectFill" />
+							<view class="product-body">
+								<text class="tag">{{item.tag}}</text>
+								<text class="product-name">{{item.name}}</text>
+								<text class="product-desc">{{item.desc}}</text>
+								<view class="price-row">
+									<text class="price">¥{{item.price}}</text>
+									<text class="sold">已售 {{item.sold}}</text>
+									<view class="cart-btn" @tap.stop="addCart(item.name, item.price)">
+										<text class="btn-text">+</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+
+				<view class="bottom-space"></view>
+			</scroll-view>
+		</view>
+
+		<view class="settle-bar">
+			<view class="cart-circle">
+				<text class="cart-symbol">🛒</text>
+				<view class="cart-count">
+					<text class="cart-count-text">{{cartCount}}</text>
+				</view>
+			</view>
+			<view class="settle-copy">
+				<text class="total-label">合计：</text>
+				<text class="total-price">¥{{cartTotal}}</text>
+				<text class="free-tip">满200元包邮</text>
+			</view>
+			<view class="settle-btn" @tap="checkout">
+				<text class="btn-text">去结算</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+const activeCategory = ref(0)
+const cartCount = ref(3)
+const cartTotal = ref(289.9)
+
+// TODO: 分类页后续可接入分类树、筛选项、商品列表和购物车接口。
+const categories = ref([
+	{ title: '海鲜水产', icon: '鲜' },
+	{ title: '食品特产', icon: '食' },
+	{ title: '文创精品', icon: '创' },
+	{ title: '礼盒专区', icon: '礼' },
+	{ title: '全部商品', icon: '全' }
+])
+
+const guaranteeTags = ref([
+	{ title: '源头直供', icon: '源' },
+	{ title: '新鲜捕捞', icon: '鲜' },
+	{ title: '冷链配送', icon: '冷' },
+	{ title: '品质保证', icon: '保' }
+])
+
+const products = ref([
+	{ category: 0, image: '/static/zy/crab.jpg', tag: '顺丰包邮', name: '舟山梭子蟹（鲜活）', desc: '肉质饱满 新鲜捕捞', price: 138, sold: 1286 },
+	{ category: 0, image: '/static/zy/shrimp.jpg', tag: '冷链配送', name: '舟山野生大虾', desc: '肉质紧实 营养美味', price: 168, sold: 856 },
+	{ category: 0, image: '/static/zy/abalone.jpg', tag: '顺丰包邮', name: '舟山活鲍鱼', desc: '鲜活捕捞 个大肥美', price: 68, sold: 632 },
+	{ category: 1, image: '/static/zy/fish.jpg', tag: '新鲜捕捞', name: '舟山大黄鱼', desc: '鲜嫩美味 肉质细腻', price: 69.9, sold: 742 },
+	{ category: 0, image: '/static/zy/squid.jpg', tag: '冷链配送', name: '舟山鲜鱿鱼', desc: '口感脆嫩 新鲜直达', price: 48, sold: 512 },
+	{ category: 1, image: '/static/zy/snail.jpg', tag: '顺丰包邮', name: '舟山花蛤', desc: '鲜活无沙 肉质鲜美', price: 28, sold: 398 },
+	{ category: 3, image: '/static/zy/mall-hero.jpg', tag: '礼盒专区', name: '东海鲜味礼盒', desc: '企业送礼 家庭分享', price: 268, sold: 310 }
+])
+
+function selectCategory(idx: number) {
+	activeCategory.value = idx
+}
+
+function addCart(name: string, price: number) {
+	cartCount.value = cartCount.value + 1
+	cartTotal.value = cartTotal.value + price
+	uni.showToast({
+		title: name + '已加入购物车',
+		icon: 'none'
+	})
+}
+
+function checkout() {
+	uni.navigateTo({
+		url: '/pages/order/checkout'
+	})
+}
+
+function goProductDetail() {
+	uni.navigateTo({
+		url: '/pages/mall/detail'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding-bottom: 120rpx;
+	background: #f5f7fa;
+}
+
+.search-box {
+	margin: 22rpx 30rpx 20rpx;
+	height: 62rpx;
+	padding: 0 24rpx;
+	border-radius: 999rpx;
+	background: #eef0f4;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-icon {
+	color: #98a2b3;
+	font-size: 28rpx;
+}
+
+.search-input {
+	flex: 1;
+	margin-left: 12rpx;
+	color: #101828;
+	font-size: 24rpx;
+}
+
+.placeholder {
+	color: #98a2b3;
+}
+
+.layout {
+	display: flex;
+	flex-direction: row;
+}
+
+.side-nav {
+	width: 184rpx;
+	min-height: 100vh;
+	padding-top: 6rpx;
+	background: #f6f9fd;
+}
+
+.nav-item {
+	width: 168rpx;
+	margin-bottom: 18rpx;
+	padding: 24rpx 8rpx;
+	border-radius: 0 18rpx 18rpx 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: #22304a;
+}
+
+.nav-item.active {
+	background: #eaf3ff;
+	color: #1677ff;
+	box-shadow: 0 10rpx 24rpx rgba(22,119,255,0.10);
+}
+
+.nav-icon {
+	width: 42rpx;
+	height: 42rpx;
+	line-height: 42rpx;
+	border-radius: 50%;
+	background: #ffffff;
+	text-align: center;
+	font-size: 18rpx;
+	font-weight: 800;
+}
+
+.nav-title {
+	margin-left: 12rpx;
+	font-size: 23rpx;
+	font-weight: 800;
+}
+
+.content {
+	flex: 1;
+	padding: 0 20rpx;
+}
+
+.banner {
+	width: 100%;
+	height: 184rpx;
+	border-radius: 14rpx;
+	background: #dfefff;
+}
+
+.service-row {
+	margin-top: 18rpx;
+	padding: 18rpx 10rpx;
+	border-radius: 16rpx;
+	background: #ffffff;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.service-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.service-icon {
+	width: 48rpx;
+	height: 48rpx;
+	line-height: 48rpx;
+	text-align: center;
+	border-radius: 50%;
+	background: #eef6ff;
+	color: #123967;
+	font-size: 20rpx;
+	font-weight: 800;
+}
+
+.service-title {
+	margin-top: 10rpx;
+	color: #28354d;
+	font-size: 20rpx;
+}
+
+.filter-row {
+	margin: 22rpx 0 18rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.filter {
+	color: #1d2939;
+	font-size: 23rpx;
+}
+
+.active-filter {
+	padding: 8rpx 20rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-weight: 800;
+}
+
+.product-grid {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.product-shell,
+.product-card {
+	width: 264rpx;
+}
+
+.product-shell {
+	margin-bottom: 18rpx;
+}
+
+.product-card {
+	margin-bottom: 18rpx;
+	border-radius: 14rpx;
+	overflow: hidden;
+	background: #ffffff;
+	box-shadow: 0 8rpx 20rpx rgba(30,48,84,0.08);
+}
+
+.product-image {
+	width: 264rpx;
+	height: 160rpx;
+	background: #edf2f8;
+}
+
+.product-body {
+	padding: 14rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.tag {
+	align-self: flex-start;
+	padding: 4rpx 8rpx;
+	border-radius: 6rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 18rpx;
+}
+
+.product-name {
+	margin-top: 12rpx;
+	color: #111827;
+	font-size: 23rpx;
+	font-weight: 800;
+}
+
+.product-desc {
+	margin-top: 8rpx;
+	color: #7c8797;
+	font-size: 20rpx;
+}
+
+.price-row {
+	margin-top: 16rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.price {
+	color: #ff3b30;
+	font-size: 27rpx;
+	font-weight: 800;
+}
+
+.sold {
+	margin-left: 10rpx;
+	color: #858f9f;
+	font-size: 18rpx;
+}
+
+.cart-btn {
+	width: 48rpx;
+	height: 48rpx;
+	min-width: 48rpx;
+	max-width: 48rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	margin-left: auto;
+	border-radius: 50%;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 28rpx;
+	font-weight: 700;
+	padding: 0;
+	flex: 0 0 48rpx;
+	overflow: hidden;
+}
+
+.settle-bar {
+	position: fixed;
+	left: 30rpx;
+	right: 30rpx;
+	bottom: 28rpx;
+	height: 88rpx;
+	padding: 0 18rpx;
+	border-radius: 999rpx;
+	background: #ffffff;
+	box-shadow: 0 12rpx 36rpx rgba(22,43,72,0.16);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	z-index: 20;
+}
+
+.cart-circle {
+	position: relative;
+	width: 66rpx;
+	height: 66rpx;
+	border-radius: 50%;
+	background: #eef6ff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cart-symbol {
+	font-size: 32rpx;
+}
+
+.cart-count {
+	position: absolute;
+	right: -4rpx;
+	top: -8rpx;
+	width: 30rpx;
+	height: 30rpx;
+	border-radius: 50%;
+	background: #ff3b30;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cart-count-text {
+	color: #ffffff;
+	font-size: 17rpx;
+	font-weight: 800;
+}
+
+.settle-copy {
+	margin-left: 18rpx;
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	flex-wrap: wrap;
+}
+
+.total-label {
+	color: #1d2939;
+	font-size: 24rpx;
+}
+
+.total-price {
+	color: #ff3b30;
+	font-size: 28rpx;
+	font-weight: 800;
+}
+
+.free-tip {
+	width: 180rpx;
+	color: #7d8796;
+	font-size: 18rpx;
+}
+
+.settle-btn {
+	width: 168rpx;
+	height: 56rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 24rpx;
+	font-weight: 800;
+	flex: 0 0 168rpx;
+	overflow: hidden;
+}
+
+.bottom-space {
+	height: 60rpx;
+}
+</style>

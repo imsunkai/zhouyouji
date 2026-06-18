@@ -1,0 +1,50 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "openid",
+                     "content",
+                     "feedback_type"
+                 ],
+    "permission":  {
+                       "read":  false,
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "openid":  {
+                                      "bsonType":  "string",
+                                      "description":  "openid"
+                                  },
+                       "feedback_type":  {
+                                             "bsonType":  "string",
+                                             "description":  "feedback_type"
+                                         },
+                       "content":  {
+                                       "bsonType":  "string",
+                                       "description":  "content"
+                                   },
+                       "contact":  {
+                                       "bsonType":  "string",
+                                       "description":  "contact"
+                                   },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

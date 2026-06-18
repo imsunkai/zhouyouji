@@ -1,0 +1,94 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "name",
+                     "price",
+                     "content"
+                 ],
+    "permission":  {
+                       "read":  true,
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "category_id":  {
+                                           "bsonType":  "string",
+                                           "description":  "category_id"
+                                       },
+                       "name":  {
+                                    "bsonType":  "string",
+                                    "description":  "name"
+                                },
+                       "desc":  {
+                                    "bsonType":  "string",
+                                    "description":  "desc"
+                                },
+                       "content":  {
+                                       "bsonType":  "string",
+                                       "description":  "content"
+                                   },
+                       "image":  {
+                                     "bsonType":  "string",
+                                     "description":  "image"
+                                 },
+                       "images":  {
+                                      "bsonType":  "array",
+                                      "description":  "images"
+                                  },
+                       "label_a":  {
+                                       "bsonType":  "string",
+                                       "description":  "label_a"
+                                   },
+                       "label_b":  {
+                                       "bsonType":  "string",
+                                       "description":  "label_b"
+                                   },
+                       "tag":  {
+                                   "bsonType":  "string",
+                                   "description":  "tag"
+                               },
+                       "price":  {
+                                     "bsonType":  "double",
+                                     "description":  "price"
+                                 },
+                       "market_price":  {
+                                            "bsonType":  "double",
+                                            "description":  "market_price"
+                                        },
+                       "stock":  {
+                                     "bsonType":  "int",
+                                     "description":  "stock"
+                                 },
+                       "sold":  {
+                                    "bsonType":  "int",
+                                    "description":  "sold"
+                                },
+                       "is_flash":  {
+                                        "bsonType":  "bool",
+                                        "description":  "is_flash"
+                                    },
+                       "sort":  {
+                                    "bsonType":  "int",
+                                    "description":  "sort"
+                                },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

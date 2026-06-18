@@ -1,0 +1,393 @@
+<template>
+	<view class="page">
+		<swiper class="car-swiper" indicator-dots autoplay circular>
+			<swiper-item v-for="(img, idx) in images" :key="idx">
+				<image class="swiper-image" :src="img" mode="aspectFill" />
+			</swiper-item>
+		</swiper>
+
+		<view class="main-card">
+			<view class="title-row">
+				<text class="car-title">2022款奔驰 E300L 豪华型</text>
+				<text class="status-tag">已检测</text>
+			</view>
+			<view class="price-row">
+				<text class="price">32.8万</text>
+				<text class="new-price">新车含税价 49.6万</text>
+			</view>
+			<text class="sub-info">2022年上牌 · 3.2万公里 · 舟山定海 · 自动挡</text>
+		</view>
+
+		<view class="card">
+			<text class="section-title">车辆配置</text>
+			<view class="config-grid">
+				<view class="config-item" v-for="(item, idx) in configs" :key="idx">
+					<text class="config-value">{{item.value}}</text>
+					<text class="config-label">{{item.label}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<view class="section-head">
+				<text class="section-title">检测报告</text>
+				<text class="section-more" @tap="goReport">查看完整 ›</text>
+			</view>
+			<view class="report-list">
+				<view class="report-item" v-for="(item, idx) in reports" :key="idx">
+					<view class="check-icon">
+						<text class="check-text">✓</text>
+					</view>
+					<view class="report-copy">
+						<text class="report-title">{{item.title}}</text>
+						<text class="report-desc">{{item.desc}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<text class="section-title">交易保障</text>
+			<view class="security-row">
+				<view class="security-item" v-for="(item, idx) in securities" :key="idx">
+					<text class="security-icon">{{item.icon}}</text>
+					<text class="security-title">{{item.title}}</text>
+					<text class="security-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="card description-card">
+			<text class="section-title">车辆描述</text>
+			<text class="description">本车为舟山本地一手车源，车况精品，保养记录齐全。外观漆面良好，内饰干净整洁，发动机与变速箱工作稳定，支持第三方检测、金融分期、过户保险代办。</text>
+		</view>
+
+		<view class="bottom-space"></view>
+
+		<view class="action-bar">
+			<view class="action-btn plain-btn" @tap="goConsult">
+				<text class="btn-text">在线咨询</text>
+			</view>
+			<view class="action-btn reserve-btn" @tap="goConsult">
+				<text class="btn-text">预约看车</text>
+			</view>
+			<view class="action-btn buy-btn" @tap="goConsult">
+				<text class="btn-text">立即购买</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+// TODO: 详情页后续通过路由 id 拉取车辆详情、图片、检测报告和交易保障信息。
+const images = ref([
+	'/static/zy/car-coast.jpg',
+	'/static/zy/car-coast.jpg',
+	'/static/zy/car-coast.jpg'
+])
+
+const configs = ref([
+	{ label: '上牌时间', value: '2022年' },
+	{ label: '表显里程', value: '3.2万公里' },
+	{ label: '排放标准', value: '国VI' },
+	{ label: '变速箱', value: '自动' },
+	{ label: '过户次数', value: '0次' },
+	{ label: '所在地', value: '舟山定海' }
+])
+
+const reports = ref([
+	{ title: '无重大事故', desc: '骨架结构正常，关键部位检测通过' },
+	{ title: '无水泡火烧', desc: '内饰、电器、线束检测未见异常' },
+	{ title: '发动机变速箱良好', desc: '启动平稳，换挡顺畅，无明显渗漏' }
+])
+
+const securities = ref([
+	{ icon: '检', title: '专业检测', desc: '车况透明' },
+	{ icon: '过', title: '过户代办', desc: '流程省心' },
+	{ icon: '保', title: '保险协助', desc: '方案可选' },
+	{ icon: '金', title: '金融分期', desc: '灵活付款' }
+])
+
+function goReport() {
+	uni.navigateTo({
+		url: '/pages/car/report'
+	})
+}
+
+function goConsult() {
+	uni.navigateTo({
+		url: '/pages/car/consult'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding-bottom: 120rpx;
+	background: #f5f7fa;
+}
+
+.car-swiper {
+	height: 430rpx;
+	background: #1677ff;
+}
+
+.swiper-image {
+	width: 100%;
+	height: 430rpx;
+}
+
+.main-card,
+.card {
+	margin: 22rpx 30rpx 0;
+	padding: 28rpx;
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.title-row,
+.section-head,
+.price-row,
+.security-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.car-title {
+	flex: 1;
+	color: #07152d;
+	font-size: 34rpx;
+	font-weight: 800;
+	line-height: 44rpx;
+}
+
+.status-tag {
+	padding: 6rpx 12rpx;
+	border-radius: 999rpx;
+	background: #eaf3ff;
+	color: #1677ff;
+	font-size: 20rpx;
+	font-weight: 800;
+}
+
+.price-row {
+	margin-top: 18rpx;
+}
+
+.price {
+	color: #ff3b30;
+	font-size: 40rpx;
+	font-weight: 900;
+}
+
+.new-price {
+	margin-left: 16rpx;
+	color: #98a2b3;
+	font-size: 22rpx;
+}
+
+.sub-info {
+	margin-top: 16rpx;
+	color: #6f7b8f;
+	font-size: 23rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.section-head {
+	justify-content: space-between;
+}
+
+.section-more {
+	color: #8a93a6;
+	font-size: 23rpx;
+}
+
+.config-grid {
+	margin-top: 26rpx;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.config-item {
+	width: 33.33%;
+	margin-bottom: 24rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.config-value {
+	color: #14233b;
+	font-size: 25rpx;
+	font-weight: 800;
+}
+
+.config-label {
+	margin-top: 8rpx;
+	color: #7c8797;
+	font-size: 20rpx;
+}
+
+.report-list {
+	margin-top: 24rpx;
+}
+
+.report-item {
+	margin-bottom: 18rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.check-icon {
+	width: 42rpx;
+	height: 42rpx;
+	border-radius: 50%;
+	background: #edfaf1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.check-text {
+	color: #20a15a;
+	font-size: 24rpx;
+	font-weight: 900;
+}
+
+.report-copy {
+	flex: 1;
+	margin-left: 16rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.report-title {
+	color: #14233b;
+	font-size: 24rpx;
+	font-weight: 800;
+}
+
+.report-desc {
+	margin-top: 6rpx;
+	color: #7c8797;
+	font-size: 21rpx;
+	line-height: 30rpx;
+}
+
+.security-row {
+	margin-top: 24rpx;
+	justify-content: space-between;
+}
+
+.security-item {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.security-icon {
+	width: 60rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	border-radius: 50%;
+	background: #eaf3ff;
+	color: #1677ff;
+	text-align: center;
+	font-size: 22rpx;
+	font-weight: 800;
+}
+
+.security-title {
+	margin-top: 12rpx;
+	color: #14233b;
+	font-size: 22rpx;
+	font-weight: 800;
+}
+
+.security-desc {
+	margin-top: 6rpx;
+	color: #7c8797;
+	font-size: 18rpx;
+}
+
+.description-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.description {
+	margin-top: 18rpx;
+	color: #596579;
+	font-size: 23rpx;
+	line-height: 36rpx;
+}
+
+.bottom-space {
+	height: 34rpx;
+}
+
+.action-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 18rpx 30rpx 28rpx;
+	background: #ffffff;
+	box-shadow: 0 -8rpx 24rpx rgba(30,48,84,0.08);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	z-index: 20;
+}
+
+.action-btn {
+	height: 64rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	border-radius: 999rpx;
+	font-size: 23rpx;
+	font-weight: 800;
+	padding: 0;
+	overflow: hidden;
+}
+
+.plain-btn {
+	width: 180rpx;
+	background: #eef6ff;
+	color: #1677ff;
+	flex: 0 0 180rpx;
+}
+
+.reserve-btn {
+	width: 210rpx;
+	margin-left: 18rpx;
+	background: #52c41a;
+	color: #ffffff;
+	flex: 0 0 210rpx;
+}
+
+.buy-btn {
+	flex: 1;
+	margin-left: 18rpx;
+	background: #1677ff;
+	color: #ffffff;
+}
+</style>

@@ -1,0 +1,7 @@
+{
+  "name": "inquiry",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

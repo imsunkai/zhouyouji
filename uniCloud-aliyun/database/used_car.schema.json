@@ -1,0 +1,31 @@
+{
+  "bsonType": "object",
+  "required": ["brand", "title", "price", "status", "create_time", "update_time"],
+  "permission": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "brand": { "bsonType": "string", "description": "car brand" },
+    "series": { "bsonType": "string", "description": "car series" },
+    "title": { "bsonType": "string", "description": "car title" },
+    "cover": { "bsonType": "string", "description": "cover image" },
+    "images": { "bsonType": "array", "description": "image list" },
+    "price": { "bsonType": "double", "description": "price in ten thousand yuan" },
+    "year": { "bsonType": "string", "description": "car year" },
+    "mileage": { "bsonType": "string", "description": "car mileage" },
+    "gearbox": { "bsonType": "string", "description": "gearbox" },
+    "fuel_type": { "bsonType": "string", "description": "fuel type" },
+    "car_status": { "bsonType": "string", "description": "selling, reserved, sold" },
+    "description": { "bsonType": "string", "description": "car description" },
+    "contact_name": { "bsonType": "string", "description": "contact name" },
+    "contact_phone": { "bsonType": "string", "description": "contact phone" },
+    "sort": { "bsonType": "int", "description": "sort value" },
+    "status": { "bsonType": "int", "description": "1 on shelf, 0 off shelf" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

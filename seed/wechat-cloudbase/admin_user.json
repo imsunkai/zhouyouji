@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "admin_default",
+    "username": "admin",
+    "password": "123456",
+    "nickname": "管理员",
+    "role": "admin",
+    "token": "",
+    "status": 1,
+    "last_login_time": 0,
+    "create_time": 1718352000000,
+    "update_time": 1718352000000
+  }
+]

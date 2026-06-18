@@ -1,0 +1,23 @@
+{
+  "bsonType": "object",
+  "required": ["title", "image", "position", "status", "create_time", "update_time"],
+  "permission": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "title": { "bsonType": "string", "description": "banner title" },
+    "image": { "bsonType": "string", "description": "banner image" },
+    "link_type": { "bsonType": "string", "description": "none, service, used_car, url" },
+    "link_id": { "bsonType": "string", "description": "linked record id" },
+    "link_url": { "bsonType": "string", "description": "linked page or url" },
+    "position": { "bsonType": "string", "description": "banner position" },
+    "sort": { "bsonType": "int", "description": "sort value" },
+    "status": { "bsonType": "int", "description": "1 enabled, 0 disabled" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

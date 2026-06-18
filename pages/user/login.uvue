@@ -1,0 +1,481 @@
+<template>
+	<view class="page">
+		<image class="hero-bg" src="/static/zy/splash-login.jpg" mode="aspectFill" />
+		<view class="hero-mask"></view>
+
+		<view class="brand">
+			<image class="brand-logo" src="/static/zy/logo-mark.png" mode="aspectFit" />
+			<text class="brand-title">&#x821F;&#x6E38;&#x8BB0;</text>
+			<text class="brand-en">ZHOUYOUJI</text>
+			<text class="brand-slogan">&#x63A2;&#x7D22;&#x821F;&#x5C71;&#x4E4B;&#x7F8E;&#x30FB;&#x8BB0;&#x5F55;&#x7CBE;&#x5F69;&#x65C5;&#x7A0B;</text>
+		</view>
+
+		<view class="login-panel">
+			<text class="panel-title">&#x6B22;&#x8FCE;&#x767B;&#x5F55;&#x821F;&#x6E38;&#x8BB0;</text>
+			<view class="title-line">
+				<view class="line-main"></view>
+				<view class="line-dot"></view>
+			</view>
+			<text class="panel-desc">&#x4E00;&#x952E;&#x767B;&#x5F55;&#xFF0C;&#x5F00;&#x542F;&#x60A8;&#x7684;&#x821F;&#x5C71;&#x4E4B;&#x65C5;</text>
+
+			<view class="wechat-btn" @click="login">
+				<view class="wechat-mark">
+					<view class="bubble bubble-a"></view>
+					<view class="bubble bubble-b"></view>
+				</view>
+				<text class="wechat-text">{{ loading ? '\u767b\u5f55\u4e2d...' : '\u5fae\u4fe1\u4e00\u952e\u767b\u5f55' }}</text>
+			</view>
+
+			<view class="agreement">
+				<view class="shield" :class="agreed ? 'checked-shield' : ''" @tap="toggleAgreement">
+					<text class="shield-text">{{ agreed ? '✓' : '' }}</text>
+				</view>
+				<text class="agree-text">&#x767B;&#x5F55;&#x5373;&#x8868;&#x793A;&#x540C;&#x610F;</text>
+				<text class="agree-link" @click="openProtocol">&#x300A;&#x7528;&#x6237;&#x670D;&#x52A1;&#x534F;&#x8BAE;&#x300B;</text>
+				<text class="agree-text">&#x548C;</text>
+				<text class="agree-link" @click="openPrivacy">&#x300A;&#x9690;&#x79C1;&#x653F;&#x7B56;&#x300B;</text>
+			</view>
+
+			<view class="island-art">
+				<view class="lighthouse">
+					<view class="light-top"></view>
+					<view class="light-body"></view>
+					<view class="light-base"></view>
+				</view>
+				<view class="mountain mountain-a"></view>
+				<view class="mountain mountain-b"></view>
+				<view class="mountain mountain-c"></view>
+				<view class="boat boat-a"></view>
+				<view class="boat boat-b"></view>
+				<view class="wave wave-a"></view>
+				<view class="wave wave-b"></view>
+			</view>
+
+			<view class="service" @click="openService">
+				<text class="service-icon">☎</text>
+				<text class="service-text">&#x9047;&#x5230;&#x95EE;&#x9898;&#xFF1F;&#x8054;&#x7CFB;&#x5BA2;&#x670D;</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { createCloudObject } from '/utils/cloud-object.js'
+
+const userObj = createCloudObject('user')
+const loading = ref(false)
+const agreed = ref(false)
+
+function getAnonymousId(): string {
+	let id = uni.getStorageSync('zy_anonymous_id') as string
+	if (id.length == 0) {
+		id = String(Date.now()) + String(Math.floor(Math.random() * 1000000))
+		uni.setStorageSync('zy_anonymous_id', id)
+	}
+	return id
+}
+
+function login() {
+	doLogin()
+}
+
+function needProfile(user): boolean {
+	return !user || !user.nickname || user.nickname == '\u821f\u6e38\u8bb0\u7528\u6237' || !user.avatar
+}
+
+async function doLogin() {
+	if (loading.value) return
+	if (!agreed.value) {
+		uni.showToast({ title: '\u8bf7\u5148\u52fe\u9009\u5e76\u540c\u610f\u534f\u8bae', icon: 'none' })
+		return
+	}
+	loading.value = true
+	uni.showLoading({ title: '\u767b\u5f55\u4e2d' })
+	try {
+		const res = await userObj.wxLogin({
+			anonymousId: getAnonymousId()
+		})
+		uni.hideLoading()
+		if (res.errCode != 0) {
+			uni.showToast({ title: res.errMsg || '\u767b\u5f55\u5931\u8d25', icon: 'none' })
+			return
+		}
+		uni.setStorageSync('zy_user_info', res.data.user)
+		uni.setStorageSync('zy_user_login_ready', '1')
+		if (needProfile(res.data.user)) {
+			uni.showToast({ title: '\u8bf7\u5b8c\u5584\u5934\u50cf\u6635\u79f0', icon: 'none' })
+			setTimeout(() => {
+				uni.navigateTo({ url: '/pages/user/profile' })
+			}, 350)
+		} else {
+			uni.showToast({ title: '\u767b\u5f55\u6210\u529f', icon: 'success' })
+			setTimeout(() => {
+				uni.switchTab({ url: '/pages/user/user' })
+			}, 350)
+		}
+	} catch (e) {
+		uni.hideLoading()
+		uni.showModal({
+			title: '\u767b\u5f55\u5931\u8d25',
+			content: '\u8bf7\u786e\u8ba4\u5fae\u4fe1\u4e91\u5f00\u53d1\u73af\u5883\u5df2\u5f00\u901a\uff0capi \u4e91\u51fd\u6570\u5df2\u4e0a\u4f20\u90e8\u7f72\uff0c\u5e76\u5df2\u521b\u5efa user \u6570\u636e\u5e93\u96c6\u5408',
+			showCancel: false
+		})
+	} finally {
+		loading.value = false
+	}
+}
+
+function toggleAgreement() {
+	agreed.value = !agreed.value
+}
+
+function openProtocol() {
+	uni.showModal({
+		title: '\u7528\u6237\u670d\u52a1\u534f\u8bae',
+		content: '\u6b22\u8fce\u4f7f\u7528\u821f\u6e38\u8bb0\u3002\u60a8\u767b\u5f55\u540e\u53ef\u4f7f\u7528\u65c5\u6e38\u3001\u8f66\u52a1\u3001\u4f4f\u5bbf\u3001\u5546\u57ce\u548c\u7528\u6237\u4e2d\u5fc3\u7b49\u670d\u52a1\u3002\u8bf7\u60a8\u4fdd\u8bc1\u63d0\u4ea4\u4fe1\u606f\u771f\u5b9e\u6709\u6548\uff0c\u5e76\u9075\u5b88\u5e73\u53f0\u670d\u52a1\u89c4\u5219\u3002',
+		showCancel: false,
+		confirmText: '\u6211\u77e5\u9053\u4e86'
+	})
+}
+
+function openPrivacy() {
+	uni.showModal({
+		title: '\u9690\u79c1\u653f\u7b56',
+		content: '\u821f\u6e38\u8bb0\u4ec5\u5728\u63d0\u4f9b\u767b\u5f55\u3001\u8ba2\u5355\u3001\u5730\u5740\u3001\u53cd\u9988\u7b49\u529f\u80fd\u65f6\u4f7f\u7528\u5fc5\u8981\u4fe1\u606f\u3002\u60a8\u7684\u5934\u50cf\u3001\u6635\u79f0\u548c\u6536\u8d27\u4fe1\u606f\u4ec5\u7528\u4e8e\u5c0f\u7a0b\u5e8f\u670d\u52a1\u5c55\u793a\u4e0e\u5c65\u7ea6\uff0c\u6211\u4eec\u4e0d\u4f1a\u8d85\u51fa\u670d\u52a1\u76ee\u7684\u4f7f\u7528\u3002',
+		showCancel: false,
+		confirmText: '\u6211\u77e5\u9053\u4e86'
+	})
+}
+
+function openService() {
+	uni.navigateTo({ url: '/pages/user/support' })
+}
+</script>
+
+<style>
+.page {
+	position: relative;
+	height: 100vh;
+	overflow: hidden;
+	background: #eef7ff;
+}
+
+.hero-bg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 750rpx;
+	height: 700rpx;
+}
+
+.hero-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 750rpx;
+	height: 760rpx;
+	background: linear-gradient(180deg, rgba(236,248,255,0.08) 0%, rgba(238,247,255,0.18) 44%, rgba(238,247,255,0.98) 100%);
+}
+
+.brand {
+	position: relative;
+	z-index: 2;
+	padding-top: 208rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.brand-logo {
+	width: 190rpx;
+	height: 88rpx;
+}
+
+.brand-title {
+	margin-top: 6rpx;
+	color: #102d55;
+	font-size: 52rpx;
+	font-weight: 900;
+	letter-spacing: 8rpx;
+}
+
+.brand-en {
+	margin-top: 6rpx;
+	color: #153763;
+	font-size: 22rpx;
+	font-weight: 700;
+	letter-spacing: 10rpx;
+}
+
+.brand-slogan {
+	margin-top: 18rpx;
+	color: #24476f;
+	font-size: 25rpx;
+	letter-spacing: 2rpx;
+}
+
+.login-panel {
+	position: relative;
+	z-index: 4;
+	margin: 72rpx 32rpx 0;
+	height: 720rpx;
+	padding: 70rpx 58rpx 28rpx;
+	box-sizing: border-box;
+	border-radius: 26rpx;
+	background: rgba(255,255,255,0.96);
+	box-shadow: 0 16rpx 44rpx rgba(30,74,120,0.12);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.panel-title {
+	color: #102d55;
+	font-size: 38rpx;
+	font-weight: 900;
+}
+
+.title-line {
+	margin-top: 18rpx;
+	height: 10rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.line-main {
+	width: 46rpx;
+	height: 8rpx;
+	border-radius: 999rpx;
+	background: #3b8cff;
+}
+
+.line-dot {
+	width: 8rpx;
+	height: 8rpx;
+	margin-left: 10rpx;
+	border-radius: 50%;
+	background: #63a5ff;
+}
+
+.panel-desc {
+	margin-top: 28rpx;
+	color: #91a0b5;
+	font-size: 26rpx;
+}
+
+.wechat-btn {
+	width: 520rpx;
+	height: 92rpx;
+	margin-top: 54rpx;
+	border-radius: 999rpx;
+	background: linear-gradient(90deg, #3ecf62 0%, #36c75a 100%);
+	box-shadow: 0 16rpx 34rpx rgba(39,188,82,0.26);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.wechat-mark {
+	position: relative;
+	width: 62rpx;
+	height: 48rpx;
+	margin-right: 22rpx;
+}
+
+.bubble {
+	position: absolute;
+	border-radius: 50%;
+	background: #ffffff;
+}
+
+.bubble-a {
+	left: 0;
+	top: 0;
+	width: 38rpx;
+	height: 32rpx;
+}
+
+.bubble-b {
+	right: 0;
+	bottom: 0;
+	width: 34rpx;
+	height: 28rpx;
+}
+
+.wechat-text {
+	color: #ffffff;
+	font-size: 32rpx;
+	font-weight: 900;
+}
+
+.agreement {
+	width: 100%;
+	margin-top: 36rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.shield {
+	width: 28rpx;
+	height: 28rpx;
+	margin-right: 14rpx;
+	border-radius: 8rpx;
+	border: 3rpx solid #a7b2c4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.checked-shield {
+	border-color: #1677ff;
+	background: #1677ff;
+}
+
+.shield-text {
+	color: #ffffff;
+	font-size: 18rpx;
+	font-weight: 900;
+}
+
+.agree-text {
+	color: #8b98ad;
+	font-size: 24rpx;
+	line-height: 40rpx;
+}
+
+.agree-link {
+	color: #1677ff;
+	font-size: 24rpx;
+	line-height: 40rpx;
+}
+
+.island-art {
+	position: relative;
+	width: 560rpx;
+	height: 150rpx;
+	margin-top: 42rpx;
+	opacity: 0.62;
+}
+
+.lighthouse {
+	position: absolute;
+	left: 8rpx;
+	bottom: 20rpx;
+	width: 92rpx;
+	height: 128rpx;
+}
+
+.light-top {
+	width: 32rpx;
+	height: 24rpx;
+	margin-left: 30rpx;
+	background: #d6eaff;
+	border-radius: 8rpx 8rpx 0 0;
+}
+
+.light-body {
+	width: 54rpx;
+	height: 84rpx;
+	margin-left: 18rpx;
+	background: #dbeeff;
+	clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+}
+
+.light-base {
+	width: 94rpx;
+	height: 20rpx;
+	border-radius: 50% 50% 0 0;
+	background: #dbeeff;
+}
+
+.mountain {
+	position: absolute;
+	bottom: 14rpx;
+	background: #dbeeff;
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.mountain-a {
+	left: 98rpx;
+	width: 190rpx;
+	height: 66rpx;
+}
+
+.mountain-b {
+	left: 244rpx;
+	width: 166rpx;
+	height: 54rpx;
+}
+
+.mountain-c {
+	right: 0;
+	width: 170rpx;
+	height: 60rpx;
+}
+
+.boat {
+	position: absolute;
+	bottom: 30rpx;
+	width: 78rpx;
+	height: 20rpx;
+	border-radius: 0 0 38rpx 38rpx;
+	background: #cfe6ff;
+}
+
+.boat-a {
+	right: 94rpx;
+}
+
+.boat-b {
+	left: 190rpx;
+	width: 48rpx;
+	height: 14rpx;
+	opacity: 0.7;
+}
+
+.wave {
+	position: absolute;
+	height: 4rpx;
+	border-radius: 999rpx;
+	background: #d1e9ff;
+}
+
+.wave-a {
+	left: 142rpx;
+	bottom: 8rpx;
+	width: 190rpx;
+}
+
+.wave-b {
+	right: 62rpx;
+	bottom: 6rpx;
+	width: 118rpx;
+}
+
+.service {
+	margin-top: 30rpx;
+	padding-top: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.service-icon {
+	color: #8795aa;
+	font-size: 28rpx;
+	margin-right: 10rpx;
+}
+
+.service-text {
+	color: #8795aa;
+	font-size: 25rpx;
+}
+</style>

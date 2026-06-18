@@ -1,0 +1,75 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "openid",
+                     "amount",
+                     "order_no",
+                     "order_status"
+                 ],
+    "permission":  {
+                       "read":  "auth.uid != null",
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "openid":  {
+                                      "bsonType":  "string",
+                                      "description":  "openid"
+                                  },
+                       "order_no":  {
+                                        "bsonType":  "string",
+                                        "description":  "order_no"
+                                    },
+                       "order_type":  {
+                                          "bsonType":  "string",
+                                          "description":  "order_type"
+                                      },
+                       "items":  {
+                                     "bsonType":  "array",
+                                     "description":  "items"
+                                 },
+                       "address_id":  {
+                                          "bsonType":  "string",
+                                          "description":  "address_id"
+                                      },
+                       "remark":  {
+                                      "bsonType":  "string",
+                                      "description":  "remark"
+                                  },
+                       "amount":  {
+                                      "bsonType":  "double",
+                                      "description":  "amount"
+                                  },
+                       "pay_amount":  {
+                                          "bsonType":  "double",
+                                          "description":  "pay_amount"
+                                      },
+                       "order_status":  {
+                                            "bsonType":  "string",
+                                            "description":  "order_status"
+                                        },
+                       "pay_time":  {
+                                        "bsonType":  "timestamp",
+                                        "description":  "pay_time"
+                                    },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

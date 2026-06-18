@@ -1,0 +1,21 @@
+{
+  "bsonType": "object",
+  "required": ["name", "type", "status", "create_time", "update_time"],
+  "permission": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "name": { "bsonType": "string", "description": "category name" },
+    "type": { "bsonType": "string", "description": "business type: travel, car_service, used_car, local" },
+    "icon": { "bsonType": "string", "description": "icon text or url" },
+    "image": { "bsonType": "string", "description": "category image" },
+    "sort": { "bsonType": "int", "description": "sort value" },
+    "status": { "bsonType": "int", "description": "1 enabled, 0 disabled" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

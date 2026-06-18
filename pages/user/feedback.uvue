@@ -1,0 +1,159 @@
+<template>
+	<view class="page">
+		<view class="card">
+			<text class="section-title">意见反馈</text>
+			<textarea class="feedback-input" v-model="content" placeholder="请描述您遇到的问题或建议" placeholder-class="placeholder" />
+			<input class="contact-input" v-model="contact" placeholder="联系方式（选填）" placeholder-class="placeholder" />
+			<view class="type-row">
+				<text class="type" :class="type == '功能建议' ? 'active-type' : ''" @tap="setType('功能建议')">功能建议</text>
+				<text class="type" :class="type == '服务体验' ? 'active-type' : ''" @tap="setType('服务体验')">服务体验</text>
+				<text class="type" :class="type == '页面问题' ? 'active-type' : ''" @tap="setType('页面问题')">页面问题</text>
+			</view>
+			<view class="submit-btn" @tap="submit">
+				<text class="btn-text">{{ submitting ? '提交中...' : '提交反馈' }}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { createCloudObject } from '/utils/cloud-object.js'
+
+const userObj = createCloudObject('user')
+const type = ref('功能建议')
+const content = ref('')
+const contact = ref('')
+const submitting = ref(false)
+
+function getAnonymousId(): string {
+	let id = uni.getStorageSync('zy_anonymous_id') as string
+	if (id.length == 0) {
+		id = String(Date.now()) + String(Math.floor(Math.random() * 1000000))
+		uni.setStorageSync('zy_anonymous_id', id)
+	}
+	return id
+}
+
+function setType(value: string) {
+	type.value = value
+}
+
+async function submit() {
+	if (submitting.value) return
+	if (content.value.length == 0) {
+		uni.showToast({ title: '请先填写反馈内容', icon: 'none' })
+		return
+	}
+	submitting.value = true
+	uni.showLoading({ title: '提交中' })
+	try {
+		const res = await userObj.submitFeedback({
+			anonymousId: getAnonymousId(),
+			type: type.value,
+			content: content.value,
+			contact: contact.value
+		})
+		uni.hideLoading()
+		if (res.errCode != 0) {
+			uni.showToast({ title: res.errMsg || '提交失败', icon: 'none' })
+			return
+		}
+		content.value = ''
+		contact.value = ''
+		uni.showToast({ title: '感谢反馈', icon: 'success' })
+	} catch (e) {
+		uni.hideLoading()
+		uni.showToast({ title: '提交失败，请检查云对象', icon: 'none' })
+	} finally {
+		submitting.value = false
+	}
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 24rpx 30rpx;
+	background: #f5f7fa;
+}
+
+.card {
+	padding: 28rpx;
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+	display: flex;
+	flex-direction: column;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.feedback-input {
+	margin-top: 22rpx;
+	min-height: 260rpx;
+	padding: 20rpx;
+	border-radius: 16rpx;
+	background: #f5f7fa;
+	color: #101828;
+	font-size: 23rpx;
+}
+
+.contact-input {
+	margin-top: 18rpx;
+	height: 72rpx;
+	padding: 0 20rpx;
+	border-radius: 16rpx;
+	background: #f5f7fa;
+	color: #101828;
+	font-size: 23rpx;
+}
+
+.placeholder {
+	color: #98a2b3;
+}
+
+.type-row {
+	margin-top: 22rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.type {
+	margin-right: 16rpx;
+	padding: 12rpx 20rpx;
+	border-radius: 999rpx;
+	background: #f1f3f6;
+	color: #667085;
+	font-size: 22rpx;
+	font-weight: 700;
+}
+
+.active-type {
+	background: #eaf3ff;
+	color: #1677ff;
+}
+
+.submit-btn {
+	margin-top: 34rpx;
+	height: 72rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 24rpx;
+	font-weight: 900;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	overflow: hidden;
+}
+</style>

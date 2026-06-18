@@ -1,0 +1,100 @@
+<template>
+	<view class="page">
+		<view class="brand-card">
+			<image class="logo" src="/static/logo-full.jpg" mode="aspectFit" />
+			<text class="slogan">玩转舟山 · 发现海岛之美</text>
+		</view>
+		<view class="card">
+			<text class="section-title">关于舟游记</text>
+			<text class="about-text">舟游记整合舟山本地旅游、车务、住宿、特产商城、活动报名与二手车交易资源，帮助用户更高效地完成出行和本地服务决策。</text>
+		</view>
+		<view class="card">
+			<view class="row">
+				<text class="row-label">版本号</text>
+				<text class="row-value">1.0.0</text>
+			</view>
+			<view class="row">
+				<text class="row-label">服务范围</text>
+				<text class="row-value">舟山本地资源</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 30rpx;
+	background: #f5f7fa;
+}
+
+.brand-card,
+.card {
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.brand-card {
+	padding: 44rpx 28rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.logo {
+	width: 420rpx;
+	height: 130rpx;
+}
+
+.slogan {
+	margin-top: 18rpx;
+	color: #1677ff;
+	font-size: 26rpx;
+	letter-spacing: 4rpx;
+}
+
+.card {
+	margin-top: 22rpx;
+	padding: 28rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.about-text {
+	margin-top: 18rpx;
+	color: #596579;
+	font-size: 23rpx;
+	line-height: 36rpx;
+}
+
+.row {
+	padding: 20rpx 0;
+	border-bottom: 1rpx solid #eef1f5;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.row:last-child {
+	border-bottom: 0;
+}
+
+.row-label {
+	color: #344054;
+	font-size: 24rpx;
+}
+
+.row-value {
+	margin-left: auto;
+	color: #667085;
+	font-size: 24rpx;
+}
+</style>

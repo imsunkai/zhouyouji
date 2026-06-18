@@ -1,0 +1,128 @@
+<template>
+	<view class="page">
+		<view class="summary-card">
+			<text class="score">92</text>
+			<text class="summary-title">综合车况评分</text>
+			<text class="summary-desc">结构件正常，发动机与变速箱状态良好</text>
+		</view>
+		<view class="card">
+			<text class="section-title">检测项目</text>
+			<view class="report-row" v-for="(item, idx) in reports" :key="idx">
+				<view class="check-icon">
+					<text class="check-text">✓</text>
+				</view>
+				<view class="report-copy">
+					<text class="report-title">{{item.title}}</text>
+					<text class="report-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+const reports = ref([
+	{ title: '无重大事故', desc: '骨架结构正常，关键部位检测通过。' },
+	{ title: '无水泡火烧', desc: '内饰、电器、线束未见异常。' },
+	{ title: '发动机良好', desc: '启动平稳，无明显渗漏。' },
+	{ title: '手续齐全', desc: '过户、保险、金融服务可协助办理。' }
+])
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 24rpx 30rpx;
+	background: #f5f7fa;
+}
+
+.summary-card,
+.card {
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.summary-card {
+	padding: 42rpx 28rpx;
+	background: linear-gradient(180deg, #eaf5ff 0%, #ffffff 100%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.score {
+	color: #1677ff;
+	font-size: 72rpx;
+	font-weight: 900;
+}
+
+.summary-title {
+	margin-top: 8rpx;
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.summary-desc {
+	margin-top: 10rpx;
+	color: #667085;
+	font-size: 22rpx;
+}
+
+.card {
+	margin-top: 22rpx;
+	padding: 28rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.report-row {
+	margin-top: 24rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.check-icon {
+	width: 46rpx;
+	height: 46rpx;
+	border-radius: 50%;
+	background: #edfaf1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.check-text {
+	color: #20a15a;
+	font-size: 24rpx;
+	font-weight: 900;
+}
+
+.report-copy {
+	flex: 1;
+	margin-left: 16rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.report-title {
+	color: #14233b;
+	font-size: 25rpx;
+	font-weight: 900;
+}
+
+.report-desc {
+	margin-top: 8rpx;
+	color: #667085;
+	font-size: 22rpx;
+	line-height: 32rpx;
+}
+</style>

@@ -1,0 +1,62 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "openid",
+                     "title",
+                     "amount"
+                 ],
+    "permission":  {
+                       "read":  "auth.uid != null",
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "openid":  {
+                                      "bsonType":  "string",
+                                      "description":  "openid"
+                                  },
+                       "title":  {
+                                     "bsonType":  "string",
+                                     "description":  "title"
+                                 },
+                       "amount":  {
+                                      "bsonType":  "double",
+                                      "description":  "amount"
+                                  },
+                       "threshold":  {
+                                         "bsonType":  "double",
+                                         "description":  "threshold"
+                                     },
+                       "start_time":  {
+                                          "bsonType":  "timestamp",
+                                          "description":  "start_time"
+                                      },
+                       "end_time":  {
+                                        "bsonType":  "timestamp",
+                                        "description":  "end_time"
+                                    },
+                       "usable":  {
+                                      "bsonType":  "bool",
+                                      "description":  "usable"
+                                  },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

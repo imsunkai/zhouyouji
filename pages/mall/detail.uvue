@@ -1,0 +1,269 @@
+<template>
+	<view class="page">
+		<swiper class="product-swiper" indicator-dots autoplay circular>
+			<swiper-item v-for="(img, idx) in images" :key="idx">
+				<image class="swiper-image" :src="img" mode="aspectFill" />
+			</swiper-item>
+		</swiper>
+
+		<view class="main-card">
+			<view class="tag-row">
+				<text class="tag tag-blue">新鲜捕捞</text>
+				<text class="tag tag-green">顺丰包邮</text>
+			</view>
+			<text class="product-title">舟山梭子蟹（鲜活）</text>
+			<text class="product-desc">膏肥肉满，鲜活直达，适合家庭聚餐与节日礼赠。</text>
+			<view class="price-row">
+				<text class="price">¥138</text>
+				<text class="sold">已售 1286</text>
+			</view>
+		</view>
+
+		<view class="card">
+			<text class="section-title">服务保障</text>
+			<view class="guarantee-row">
+				<view class="guarantee-item" v-for="(item, idx) in guarantees" :key="idx">
+					<text class="guarantee-icon">{{item.icon}}</text>
+					<text class="guarantee-title">{{item.title}}</text>
+					<text class="guarantee-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<text class="section-title">商品详情</text>
+			<text class="detail-text">精选舟山本地海鲜水产，源头直供，冷链配送。下单后顾问会确认收货时间与配送信息，尽量保障鲜度和口感。</text>
+		</view>
+
+		<view class="bottom-space"></view>
+		<view class="action-bar">
+			<view class="cart-info">
+				<text class="cart-label">购物车</text>
+				<text class="cart-price">¥{{cartTotal}}</text>
+			</view>
+			<view class="plain-btn" @tap="addCart">
+				<text class="btn-text">加入购物车</text>
+			</view>
+			<view class="buy-btn" @tap="buyNow">
+				<text class="btn-text">立即购买</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+const cartTotal = ref(0)
+const images = ref(['/static/zy/crab.jpg', '/static/zy/shrimp.jpg', '/static/zy/abalone.jpg'])
+const guarantees = ref([
+	{ icon: '品', title: '品质保证', desc: '严格品控' },
+	{ icon: '产', title: '产地直供', desc: '源头发货' },
+	{ icon: '冷', title: '冷链配送', desc: '锁住鲜度' },
+	{ icon: '售', title: '售后无忧', desc: '顾问跟进' }
+])
+
+function addCart() {
+	cartTotal.value = cartTotal.value + 138
+	uni.showToast({
+		title: '已加入购物车',
+		icon: 'none'
+	})
+}
+
+function buyNow() {
+	uni.navigateTo({
+		url: '/pages/order/checkout'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding-bottom: 126rpx;
+	background: #f5f7fa;
+}
+
+.product-swiper,
+.swiper-image {
+	width: 100%;
+	height: 460rpx;
+	background: #edf2f8;
+}
+
+.main-card,
+.card {
+	margin: 22rpx 30rpx 0;
+	padding: 28rpx;
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.tag-row,
+.price-row,
+.guarantee-row,
+.action-bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.tag {
+	margin-right: 10rpx;
+	padding: 6rpx 12rpx;
+	border-radius: 6rpx;
+	color: #ffffff;
+	font-size: 19rpx;
+	font-weight: 800;
+}
+
+.tag-blue {
+	background: #1677ff;
+}
+
+.tag-green {
+	background: #52c41a;
+}
+
+.product-title {
+	margin-top: 18rpx;
+	color: #07152d;
+	font-size: 34rpx;
+	font-weight: 900;
+	line-height: 44rpx;
+}
+
+.product-desc,
+.detail-text {
+	margin-top: 14rpx;
+	color: #6f7b8f;
+	font-size: 23rpx;
+	line-height: 34rpx;
+}
+
+.price-row {
+	margin-top: 18rpx;
+}
+
+.price {
+	color: #ff3b30;
+	font-size: 40rpx;
+	font-weight: 900;
+}
+
+.sold {
+	margin-left: 16rpx;
+	color: #98a2b3;
+	font-size: 22rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.guarantee-row {
+	margin-top: 26rpx;
+	justify-content: space-between;
+}
+
+.guarantee-item {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.guarantee-icon {
+	width: 58rpx;
+	height: 58rpx;
+	border-radius: 50%;
+	background: #eef6ff;
+	color: #123967;
+	font-size: 21rpx;
+	font-weight: 900;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.guarantee-title {
+	margin-top: 12rpx;
+	color: #14233b;
+	font-size: 21rpx;
+	font-weight: 800;
+}
+
+.guarantee-desc {
+	margin-top: 6rpx;
+	color: #7c8797;
+	font-size: 18rpx;
+}
+
+.bottom-space {
+	height: 32rpx;
+}
+
+.action-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 18rpx 30rpx 30rpx;
+	background: #ffffff;
+	box-shadow: 0 -8rpx 24rpx rgba(30,48,84,0.08);
+	z-index: 20;
+}
+
+.cart-info {
+	width: 142rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.cart-label {
+	color: #6f7b8f;
+	font-size: 20rpx;
+}
+
+.cart-price {
+	margin-top: 6rpx;
+	color: #ff3b30;
+	font-size: 25rpx;
+	font-weight: 900;
+}
+
+.plain-btn,
+.buy-btn {
+	height: 66rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	border-radius: 999rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	font-size: 23rpx;
+	font-weight: 800;
+	overflow: hidden;
+}
+
+.plain-btn {
+	width: 210rpx;
+	background: #eef6ff;
+	color: #1677ff;
+	flex: 0 0 210rpx;
+}
+
+.buy-btn {
+	flex: 1;
+	margin-left: 16rpx;
+	background: #1677ff;
+	color: #ffffff;
+}
+</style>

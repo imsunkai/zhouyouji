@@ -1,0 +1,116 @@
+<template>
+	<view class="page">
+		<view class="history-card" v-for="(item, idx) in history" :key="idx">
+			<image class="history-image" :src="item.image" mode="aspectFill" />
+			<view class="history-copy">
+				<text class="history-title">{{item.title}}</text>
+				<text class="history-desc">{{item.desc}}</text>
+				<text class="history-time">{{item.time}}</text>
+			</view>
+		</view>
+		<view v-if="history.length == 0" class="empty">
+			<text class="empty-title">暂无浏览足迹</text>
+			<text class="empty-desc">看过的商品、车源和活动会在这里记录</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { createCloudObject } from '/utils/cloud-object.js'
+import { onShow } from '@dcloudio/uni-app'
+
+const userObj = createCloudObject('user')
+const history = ref([])
+
+onShow(() => {
+	loadHistory()
+})
+
+function getAnonymousId(): string {
+	let id = uni.getStorageSync('zy_anonymous_id') as string
+	if (id.length == 0) {
+		id = String(Date.now()) + String(Math.floor(Math.random() * 1000000))
+		uni.setStorageSync('zy_anonymous_id', id)
+	}
+	return id
+}
+
+async function loadHistory() {
+	try {
+		const res = await userObj.getBrowseHistory({ anonymousId: getAnonymousId() })
+		if (res.errCode == 0) history.value = res.data.list || []
+	} catch (e) {
+		uni.showToast({ title: '足迹加载失败', icon: 'none' })
+	}
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 24rpx 30rpx;
+	background: #f5f7fa;
+}
+
+.history-card {
+	margin-bottom: 18rpx;
+	padding: 18rpx;
+	border-radius: 20rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+	display: flex;
+	flex-direction: row;
+}
+
+.history-image {
+	width: 150rpx;
+	height: 112rpx;
+	border-radius: 14rpx;
+	background: #edf2f8;
+}
+
+.history-copy {
+	flex: 1;
+	margin-left: 18rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.history-title {
+	color: #07152d;
+	font-size: 27rpx;
+	font-weight: 900;
+}
+
+.history-desc {
+	margin-top: 8rpx;
+	color: #667085;
+	font-size: 22rpx;
+}
+
+.history-time {
+	margin-top: auto;
+	color: #98a2b3;
+	font-size: 20rpx;
+}
+
+.empty {
+	margin-top: 160rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.empty-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.empty-desc {
+	margin-top: 12rpx;
+	color: #98a2b3;
+	font-size: 23rpx;
+}
+</style>

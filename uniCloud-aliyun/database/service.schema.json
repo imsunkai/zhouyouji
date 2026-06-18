@@ -1,0 +1,33 @@
+{
+  "bsonType": "object",
+  "required": ["title", "type", "status", "create_time", "update_time"],
+  "permission": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "category_id": { "bsonType": "string", "description": "category id" },
+    "category_name": { "bsonType": "string", "description": "category name snapshot" },
+    "type": { "bsonType": "string", "description": "business type" },
+    "title": { "bsonType": "string", "description": "service title" },
+    "subtitle": { "bsonType": "string", "description": "service subtitle" },
+    "description": { "bsonType": "string", "description": "short description" },
+    "content": { "bsonType": "string", "description": "detail content" },
+    "cover": { "bsonType": "string", "description": "cover image" },
+    "images": { "bsonType": "array", "description": "image list" },
+    "price": { "bsonType": "double", "description": "price" },
+    "unit": { "bsonType": "string", "description": "price unit" },
+    "contact_name": { "bsonType": "string", "description": "contact name" },
+    "contact_phone": { "bsonType": "string", "description": "contact phone" },
+    "address": { "bsonType": "string", "description": "service address" },
+    "tags": { "bsonType": "array", "description": "tag list" },
+    "is_recommend": { "bsonType": "bool", "description": "home recommend flag" },
+    "sort": { "bsonType": "int", "description": "sort value" },
+    "status": { "bsonType": "int", "description": "1 on shelf, 0 off shelf" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

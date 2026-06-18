@@ -1,0 +1,539 @@
+<template>
+	<view class="page">
+		<view class="hero">
+			<image class="hero-image" src="/static/zy/sea-hero.jpg" mode="aspectFill" />
+			<view class="hero-mask"></view>
+			<view class="hero-copy">
+				<text class="hero-title">舟游记</text>
+				<text class="hero-subtitle">舟山本地资源服务平台</text>
+				<text class="hero-tags">旅游 · 车务 · 住宿 · 特产 · 二手车</text>
+				<view class="hero-line">
+					<view class="line-long"></view>
+					<view class="line-short"></view>
+				</view>
+			</view>
+		</view>
+
+		<view class="quick-card">
+			<view
+				class="quick-item"
+				v-for="(item, idx) in serviceEntrances"
+				:key="idx"
+				@tap="openRoute(item.url, item.tab)"
+			>
+				<view class="quick-icon" :style="'background:' + item.color">
+					<text class="quick-emoji">{{item.icon}}</text>
+				</view>
+				<text class="quick-title">{{item.title}}</text>
+				<text class="quick-desc">{{item.desc}}</text>
+			</view>
+		</view>
+
+		<view class="card advantage-card">
+			<view class="section-head">
+				<text class="section-title">平台优势</text>
+			</view>
+			<view class="advantage-row">
+				<view class="advantage-item" v-for="(item, idx) in advantages" :key="idx">
+					<view class="advantage-icon">
+						<text class="advantage-emoji">{{item.icon}}</text>
+					</view>
+					<text class="advantage-title">{{item.title}}</text>
+					<text class="advantage-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="card recommend-card">
+			<view class="section-head">
+				<text class="section-title">精选推荐</text>
+				<text class="section-more" @tap="openRoute('/pages/service/service', true)">查看更多 ›</text>
+			</view>
+			<scroll-view scroll-x class="recommend-scroll" show-scrollbar="false">
+				<view class="recommend-row">
+					<view
+						class="recommend-item"
+						v-for="(item, idx) in recommends"
+						:key="idx"
+						@tap="openRoute('/pages/service/detail', false)"
+					>
+						<image class="recommend-image" :src="item.image" mode="aspectFill" />
+						<view class="recommend-info">
+							<text class="recommend-title">{{item.title}}</text>
+							<text class="recommend-desc">{{item.desc}}</text>
+							<view class="recommend-bottom">
+								<text class="recommend-price">¥{{item.price}}</text>
+								<text class="recommend-unit">{{item.unit}}</text>
+								<text class="recommend-tag">{{item.tag}}</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+
+		<view class="consult-card">
+			<view class="consult-icon">
+				<text class="consult-emoji">☎</text>
+			</view>
+			<view class="consult-copy">
+				<text class="consult-title">有问题？联系专属顾问</text>
+				<text class="consult-desc">专业顾问为您提供一对一服务</text>
+			</view>
+			<view class="consult-btn" @tap="consult">
+				<text class="btn-text">立即咨询</text>
+			</view>
+		</view>
+
+		<view class="notice-card" @tap="openRoute('/pages/user/about', false)">
+			<text class="notice-icon">公告</text>
+			<text class="notice-text">欢迎使用舟游记小程序，我们将竭诚为您服务！</text>
+			<text class="notice-arrow">›</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { createCloudObject } from '/utils/cloud-object.js'
+import { onLoad } from '@dcloudio/uni-app'
+
+const serviceObj = createCloudObject('service')
+
+// TODO: 后续接入首页聚合接口，替换本地 mock 数据。
+const serviceEntrances = ref([
+	{ title: '旅游服务', desc: '线路推荐 · 定制游', icon: '岛', color: '#4F8FFF', url: '/pages/service/service', tab: true },
+	{ title: '车务服务', desc: '接送 · 包车 · 租车', icon: '车', color: '#48B982', url: '/pages/service/service', tab: true },
+	{ title: '住宿资源', desc: '酒店 · 民宿 · 公寓', icon: '住', color: '#FA8C16', url: '/pages/service/service', tab: true },
+	{ title: '商城特产', desc: '海鲜特产 · 礼盒', icon: '购', color: '#8E62E8', url: '/pages/mall/mall', tab: false },
+	{ title: '二手车', desc: '车源 · 评估 · 过户', icon: '换', color: '#1677FF', url: '/pages/car/index', tab: false }
+])
+
+const advantages = ref([
+	{ title: '本地资源', desc: '深耕舟山\n资源丰富', icon: '⌖' },
+	{ title: '靠谱服务', desc: '严选合作\n品质保障', icon: '✓' },
+	{ title: '专属客服', desc: '一对一服务\n快速响应', icon: '☎' },
+	{ title: '价格透明', desc: '明码标价\n无隐形消费', icon: '赞' }
+])
+
+const recommends = ref([
+	{ image: '/static/zy/tour-lighthouse.jpg', title: '朱家尖一日游', desc: '经典海岛路线', price: '198', unit: '起/人', tag: '热门' },
+	{ image: '/static/zy/car-coast.jpg', title: '普陀山接送服务', desc: '机场/码头接送', price: '180', unit: '起/次', tag: '便捷' },
+	{ image: '/static/zy/hotel-seaview.jpg', title: '海景民宿推荐', desc: '优质海景房源', price: '268', unit: '起/晚', tag: '优选' },
+	{ image: '/static/zy/crab.jpg', title: '舟山海鲜礼盒', desc: '新鲜美味 · 顺丰包邮', price: '268', unit: '起', tag: '好物' }
+])
+
+onLoad(() => {
+	loadHomeRecommend()
+})
+
+async function loadHomeRecommend() {
+	try {
+		const res = await serviceObj.getHomeRecommend({ page: 1, pageSize: 10 })
+		if (res.errCode == 0 && res.data.list.length > 0) {
+			recommends.value = res.data.list.map((item) => {
+				return {
+					image: item.cover || '/static/zy/tour-lighthouse.jpg',
+					title: item.title || '',
+					desc: item.description || item.subtitle || '',
+					price: String(item.price || ''),
+					unit: item.unit || '',
+					tag: item.category_name || ''
+				}
+			})
+		}
+	} catch (e) {
+	}
+}
+
+function openRoute(url: string, tab: boolean) {
+	if (tab) {
+		uni.switchTab({ url })
+	} else {
+		uni.navigateTo({ url })
+	}
+}
+
+function consult() {
+	uni.showToast({
+		title: '已为您连接专属顾问',
+		icon: 'none'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding-bottom: 36rpx;
+	background: #f5f7fa;
+}
+
+.hero {
+	position: relative;
+	height: 520rpx;
+	overflow: hidden;
+	background: #1677ff;
+}
+
+.hero-image {
+	width: 100%;
+	height: 520rpx;
+	display: block;
+}
+
+.hero-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 520rpx;
+	background: linear-gradient(90deg, rgba(12,68,138,0.70) 0%, rgba(12,88,164,0.22) 58%, rgba(255,255,255,0.10) 100%);
+}
+
+.hero-copy {
+	position: absolute;
+	left: 52rpx;
+	bottom: 112rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.hero-title {
+	color: #ffffff;
+	font-size: 58rpx;
+	line-height: 68rpx;
+	font-weight: 800;
+}
+
+.hero-subtitle {
+	margin-top: 18rpx;
+	color: #ffffff;
+	font-size: 30rpx;
+	font-weight: 600;
+}
+
+.hero-tags {
+	margin-top: 16rpx;
+	color: rgba(255,255,255,0.94);
+	font-size: 25rpx;
+}
+
+.hero-line {
+	margin-top: 28rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.line-long,
+.line-short {
+	height: 5rpx;
+	border-radius: 999rpx;
+	background: #ffffff;
+}
+
+.line-long {
+	width: 70rpx;
+}
+
+.line-short {
+	width: 34rpx;
+	margin-left: 12rpx;
+	opacity: 0.76;
+}
+
+.quick-card {
+	position: relative;
+	z-index: 2;
+	margin: -72rpx 24rpx 18rpx;
+	padding: 34rpx 18rpx 28rpx;
+	background: #ffffff;
+	border-radius: 28rpx;
+	box-shadow: 0 18rpx 40rpx rgba(33,55,96,0.10);
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.quick-item {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.quick-icon {
+	width: 88rpx;
+	height: 88rpx;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10rpx 22rpx rgba(22,119,255,0.20);
+}
+
+.quick-emoji {
+	color: #ffffff;
+	font-size: 30rpx;
+	font-weight: 700;
+}
+
+.quick-title {
+	margin-top: 18rpx;
+	color: #101828;
+	font-size: 24rpx;
+	font-weight: 700;
+}
+
+.quick-desc {
+	width: 128rpx;
+	margin-top: 8rpx;
+	color: #687386;
+	font-size: 18rpx;
+	line-height: 28rpx;
+	text-align: center;
+}
+
+.card {
+	margin: 18rpx 24rpx 0;
+	padding: 28rpx 26rpx;
+	background: #ffffff;
+	border-radius: 22rpx;
+	box-shadow: 0 10rpx 26rpx rgba(28,45,86,0.06);
+}
+
+.section-head {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.section-more {
+	color: #7d8796;
+	font-size: 24rpx;
+}
+
+.advantage-row {
+	margin-top: 34rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.advantage-item {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.advantage-icon {
+	width: 70rpx;
+	height: 70rpx;
+	border-radius: 50%;
+	background: #eef6ff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.advantage-emoji {
+	color: #1677ff;
+	font-size: 32rpx;
+	font-weight: 700;
+}
+
+.advantage-title {
+	margin-top: 18rpx;
+	color: #14233b;
+	font-size: 24rpx;
+	font-weight: 700;
+}
+
+.advantage-desc {
+	margin-top: 10rpx;
+	color: #737f91;
+	font-size: 21rpx;
+	line-height: 32rpx;
+	text-align: center;
+	white-space: pre-line;
+}
+
+.recommend-card {
+	padding-right: 0;
+}
+
+.recommend-scroll {
+	margin-top: 24rpx;
+	white-space: nowrap;
+}
+
+.recommend-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.recommend-item {
+	width: 190rpx;
+	margin-right: 14rpx;
+	background: #ffffff;
+	border-radius: 12rpx;
+	overflow: hidden;
+	box-shadow: 0 8rpx 18rpx rgba(31,50,85,0.08);
+}
+
+.recommend-image {
+	width: 190rpx;
+	height: 146rpx;
+	display: block;
+}
+
+.recommend-info {
+	padding: 14rpx 14rpx 16rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.recommend-title {
+	color: #111827;
+	font-size: 23rpx;
+	font-weight: 700;
+	line-height: 30rpx;
+}
+
+.recommend-desc {
+	margin-top: 8rpx;
+	color: #7b8494;
+	font-size: 20rpx;
+	line-height: 28rpx;
+}
+
+.recommend-bottom {
+	margin-top: 14rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.recommend-price {
+	color: #ff5d1f;
+	font-size: 25rpx;
+	font-weight: 700;
+}
+
+.recommend-unit {
+	margin-left: 6rpx;
+	color: #7d8796;
+	font-size: 18rpx;
+}
+
+.recommend-tag {
+	margin-left: auto;
+	padding: 4rpx 10rpx;
+	border-radius: 999rpx;
+	background: #fff0e5;
+	color: #fa8c16;
+	font-size: 18rpx;
+}
+
+.consult-card {
+	margin: 24rpx 24rpx 0;
+	padding: 28rpx 26rpx;
+	border-radius: 22rpx;
+	background: linear-gradient(90deg, #eaf5ff 0%, #eef7ff 100%);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-shadow: 0 8rpx 22rpx rgba(22,119,255,0.08);
+}
+
+.consult-icon {
+	width: 74rpx;
+	height: 74rpx;
+	border-radius: 50%;
+	background: #d8ebff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.consult-emoji {
+	color: #1677ff;
+	font-size: 36rpx;
+	font-weight: 700;
+}
+
+.consult-copy {
+	flex: 1;
+	margin-left: 18rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.consult-title {
+	color: #0c1b33;
+	font-size: 29rpx;
+	font-weight: 800;
+}
+
+.consult-desc {
+	margin-top: 8rpx;
+	color: #627086;
+	font-size: 23rpx;
+}
+
+.consult-btn {
+	width: 168rpx;
+	height: 56rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 22rpx;
+	font-weight: 700;
+	flex: 0 0 168rpx;
+	overflow: hidden;
+}
+
+.notice-card {
+	margin: 22rpx 24rpx 0;
+	padding: 22rpx 24rpx;
+	border-radius: 18rpx;
+	background: #fff8ef;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.notice-icon {
+	color: #fa8c16;
+	font-size: 24rpx;
+	font-weight: 700;
+}
+
+.notice-text {
+	flex: 1;
+	margin-left: 18rpx;
+	color: #606b7c;
+	font-size: 23rpx;
+}
+
+.notice-arrow {
+	color: #9ba4b3;
+	font-size: 40rpx;
+}
+</style>

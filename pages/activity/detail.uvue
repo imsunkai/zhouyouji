@@ -1,0 +1,222 @@
+<template>
+	<view class="page">
+		<image class="hero-image" src="/static/zy/activity-hero.jpg" mode="aspectFill" />
+		<view class="main-card">
+			<view class="status-row">
+				<text class="status-tag">火热进行中</text>
+				<text class="count-text">已报名 128 人</text>
+			</view>
+			<text class="title">普陀山祈福之旅 · 2日游</text>
+			<text class="desc">感受海天佛国的宁静与美好，适合家庭、朋友和企业小团队出行。</text>
+		</view>
+
+		<view class="card">
+			<text class="section-title">活动信息</text>
+			<view class="info-row" v-for="(item, idx) in infos" :key="idx">
+				<text class="info-label">{{item.label}}</text>
+				<text class="info-value">{{item.value}}</text>
+			</view>
+		</view>
+
+		<view class="card">
+			<text class="section-title">行程亮点</text>
+			<view class="highlight" v-for="(item, idx) in highlights" :key="idx">
+				<text class="dot"></text>
+				<text class="highlight-text">{{item}}</text>
+			</view>
+		</view>
+
+		<view class="bottom-space"></view>
+		<view class="action-bar">
+			<view class="plain-btn" @tap="consult">
+				<text class="btn-text">咨询顾问</text>
+			</view>
+			<view class="primary-btn" @tap="signup">
+				<text class="btn-text">立即报名</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+const infos = ref([
+	{ label: '活动时间', value: '2024.05.18 - 2024.05.25' },
+	{ label: '集合地点', value: '舟山定海游客中心' },
+	{ label: '活动类型', value: '旅游活动 · 精品线路' },
+	{ label: '适合人群', value: '家庭出游 / 企业团建 / 朋友结伴' }
+])
+
+const highlights = ref([
+	'本地顾问全程跟进，行程安排更省心',
+	'精选舟山经典海岛路线，拍照与体验兼顾',
+	'支持包车、住宿、餐饮等配套服务定制'
+])
+
+function consult() {
+	uni.showToast({ title: '活动顾问将尽快联系您', icon: 'none' })
+}
+
+function signup() {
+	uni.showToast({ title: '报名信息已提交', icon: 'none' })
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding-bottom: 126rpx;
+	background: #f5f7fa;
+}
+
+.hero-image {
+	width: 100%;
+	height: 420rpx;
+	background: #edf2f8;
+}
+
+.main-card,
+.card {
+	margin: 22rpx 30rpx 0;
+	padding: 28rpx;
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.main-card {
+	margin-top: -46rpx;
+	position: relative;
+	z-index: 2;
+}
+
+.status-row,
+.info-row,
+.highlight,
+.action-bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.status-tag {
+	padding: 7rpx 14rpx;
+	border-radius: 999rpx;
+	background: #fff0ed;
+	color: #ff5d3a;
+	font-size: 21rpx;
+	font-weight: 800;
+}
+
+.count-text {
+	margin-left: auto;
+	color: #667085;
+	font-size: 22rpx;
+}
+
+.title {
+	margin-top: 18rpx;
+	color: #07152d;
+	font-size: 36rpx;
+	line-height: 46rpx;
+	font-weight: 900;
+}
+
+.desc {
+	margin-top: 12rpx;
+	color: #6f7b8f;
+	font-size: 23rpx;
+	line-height: 34rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.info-row {
+	margin-top: 22rpx;
+}
+
+.info-label {
+	width: 150rpx;
+	color: #667085;
+	font-size: 23rpx;
+}
+
+.info-value {
+	flex: 1;
+	color: #14233b;
+	font-size: 23rpx;
+	font-weight: 700;
+}
+
+.highlight {
+	margin-top: 22rpx;
+	align-items: flex-start;
+}
+
+.dot {
+	width: 12rpx;
+	height: 12rpx;
+	margin-top: 11rpx;
+	border-radius: 50%;
+	background: #1677ff;
+}
+
+.highlight-text {
+	flex: 1;
+	margin-left: 16rpx;
+	color: #344054;
+	font-size: 23rpx;
+	line-height: 34rpx;
+}
+
+.bottom-space {
+	height: 36rpx;
+}
+
+.action-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 18rpx 30rpx 30rpx;
+	background: #ffffff;
+	box-shadow: 0 -8rpx 24rpx rgba(30,48,84,0.08);
+	z-index: 20;
+}
+
+.plain-btn,
+.primary-btn {
+	height: 66rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	border-radius: 999rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	font-size: 24rpx;
+	font-weight: 800;
+	overflow: hidden;
+}
+
+.plain-btn {
+	width: 210rpx;
+	background: #eef6ff;
+	color: #1677ff;
+	flex: 0 0 210rpx;
+}
+
+.primary-btn {
+	flex: 1;
+	margin-left: 18rpx;
+	background: #1677ff;
+	color: #ffffff;
+}
+</style>

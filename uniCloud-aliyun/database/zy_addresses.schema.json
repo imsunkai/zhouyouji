@@ -1,0 +1,67 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "openid",
+                     "name",
+                     "phone",
+                     "address"
+                 ],
+    "permission":  {
+                       "read":  "auth.uid != null",
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "openid":  {
+                                      "bsonType":  "string",
+                                      "description":  "openid"
+                                  },
+                       "name":  {
+                                    "bsonType":  "string",
+                                    "description":  "name"
+                                },
+                       "phone":  {
+                                     "bsonType":  "string",
+                                     "description":  "phone"
+                                 },
+                       "province":  {
+                                        "bsonType":  "string",
+                                        "description":  "province"
+                                    },
+                       "city":  {
+                                    "bsonType":  "string",
+                                    "description":  "city"
+                                },
+                       "district":  {
+                                        "bsonType":  "string",
+                                        "description":  "district"
+                                    },
+                       "address":  {
+                                       "bsonType":  "string",
+                                       "description":  "address"
+                                   },
+                       "is_default":  {
+                                          "bsonType":  "bool",
+                                          "description":  "is_default"
+                                      },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

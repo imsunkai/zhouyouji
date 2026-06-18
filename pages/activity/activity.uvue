@@ -1,0 +1,406 @@
+<template>
+	<view class="page">
+		<view class="search-row">
+			<view class="search-box">
+				<text class="search-icon">⌕</text>
+				<input class="search-input" placeholder="搜索活动/关键词" placeholder-class="placeholder" />
+			</view>
+			<view class="search-btn" @tap="showComing('活动搜索')">
+				<text class="btn-text">搜索</text>
+			</view>
+		</view>
+
+		<view class="hero">
+			<image class="hero-image" src="/static/zy/activity-hero.jpg" mode="aspectFill" />
+		</view>
+
+		<view class="category-card">
+			<view class="activity-category" v-for="(item, idx) in categories" :key="idx" @tap="showComing(item.title)">
+				<view class="category-icon" :style="'background:' + item.bg">
+					<text class="category-symbol" :style="'color:' + item.color">{{item.icon}}</text>
+				</view>
+				<text class="category-title">{{item.title}}</text>
+			</view>
+		</view>
+
+		<view class="tab-row">
+			<view class="tabs">
+				<text class="tab active-tab">全部</text>
+				<text class="tab">即将开始</text>
+				<text class="tab">火热进行中</text>
+				<text class="tab">已结束</text>
+			</view>
+			<view class="filter-entry" @tap="showComing('筛选')">
+				<text class="filter-text">筛选</text>
+				<text class="filter-icon">♢</text>
+			</view>
+		</view>
+
+		<view class="event-list">
+			<view class="event-card" v-for="(item, idx) in events" :key="idx">
+				<view class="event-image-wrap">
+					<image class="event-image" :src="item.image" mode="aspectFill" />
+					<text :class="'ribbon ' + item.ribbonClass">{{item.status}}</text>
+				</view>
+				<view class="event-info">
+					<text class="event-title">{{item.title}}</text>
+					<view class="tag-row">
+						<text :class="'event-tag ' + item.typeClass">{{item.category}}</text>
+						<text class="event-tag soft-tag">{{item.tag}}</text>
+					</view>
+					<text class="event-desc">{{item.desc}}</text>
+					<text class="event-time">{{item.time}}</text>
+					<view class="event-bottom">
+						<text class="event-count">已报名 {{item.count}} 人</text>
+						<view class="detail-btn" @tap="goDetail">
+							<text class="btn-text">查看详情</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+
+// TODO: 活动页后续接入活动分类、状态筛选、报名人数与详情接口。
+const categories = ref([
+	{ title: '旅游活动', icon: '旗', bg: '#fff1e8', color: '#fa8c16' },
+	{ title: '车务活动', icon: '车', bg: '#eaf3ff', color: '#1677ff' },
+	{ title: '住宿优惠', icon: '住', bg: '#edfff2', color: '#52c41a' },
+	{ title: '商城促销', icon: '购', bg: '#fff0e8', color: '#ff6b3b' },
+	{ title: '特产活动', icon: '礼', bg: '#f3efff', color: '#722ed1' },
+	{ title: '全部活动', icon: '全', bg: '#eef6ff', color: '#1677ff' }
+])
+
+const events = ref([
+	{ image: '/static/zy/tour-lighthouse.jpg', status: '火热进行中', ribbonClass: 'ribbon-red', title: '普陀山祈福之旅 · 2日游', category: '旅游活动', typeClass: 'tag-blue', tag: '精品线路', desc: '普陀山祈福祈愿，感受海天佛国的宁静与美好', time: '2024.05.18 - 2024.05.25', count: 128 },
+	{ image: '/static/zy/car-coast.jpg', status: '即将开始', ribbonClass: 'ribbon-orange', title: '端午专享 · 包车出游特惠', category: '车务活动', typeClass: 'tag-green', tag: '优惠活动', desc: '端午出行，包车更省心！多种车型，专业司机', time: '2024.06.01 - 2024.06.10', count: 86 },
+	{ image: '/static/zy/hotel-seaview.jpg', status: '限时优惠', ribbonClass: 'ribbon-green', title: '海景酒店 · 端午特惠', category: '住宿优惠', typeClass: 'tag-green', tag: '限时特惠', desc: '精选海景酒店，端午特惠7折起', time: '2024.06.01 - 2024.06.10', count: 56 },
+	{ image: '/static/zy/crab.jpg', status: '商城促销', ribbonClass: 'ribbon-orange', title: '海鲜礼盒 · 端午大促', category: '商城促销', typeClass: 'tag-red', tag: '满减优惠', desc: '舟山海鲜礼盒，新鲜直达，满减优惠多多', time: '2024.05.20 - 2024.06.08', count: 218 },
+	{ image: '/static/zy/team-beach.jpg', status: '企业团建', ribbonClass: 'ribbon-blue', title: '企业团建 · 定制活动', category: '旅游活动', typeClass: 'tag-blue', tag: '定制团建', desc: '团建定制方案，拓展活动+海岛体验', time: '2024.06.10 - 2024.06.30', count: 42 }
+])
+
+function showComing(name: string) {
+	uni.showToast({
+		title: name + '详情即将上线',
+		icon: 'none'
+	})
+}
+
+function goDetail() {
+	uni.navigateTo({
+		url: '/pages/activity/detail'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 22rpx 30rpx 36rpx;
+	background: #f5f7fa;
+}
+
+.search-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-box {
+	flex: 1;
+	height: 58rpx;
+	padding: 0 22rpx;
+	border-radius: 999rpx;
+	background: #eef0f4;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-icon {
+	color: #9aa2af;
+	font-size: 28rpx;
+}
+
+.search-input {
+	flex: 1;
+	margin-left: 12rpx;
+	font-size: 23rpx;
+	color: #101828;
+}
+
+.placeholder {
+	color: #9aa2af;
+}
+
+.search-btn {
+	width: 118rpx;
+	height: 56rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	margin-left: 12rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 24rpx;
+	font-weight: 700;
+	flex: 0 0 118rpx;
+	overflow: hidden;
+}
+
+.hero {
+	margin-top: 22rpx;
+	height: 264rpx;
+	border-radius: 12rpx;
+	overflow: hidden;
+	box-shadow: 0 12rpx 26rpx rgba(0,64,130,0.12);
+}
+
+.hero-image {
+	width: 100%;
+	height: 264rpx;
+}
+
+.category-card {
+	margin-top: 18rpx;
+	padding: 22rpx 12rpx;
+	background: #ffffff;
+	border-radius: 16rpx;
+	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.activity-category {
+	width: 16.66%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.category-icon {
+	width: 76rpx;
+	height: 76rpx;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.category-symbol {
+	font-size: 25rpx;
+	font-weight: 800;
+}
+
+.category-title {
+	margin-top: 12rpx;
+	color: #172033;
+	font-size: 21rpx;
+	font-weight: 700;
+}
+
+.tab-row {
+	margin-top: 28rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.tabs {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.tab {
+	color: #7b8494;
+	font-size: 25rpx;
+	padding-bottom: 14rpx;
+}
+
+.active-tab {
+	color: #0b3b75;
+	font-weight: 800;
+	border-bottom: 4rpx solid #1677ff;
+}
+
+.filter-entry {
+	margin-left: 22rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.filter-text {
+	color: #27364f;
+	font-size: 24rpx;
+	font-weight: 700;
+}
+
+.filter-icon {
+	margin-left: 8rpx;
+	color: #647084;
+	font-size: 24rpx;
+}
+
+.event-list {
+	margin-top: 10rpx;
+}
+
+.event-card {
+	margin-bottom: 18rpx;
+	padding: 8rpx;
+	border-radius: 16rpx;
+	background: #ffffff;
+	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
+	display: flex;
+	flex-direction: row;
+}
+
+.event-image-wrap {
+	position: relative;
+	width: 284rpx;
+	height: 172rpx;
+	border-radius: 10rpx;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.event-image {
+	width: 284rpx;
+	height: 172rpx;
+}
+
+.ribbon {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding: 8rpx 14rpx;
+	border-radius: 0 0 10rpx 0;
+	color: #ffffff;
+	font-size: 20rpx;
+	font-weight: 700;
+}
+
+.ribbon-red {
+	background: #ff4d4f;
+}
+
+.ribbon-orange {
+	background: #fa8c16;
+}
+
+.ribbon-green {
+	background: #20b486;
+}
+
+.ribbon-blue {
+	background: #1677ff;
+}
+
+.event-info {
+	flex: 1;
+	min-width: 0;
+	padding: 6rpx 8rpx 4rpx 20rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.event-title {
+	color: #07152d;
+	font-size: 27rpx;
+	font-weight: 800;
+	line-height: 34rpx;
+}
+
+.tag-row {
+	margin-top: 10rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.event-tag {
+	margin-right: 10rpx;
+	padding: 4rpx 8rpx;
+	border-radius: 6rpx;
+	font-size: 18rpx;
+}
+
+.tag-blue {
+	background: #eaf3ff;
+	color: #1677ff;
+}
+
+.tag-green {
+	background: #eafaf0;
+	color: #1b9c55;
+}
+
+.tag-red {
+	background: #fff0ed;
+	color: #ff5d3a;
+}
+
+.soft-tag {
+	background: #f1f3f6;
+	color: #7b8494;
+}
+
+.event-desc {
+	margin-top: 10rpx;
+	color: #687386;
+	font-size: 22rpx;
+	line-height: 30rpx;
+}
+
+.event-time {
+	margin-top: 10rpx;
+	color: #7b8494;
+	font-size: 22rpx;
+}
+
+.event-bottom {
+	margin-top: 10rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.event-count {
+	color: #858f9f;
+	font-size: 20rpx;
+}
+
+.detail-btn {
+	width: 120rpx;
+	height: 46rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	margin-left: auto;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 18rpx;
+	font-weight: 700;
+	padding: 0;
+	flex: 0 0 120rpx;
+	overflow: hidden;
+}
+</style>

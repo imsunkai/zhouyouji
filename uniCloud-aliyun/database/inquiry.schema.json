@@ -1,0 +1,26 @@
+{
+  "bsonType": "object",
+  "required": ["type", "name", "phone", "inquiry_status", "status", "create_time", "update_time"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "openid": { "bsonType": "string", "description": "wechat openid" },
+    "service_id": { "bsonType": "string", "description": "service id" },
+    "service_title": { "bsonType": "string", "description": "service title snapshot" },
+    "car_id": { "bsonType": "string", "description": "used car id" },
+    "type": { "bsonType": "string", "description": "inquiry type" },
+    "name": { "bsonType": "string", "description": "customer name" },
+    "phone": { "bsonType": "string", "description": "customer phone" },
+    "content": { "bsonType": "string", "description": "inquiry content" },
+    "inquiry_status": { "bsonType": "string", "description": "pending, processing, done, closed" },
+    "remark": { "bsonType": "string", "description": "admin remark" },
+    "status": { "bsonType": "int", "description": "1 normal, 0 deleted" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

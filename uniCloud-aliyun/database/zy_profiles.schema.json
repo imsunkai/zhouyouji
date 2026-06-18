@@ -1,0 +1,53 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "openid",
+                     "phone"
+                 ],
+    "permission":  {
+                       "read":  "auth.uid != null",
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "openid":  {
+                                      "bsonType":  "string",
+                                      "description":  "openid"
+                                  },
+                       "nickname":  {
+                                        "bsonType":  "string",
+                                        "description":  "nickname"
+                                    },
+                       "avatar":  {
+                                      "bsonType":  "string",
+                                      "description":  "avatar"
+                                  },
+                       "phone":  {
+                                     "bsonType":  "string",
+                                     "description":  "phone"
+                                 },
+                       "gender":  {
+                                      "bsonType":  "string",
+                                      "description":  "gender"
+                                  },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

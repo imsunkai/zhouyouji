@@ -1,0 +1,292 @@
+<template>
+	<view class="page">
+		<view class="address-card">
+			<view class="address-icon">
+				<text class="address-symbol">收</text>
+			</view>
+			<view class="address-copy">
+				<text class="address-title">张先生 138****8899</text>
+				<text class="address-desc">浙江省舟山市定海区海岛资源服务中心</text>
+			</view>
+			<text class="arrow">›</text>
+		</view>
+
+		<view class="card">
+			<text class="section-title">确认商品</text>
+			<view class="goods-item">
+				<image class="goods-image" src="/static/zy/crab.jpg" mode="aspectFill" />
+				<view class="goods-copy">
+					<text class="goods-title">舟山梭子蟹（鲜活）</text>
+					<text class="goods-desc">新鲜捕捞 · 顺丰包邮</text>
+					<view class="goods-bottom">
+						<text class="goods-price">¥138</text>
+						<text class="goods-count">x1</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<view class="row">
+				<text class="row-label">商品金额</text>
+				<text class="row-value">¥138</text>
+			</view>
+			<view class="row">
+				<text class="row-label">冷链配送</text>
+				<text class="row-value green">免运费</text>
+			</view>
+			<view class="row">
+				<text class="row-label">优惠券</text>
+				<text class="row-value">暂无可用 ›</text>
+			</view>
+		</view>
+
+		<view class="card remark-card">
+			<text class="section-title">订单备注</text>
+			<textarea class="remark-input" placeholder="请输入配送时间、口味偏好等信息" placeholder-class="placeholder" />
+		</view>
+
+		<view class="submit-bar">
+			<view class="total-copy">
+				<text class="total-label">合计</text>
+				<text class="total-price">¥138</text>
+			</view>
+			<view class="submit-btn" @tap="submit">
+				<text class="btn-text">提交订单</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+function submit() {
+	uni.showToast({
+		title: '订单已提交，顾问将跟进确认',
+		icon: 'none'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 24rpx 30rpx 130rpx;
+	background: #f5f7fa;
+}
+
+.address-card,
+.card {
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.address-card {
+	padding: 28rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.address-icon {
+	width: 68rpx;
+	height: 68rpx;
+	border-radius: 50%;
+	background: #eaf3ff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.address-symbol {
+	color: #1677ff;
+	font-size: 24rpx;
+	font-weight: 900;
+}
+
+.address-copy {
+	flex: 1;
+	margin-left: 18rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.address-title {
+	color: #07152d;
+	font-size: 27rpx;
+	font-weight: 800;
+}
+
+.address-desc {
+	margin-top: 8rpx;
+	color: #6f7b8f;
+	font-size: 22rpx;
+	line-height: 32rpx;
+}
+
+.arrow {
+	color: #98a2b3;
+	font-size: 44rpx;
+}
+
+.card {
+	margin-top: 22rpx;
+	padding: 28rpx;
+}
+
+.section-title {
+	color: #07152d;
+	font-size: 30rpx;
+	font-weight: 800;
+}
+
+.goods-item {
+	margin-top: 24rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.goods-image {
+	width: 168rpx;
+	height: 132rpx;
+	border-radius: 14rpx;
+	background: #edf2f8;
+}
+
+.goods-copy {
+	flex: 1;
+	min-width: 0;
+	margin-left: 18rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.goods-title {
+	color: #111827;
+	font-size: 27rpx;
+	font-weight: 800;
+}
+
+.goods-desc {
+	margin-top: 10rpx;
+	color: #7c8797;
+	font-size: 22rpx;
+}
+
+.goods-bottom,
+.row,
+.submit-bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.goods-bottom {
+	margin-top: auto;
+}
+
+.goods-price {
+	color: #ff3b30;
+	font-size: 30rpx;
+	font-weight: 900;
+}
+
+.goods-count {
+	margin-left: auto;
+	color: #667085;
+	font-size: 22rpx;
+}
+
+.row {
+	padding: 18rpx 0;
+	border-bottom: 1rpx solid #eef1f5;
+}
+
+.row:last-child {
+	border-bottom: 0;
+}
+
+.row-label {
+	color: #344054;
+	font-size: 24rpx;
+}
+
+.row-value {
+	margin-left: auto;
+	color: #07152d;
+	font-size: 24rpx;
+	font-weight: 700;
+}
+
+.green {
+	color: #20a15a;
+}
+
+.remark-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.remark-input {
+	margin-top: 18rpx;
+	min-height: 150rpx;
+	padding: 18rpx;
+	border-radius: 14rpx;
+	background: #f5f7fa;
+	color: #101828;
+	font-size: 23rpx;
+}
+
+.placeholder {
+	color: #98a2b3;
+}
+
+.submit-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 18rpx 30rpx 30rpx;
+	background: #ffffff;
+	box-shadow: 0 -8rpx 24rpx rgba(30,48,84,0.08);
+}
+
+.total-copy {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+}
+
+.total-label {
+	color: #344054;
+	font-size: 24rpx;
+}
+
+.total-price {
+	margin-left: 10rpx;
+	color: #ff3b30;
+	font-size: 36rpx;
+	font-weight: 900;
+}
+
+.submit-btn {
+	width: 220rpx;
+	height: 66rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 24rpx;
+	font-weight: 800;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	flex: 0 0 220rpx;
+	overflow: hidden;
+}
+</style>

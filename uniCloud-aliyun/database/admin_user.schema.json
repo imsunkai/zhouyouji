@@ -1,0 +1,59 @@
+{
+  "bsonType": "object",
+  "required": [
+    "username",
+    "password",
+    "nickname",
+    "role",
+    "status",
+    "create_time",
+    "update_time"
+  ],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "record id"
+    },
+    "username": {
+      "bsonType": "string",
+      "description": "admin login account"
+    },
+    "password": {
+      "bsonType": "string",
+      "description": "admin login password"
+    },
+    "nickname": {
+      "bsonType": "string",
+      "description": "admin display name"
+    },
+    "role": {
+      "bsonType": "string",
+      "description": "admin role, for example admin"
+    },
+    "token": {
+      "bsonType": "string",
+      "description": "current login token"
+    },
+    "status": {
+      "bsonType": "int",
+      "description": "account status, 1 enabled, 0 disabled"
+    },
+    "last_login_time": {
+      "bsonType": "timestamp",
+      "description": "last login timestamp"
+    },
+    "create_time": {
+      "bsonType": "timestamp",
+      "description": "created timestamp"
+    },
+    "update_time": {
+      "bsonType": "timestamp",
+      "description": "updated timestamp"
+    }
+  }
+}

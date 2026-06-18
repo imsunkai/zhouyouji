@@ -1,0 +1,5 @@
+{"_id":"cat_travel","name":"旅游服务","type":"travel","icon":"岛","image":"/static/zy/route-island.jpg","sort":10,"status":1,"create_time":1718352000000,"update_time":1718352000000}
+{"_id":"cat_car_service","name":"车务服务","type":"car_service","icon":"车","image":"/static/zy/car-coast.jpg","sort":20,"status":1,"create_time":1718352000000,"update_time":1718352000000}
+{"_id":"cat_hotel","name":"住宿资源","type":"hotel","icon":"住","image":"/static/zy/hotel-seaview.jpg","sort":30,"status":1,"create_time":1718352000000,"update_time":1718352000000}
+{"_id":"cat_local_goods","name":"商城特产","type":"local_goods","icon":"购","image":"/static/zy/crab.jpg","sort":40,"status":1,"create_time":1718352000000,"update_time":1718352000000}
+{"_id":"cat_used_car","name":"二手车服务","type":"used_car","icon":"换","image":"/static/zy/car-coast.jpg","sort":50,"status":1,"create_time":1718352000000,"update_time":1718352000000}

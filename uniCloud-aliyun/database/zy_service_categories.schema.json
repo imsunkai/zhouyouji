@@ -1,0 +1,80 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "title"
+                 ],
+    "permission":  {
+                       "read":  true,
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "short_title":  {
+                                           "bsonType":  "string",
+                                           "description":  "short_title"
+                                       },
+                       "title":  {
+                                     "bsonType":  "string",
+                                     "description":  "title"
+                                 },
+                       "subtitle":  {
+                                        "bsonType":  "string",
+                                        "description":  "subtitle"
+                                    },
+                       "icon":  {
+                                    "bsonType":  "string",
+                                    "description":  "icon"
+                                },
+                       "color":  {
+                                     "bsonType":  "string",
+                                     "description":  "color"
+                                 },
+                       "helper_bg":  {
+                                         "bsonType":  "string",
+                                         "description":  "helper_bg"
+                                     },
+                       "helper_title":  {
+                                            "bsonType":  "string",
+                                            "description":  "helper_title"
+                                        },
+                       "helper_desc":  {
+                                           "bsonType":  "string",
+                                           "description":  "helper_desc"
+                                       },
+                       "action_text":  {
+                                           "bsonType":  "string",
+                                           "description":  "action_text"
+                                       },
+                       "action_url":  {
+                                          "bsonType":  "string",
+                                          "description":  "action_url"
+                                      },
+                       "action_tab":  {
+                                          "bsonType":  "bool",
+                                          "description":  "action_tab"
+                                      },
+                       "sort":  {
+                                    "bsonType":  "int",
+                                    "description":  "sort"
+                                },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

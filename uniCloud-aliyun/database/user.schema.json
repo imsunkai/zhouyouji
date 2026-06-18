@@ -1,0 +1,21 @@
+{
+  "bsonType": "object",
+  "required": ["openid", "status", "create_time", "update_time"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": { "description": "record id" },
+    "openid": { "bsonType": "string", "description": "wechat openid" },
+    "nickname": { "bsonType": "string", "description": "user nickname" },
+    "avatar": { "bsonType": "string", "description": "user avatar url" },
+    "phone": { "bsonType": "string", "description": "user phone" },
+    "gender": { "bsonType": "string", "description": "user gender" },
+    "status": { "bsonType": "int", "description": "1 enabled, 0 disabled" },
+    "create_time": { "bsonType": "timestamp", "description": "created timestamp" },
+    "update_time": { "bsonType": "timestamp", "description": "updated timestamp" }
+  }
+}

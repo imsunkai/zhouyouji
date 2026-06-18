@@ -1,0 +1,234 @@
+<template>
+	<view class="page">
+		<view class="profile-card">
+			<button class="avatar-button" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
+				<image class="avatar" :src="avatar" mode="aspectFill" />
+				<text class="avatar-tip">更换头像</text>
+			</button>
+			<input class="nickname-input" type="nickname" v-model="nickname" placeholder="请输入微信昵称" />
+			<text class="member">普通会员</text>
+		</view>
+		<button class="save-btn" :disabled="saving" @tap="saveProfile">
+			<text class="save-text">{{ saving ? '保存中...' : '保存资料' }}</text>
+		</button>
+		<view class="card">
+			<view class="row" v-for="(item, idx) in fields" :key="idx">
+				<text class="row-label">{{ item.label }}</text>
+				<text class="row-value">{{ item.value }}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+import { createCloudObject, uploadCloudFile } from '/utils/cloud-object.js'
+
+const userObj = createCloudObject('user')
+const nickname = ref('舟游记用户')
+const avatar = ref('/static/logo.png')
+const saving = ref(false)
+const fields = ref([
+	{ label: '昵称', value: '舟游记用户' },
+	{ label: '手机号', value: '未设置' },
+	{ label: '会员等级', value: '普通会员' },
+	{ label: '城市', value: '舟山' }
+])
+
+onShow(() => {
+	loadUser()
+})
+
+async function loadUser() {
+	const user = uni.getStorageSync('zy_user_info')
+	if (user) {
+		nickname.value = user.nickname || '舟游记用户'
+		avatar.value = user.avatar || '/static/logo.png'
+		applyFields(user)
+	}
+	const ready = uni.getStorageSync('zy_user_login_ready')
+	if (ready != '1') return
+	try {
+		const res = await userObj.getUserInfo()
+		if (res.errCode != 0) return
+		uni.setStorageSync('zy_user_info', res.data.user)
+		nickname.value = res.data.user.nickname || '舟游记用户'
+		avatar.value = res.data.user.avatar || '/static/logo.png'
+		applyFields(res.data.user)
+	} catch (e) {
+		console.log('getUserInfo failed', e)
+	}
+}
+
+function applyFields(user) {
+	fields.value = [
+		{ label: '昵称', value: user.nickname || '舟游记用户' },
+		{ label: '手机号', value: user.phone || '未设置' },
+		{ label: '会员等级', value: '普通会员' },
+		{ label: '用户ID', value: user._id || '' }
+	]
+}
+
+function onChooseAvatar(e) {
+	const path = e.detail && e.detail.avatarUrl ? e.detail.avatarUrl : ''
+	if (path) avatar.value = path
+}
+
+function isRemoteAvatar(path: string): boolean {
+	return path.indexOf('cloud://') == 0 || path.indexOf('http://') == 0 || path.indexOf('https://') == 0 || path.indexOf('/static/') == 0
+}
+
+async function saveProfile() {
+	const name = nickname.value.trim()
+	if (!name) {
+		uni.showToast({ title: '请输入昵称', icon: 'none' })
+		return
+	}
+	if (saving.value) return
+	saving.value = true
+	uni.showLoading({ title: '保存中' })
+	try {
+		let finalAvatar = avatar.value
+		if (finalAvatar && !isRemoteAvatar(finalAvatar)) {
+			const cloudPath = 'user-avatar/' + String(Date.now()) + '-' + String(Math.floor(Math.random() * 1000000)) + '.png'
+			finalAvatar = (await uploadCloudFile(cloudPath, finalAvatar)) as string
+		}
+		const res = await userObj.updateProfile({
+			nickname: name,
+			avatar: finalAvatar
+		})
+		uni.hideLoading()
+		if (res.errCode != 0) {
+			uni.showToast({ title: res.errMsg || '保存失败', icon: 'none' })
+			return
+		}
+		uni.setStorageSync('zy_user_info', res.data.user)
+		uni.setStorageSync('zy_user_login_ready', '1')
+		nickname.value = res.data.user.nickname || name
+		avatar.value = res.data.user.avatar || finalAvatar || '/static/logo.png'
+		applyFields(res.data.user)
+		uni.showToast({ title: '已同步资料', icon: 'success' })
+	} catch (e) {
+		uni.hideLoading()
+		uni.showToast({ title: '保存失败，请稍后重试', icon: 'none' })
+	} finally {
+		saving.value = false
+	}
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 30rpx;
+	background: #f5f7fa;
+}
+
+.profile-card,
+.card {
+	border-radius: 22rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.profile-card {
+	padding: 42rpx 28rpx 36rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: linear-gradient(180deg, #eaf5ff 0%, #ffffff 100%);
+}
+
+.avatar-button {
+	width: 168rpx;
+	height: 196rpx;
+	background: transparent;
+	border-radius: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	overflow: visible;
+}
+
+.avatar {
+	width: 132rpx;
+	height: 132rpx;
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow: 0 12rpx 28rpx rgba(22,119,255,0.14);
+}
+
+.avatar-tip {
+	margin-top: 18rpx;
+	color: #1677ff;
+	font-size: 24rpx;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.nickname-input {
+	margin-top: 18rpx;
+	width: 420rpx;
+	height: 72rpx;
+	border-radius: 999rpx;
+	background: #f5f8fc;
+	color: #07152d;
+	font-size: 32rpx;
+	font-weight: 900;
+	text-align: center;
+}
+
+.save-btn {
+	margin-top: 24rpx;
+	height: 82rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+	box-shadow: 0 14rpx 26rpx rgba(22,119,255,0.20);
+}
+
+.save-btn[disabled] {
+	opacity: 0.7;
+}
+
+.save-text {
+	color: #ffffff;
+	font-size: 28rpx;
+	font-weight: 900;
+}
+
+.member {
+	margin-top: 10rpx;
+	color: #667085;
+	font-size: 23rpx;
+}
+
+.card {
+	margin-top: 22rpx;
+	padding: 10rpx 28rpx;
+}
+
+.row {
+	padding: 24rpx 0;
+	border-bottom: 1rpx solid #eef1f5;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.row:last-child {
+	border-bottom: 0;
+}
+
+.row-label {
+	color: #344054;
+	font-size: 25rpx;
+}
+
+.row-value {
+	margin-left: auto;
+	color: #667085;
+	font-size: 24rpx;
+}
+</style>

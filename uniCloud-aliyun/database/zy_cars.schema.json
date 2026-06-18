@@ -1,0 +1,82 @@
+﻿{
+    "bsonType":  "object",
+    "required":  [
+                     "status",
+                     "create_time",
+                     "update_time",
+                     "title",
+                     "price",
+                     "content"
+                 ],
+    "permission":  {
+                       "read":  true,
+                       "create":  false,
+                       "update":  false,
+                       "delete":  false
+                   },
+    "properties":  {
+                       "_id":  {
+                                   "description":  "id"
+                               },
+                       "title":  {
+                                     "bsonType":  "string",
+                                     "description":  "title"
+                                 },
+                       "brand":  {
+                                     "bsonType":  "string",
+                                     "description":  "brand"
+                                 },
+                       "image":  {
+                                     "bsonType":  "string",
+                                     "description":  "image"
+                                 },
+                       "images":  {
+                                      "bsonType":  "array",
+                                      "description":  "images"
+                                  },
+                       "year":  {
+                                    "bsonType":  "string",
+                                    "description":  "year"
+                                },
+                       "mileage":  {
+                                       "bsonType":  "string",
+                                       "description":  "mileage"
+                                   },
+                       "gearbox":  {
+                                       "bsonType":  "string",
+                                       "description":  "gearbox"
+                                   },
+                       "price":  {
+                                     "bsonType":  "double",
+                                     "description":  "price"
+                                 },
+                       "tags":  {
+                                    "bsonType":  "array",
+                                    "description":  "tags"
+                                },
+                       "report":  {
+                                      "bsonType":  "object",
+                                      "description":  "report"
+                                  },
+                       "content":  {
+                                       "bsonType":  "string",
+                                       "description":  "content"
+                                   },
+                       "sort":  {
+                                    "bsonType":  "int",
+                                    "description":  "sort"
+                                },
+                       "status":  {
+                                      "bsonType":  "int",
+                                      "description":  "status"
+                                  },
+                       "create_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "create_time"
+                                       },
+                       "update_time":  {
+                                           "bsonType":  "timestamp",
+                                           "description":  "update_time"
+                                       }
+                   }
+}

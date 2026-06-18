@@ -1,0 +1,327 @@
+<template>
+	<view class="page">
+		<view class="search-box">
+			<text class="search-icon">⌕</text>
+			<input class="search-input" placeholder="搜索品牌/车型/关键词" placeholder-class="placeholder" />
+		</view>
+
+		<scroll-view class="filter-scroll" scroll-x show-scrollbar="false">
+			<view class="filter-row">
+				<text class="filter active-filter">全部车源</text>
+				<text class="filter">10万以内</text>
+				<text class="filter">10-20万</text>
+				<text class="filter">新能源</text>
+				<text class="filter">准新车</text>
+				<text class="filter">筛选 ♢</text>
+			</view>
+		</scroll-view>
+
+		<view class="summary-card">
+			<view class="summary-copy">
+				<text class="summary-title">本地严选车源</text>
+				<text class="summary-desc">共 128 台在售车辆 · 支持评估/过户/保险代办</text>
+			</view>
+			<view class="summary-btn" @tap="consult">
+				<text class="btn-text">帮我找车</text>
+			</view>
+		</view>
+
+		<view class="car-list">
+			<view class="car-card" v-for="(item, idx) in cars" :key="idx" @tap="goDetail">
+				<image class="car-image" :src="item.image" mode="aspectFill" />
+				<view class="car-info">
+					<text class="car-title">{{item.title}}</text>
+					<text class="car-meta">{{item.year}} · {{item.mileage}} · {{item.location}}</text>
+					<view class="tag-row">
+						<text class="tag">无重大事故</text>
+						<text class="tag green-tag">支持分期</text>
+						<text class="tag orange-tag">{{item.tag}}</text>
+					</view>
+					<text class="car-desc">{{item.desc}}</text>
+					<view class="bottom-row">
+						<text class="price">{{item.price}}万</text>
+						<text class="new-price">新车含税价 {{item.newPrice}}万</text>
+						<view class="detail-btn" @tap.stop="goDetail">
+							<text class="btn-text">查看详情</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+import { ref } from 'vue'
+import { createCloudObject } from '/utils/cloud-object.js'
+import { onLoad } from '@dcloudio/uni-app'
+
+const usedCarObj = createCloudObject('usedCar')
+
+// TODO: 车源列表后续接入分页、筛选、排序和收藏接口。
+const cars = ref([
+	{ image: '/static/zy/car-coast.jpg', title: '2022款奔驰 E300L 豪华型', year: '2022年', mileage: '3.2万公里', location: '舟山定海', tag: '热门', desc: '一手车源，车况精品，内饰整洁，支持第三方检测。', price: '32.8', newPrice: '49.6' },
+	{ image: '/static/zy/car-coast.jpg', title: '2021款宝马 530Li 领先型', year: '2021年', mileage: '4.6万公里', location: '舟山普陀', tag: '优选', desc: '保养记录齐全，动力平顺，适合商务与家庭使用。', price: '29.6', newPrice: '46.2' },
+	{ image: '/static/zy/car-coast.jpg', title: '2023款比亚迪 汉EV 冠军版', year: '2023年', mileage: '1.8万公里', location: '舟山临城', tag: '准新车', desc: '新能源热门车型，续航扎实，配置丰富，质保在期。', price: '18.8', newPrice: '24.9' },
+	{ image: '/static/zy/car-coast.jpg', title: '2020款奥迪 A6L 45TFSI', year: '2020年', mileage: '5.1万公里', location: '舟山岱山', tag: '精选', desc: '车况透明，外观成色佳，支持置换与金融方案。', price: '27.5', newPrice: '44.8' }
+])
+
+onLoad(() => {
+	loadCars()
+})
+
+async function loadCars() {
+	try {
+		const res = await usedCarObj.getList({ page: 1, pageSize: 20 })
+		if (res.errCode == 0 && res.data.list.length > 0) {
+			cars.value = res.data.list.map((item) => {
+				return {
+					image: item.cover || '/static/zy/car-coast.jpg',
+					title: item.title || '',
+					year: item.year || '',
+					mileage: item.mileage || '',
+					location: item.brand || '',
+					tag: item.car_status || '',
+					desc: item.description || '',
+					price: String(item.price || ''),
+					newPrice: ''
+				}
+			})
+		}
+	} catch (e) {
+	}
+}
+
+function goDetail() {
+	uni.navigateTo({
+		url: '/pages/car/detail'
+	})
+}
+
+function consult() {
+	uni.navigateTo({
+		url: '/pages/car/consult'
+	})
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 22rpx 30rpx 36rpx;
+	background: #f5f7fa;
+}
+
+.search-box {
+	height: 62rpx;
+	padding: 0 24rpx;
+	border-radius: 999rpx;
+	background: #eef0f4;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.search-icon {
+	color: #98a2b3;
+	font-size: 28rpx;
+}
+
+.search-input {
+	flex: 1;
+	margin-left: 12rpx;
+	color: #101828;
+	font-size: 24rpx;
+}
+
+.placeholder {
+	color: #98a2b3;
+}
+
+.filter-scroll {
+	margin-top: 22rpx;
+	white-space: nowrap;
+}
+
+.filter-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.filter {
+	margin-right: 16rpx;
+	padding: 12rpx 22rpx;
+	border-radius: 999rpx;
+	background: #ffffff;
+	color: #24344d;
+	font-size: 23rpx;
+}
+
+.active-filter {
+	background: #1677ff;
+	color: #ffffff;
+	font-weight: 800;
+}
+
+.summary-card {
+	margin-top: 22rpx;
+	padding: 24rpx;
+	border-radius: 20rpx;
+	background: linear-gradient(90deg, #eaf5ff 0%, #ffffff 100%);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+}
+
+.summary-copy {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.summary-title {
+	color: #07152d;
+	font-size: 29rpx;
+	font-weight: 800;
+}
+
+.summary-desc {
+	margin-top: 8rpx;
+	color: #6f7b8f;
+	font-size: 22rpx;
+}
+
+.summary-btn {
+	width: 168rpx;
+	height: 56rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	margin-left: 18rpx;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 22rpx;
+	font-weight: 800;
+	flex: 0 0 168rpx;
+	overflow: hidden;
+}
+
+.car-list {
+	margin-top: 22rpx;
+}
+
+.car-card {
+	margin-bottom: 20rpx;
+	padding: 18rpx;
+	border-radius: 20rpx;
+	background: #ffffff;
+	box-shadow: 0 10rpx 26rpx rgba(30,48,84,0.06);
+	display: flex;
+	flex-direction: row;
+}
+
+.car-image {
+	width: 230rpx;
+	height: 176rpx;
+	border-radius: 14rpx;
+	background: #edf2f8;
+	flex-shrink: 0;
+}
+
+.car-info {
+	flex: 1;
+	min-width: 0;
+	margin-left: 18rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.car-title {
+	color: #07152d;
+	font-size: 27rpx;
+	font-weight: 800;
+	line-height: 35rpx;
+}
+
+.car-meta,
+.car-desc {
+	margin-top: 9rpx;
+	color: #6f7b8f;
+	font-size: 21rpx;
+	line-height: 29rpx;
+}
+
+.tag-row {
+	margin-top: 10rpx;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.tag {
+	margin-right: 8rpx;
+	margin-bottom: 6rpx;
+	padding: 4rpx 8rpx;
+	border-radius: 6rpx;
+	background: #eaf3ff;
+	color: #1677ff;
+	font-size: 18rpx;
+}
+
+.green-tag {
+	background: #edfaf1;
+	color: #20a15a;
+}
+
+.orange-tag {
+	background: #fff3e8;
+	color: #fa8c16;
+}
+
+.bottom-row {
+	margin-top: 12rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.price {
+	color: #ff3b30;
+	font-size: 31rpx;
+	font-weight: 800;
+}
+
+.new-price {
+	margin-left: 12rpx;
+	color: #98a2b3;
+	font-size: 18rpx;
+}
+
+.detail-btn {
+	width: 120rpx;
+	height: 46rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	margin-left: auto;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 18rpx;
+	font-weight: 700;
+	padding: 0;
+	flex: 0 0 120rpx;
+	overflow: hidden;
+}
+</style>
