@@ -100,7 +100,7 @@ const serviceObj = createCloudObject('service')
 // TODO: 后续接入首页聚合接口，替换本地 mock 数据。
 const serviceEntrances = ref([
 	{ title: '游玩', desc: '线路推荐 · 定制游', icon: '岛', color: '#4F8FFF', url: '/pages/service/service', tab: true },
-	{ title: '住宿', desc: '酒店 · 民宿 · 公寓', icon: '住', color: '#FA8C16', url: '/pages/service/service', tab: true },
+	{ title: '住宿', desc: '酒店 · 民宿 · 公寓', icon: '住', color: '#FA8C16', url: '/pages/stay/stay', tab: false },
 	{ title: '服务', desc: '车服 · 特产 · 本地资源', icon: '服', color: '#48B982', url: '/pages/service/service', tab: true },
 	{ title: '山海会', desc: '活动 · 交流 · 同城', icon: '会', color: '#8E62E8', url: '/pages/activity/activity', tab: true }
 ])

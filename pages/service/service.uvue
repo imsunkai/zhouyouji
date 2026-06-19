@@ -1,70 +1,60 @@
 <template>
 	<view class="page">
-		<view class="service-layout">
-			<scroll-view class="side-nav" scroll-y show-scrollbar="false">
-				<view
-					v-for="(item, idx) in serviceSections"
-					:key="idx"
-					:class="activeCategory == idx ? 'nav-item active' : 'nav-item'"
-					@tap="selectCategory(idx)"
-				>
-					<view v-if="activeCategory == idx" class="nav-indicator"></view>
-					<text class="nav-icon">{{item.icon}}</text>
-					<text class="nav-text">{{item.shortTitle}}</text>
+		<view class="hero-card">
+			<view class="hero-copy">
+				<text class="hero-title">本地服务</text>
+				<text class="hero-desc">出行、生活、置业与本地配套资源对接</text>
+			</view>
+			<view class="hero-btn" @tap="openRoute('/pages/service/detail', false)">
+				<text class="btn-text">咨询顾问</text>
+			</view>
+		</view>
+
+		<view class="section-card" v-for="(section, sectionIndex) in serviceSections" :key="sectionIndex">
+			<view class="section-head">
+				<view class="title-wrap">
+					<view class="title-mark" :style="'background:' + section.color"></view>
+					<text class="section-title">{{section.title}}</text>
 				</view>
-			</scroll-view>
+				<text class="section-sub">{{section.subtitle}}</text>
+			</view>
 
-			<scroll-view class="content" scroll-y show-scrollbar="false">
-				<view class="section-card" v-if="currentSection">
-					<view class="section-head">
-						<view class="title-row">
-							<text class="section-title">{{currentSection.title}}</text>
-							<text class="section-sub">{{currentSection.subtitle}}</text>
-						</view>
-						<text class="more" @tap="openRoute('/pages/service/detail', false)">查看更多 ›</text>
+			<view class="service-grid">
+				<view class="service-item" v-for="(item, idx) in section.items" :key="idx" @tap="openRoute(item.url, item.tab)">
+					<image class="service-image" :src="item.image" mode="aspectFill" />
+					<view class="service-copy">
+						<text class="service-name">{{item.title}}</text>
+						<text class="service-desc">{{item.desc}}</text>
 					</view>
-
-					<view class="service-grid">
-						<view class="service-item" v-for="(item, idx) in currentSection.items" :key="idx" @tap="openRoute(item.url, item.tab)">
-							<image class="service-image" :src="item.image" mode="aspectFill" />
-							<text class="service-name">{{item.title}}</text>
-							<text class="service-desc">{{item.desc}}</text>
-							<view class="service-action" :style="'border-color:' + currentSection.color">
-								<text class="service-action-text" :style="'color:' + currentSection.color">{{item.action}}</text>
-							</view>
-						</view>
-					</view>
-
-					<view class="helper-card" :style="'background:' + currentSection.helperBg">
-						<view class="helper-icon" :style="'background:' + currentSection.color">
-							<text class="helper-symbol">{{currentSection.icon}}</text>
-						</view>
-						<view class="helper-copy">
-							<text class="helper-title">{{currentSection.helperTitle}}</text>
-							<text class="helper-desc">{{currentSection.helperDesc}}</text>
-						</view>
-						<view class="helper-btn" :style="'background:' + currentSection.color" @tap="openRoute(currentSection.actionUrl, currentSection.actionTab)">
-							<text class="btn-text">{{currentSection.actionText}}</text>
-						</view>
+					<view class="service-action" :style="'border-color:' + section.color">
+						<text class="service-action-text" :style="'color:' + section.color">{{item.action}}</text>
 					</view>
 				</view>
+			</view>
 
-				<view class="bottom-space"></view>
-			</scroll-view>
+			<view class="helper-card" :style="'background:' + section.helperBg">
+				<view class="helper-icon" :style="'background:' + section.color">
+					<text class="helper-symbol">{{section.icon}}</text>
+				</view>
+				<view class="helper-copy">
+					<text class="helper-title">{{section.helperTitle}}</text>
+					<text class="helper-desc">{{section.helperDesc}}</text>
+				</view>
+				<view class="helper-btn" :style="'background:' + section.color" @tap="openRoute(section.actionUrl, section.actionTab)">
+					<text class="btn-text">{{section.actionText}}</text>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script setup lang="uts">
-import { computed, ref } from 'vue'
-
-const activeCategory = ref(0)
+import { ref } from 'vue'
 
 const serviceSections = ref([
 	{
-		shortTitle: '出行服务',
 		title: '出行服务',
-		subtitle: '接送包车 租车养车',
+		subtitle: '接送、包车、租车与车务资源',
 		icon: '行',
 		color: '#1677FF',
 		helperBg: '#edf5ff',
@@ -75,16 +65,15 @@ const serviceSections = ref([
 		actionTab: false,
 		items: [
 			{ image: '/static/zy/car-coast.jpg', title: '接送', desc: '机场码头站点接送', action: '咨询', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '包车', desc: '多车型包车出行', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/yacht.jpg', title: '包车', desc: '多车型包车出行', action: '咨询', url: '/pages/service/detail', tab: false },
 			{ image: '/static/zy/car-coast.jpg', title: '租车', desc: '自驾租车灵活便捷', action: '咨询', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '养车', desc: '保养维修年检代办', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/harbor.jpg', title: '养车', desc: '保养维修年检代办', action: '咨询', url: '/pages/service/detail', tab: false },
 			{ image: '/static/zy/car-coast.jpg', title: '二手车', desc: '车源评估交易过户', action: '查看', url: '/pages/car/index', tab: false }
 		]
 	},
 	{
-		shortTitle: '生活服务',
 		title: '生活服务',
-		subtitle: '特产海鲜 禅茶文创',
+		subtitle: '特产、海鲜、禅茶与文创好物',
 		icon: '生',
 		color: '#FA8C16',
 		helperBg: '#fff3e8',
@@ -94,16 +83,15 @@ const serviceSections = ref([
 		actionUrl: '/pages/mall/mall',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/crab.jpg', title: '海鲜', desc: '海鲜水产直供', action: '查看', url: '/pages/mall/mall', tab: false },
 			{ image: '/static/zy/fish.jpg', title: '特产', desc: '舟山地道特产', action: '查看', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/crab.jpg', title: '海鲜', desc: '海鲜水产直供', action: '查看', url: '/pages/mall/mall', tab: false },
 			{ image: '/static/zy/mall-hero.jpg', title: '禅茶', desc: '禅意茶礼资源', action: '查看', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/mall-hero.jpg', title: '文创', desc: '海岛文创礼品', action: '查看', url: '/pages/mall/mall', tab: false }
+			{ image: '/static/zy/abalone.jpg', title: '文创', desc: '海岛文创礼品', action: '查看', url: '/pages/mall/mall', tab: false }
 		]
 	},
 	{
-		shortTitle: '置业服务',
 		title: '置业服务',
-		subtitle: '地产置业 装修配套',
+		subtitle: '地产、置业咨询与装修配套',
 		icon: '置',
 		color: '#722ED1',
 		helperBg: '#f5efff',
@@ -119,9 +107,8 @@ const serviceSections = ref([
 		]
 	},
 	{
-		shortTitle: '本地配套',
 		title: '本地配套',
-		subtitle: '资源代办 商务协作',
+		subtitle: '本地资源、代办与商务协作',
 		icon: '配',
 		color: '#13A8A8',
 		helperBg: '#e9fbfb',
@@ -131,18 +118,12 @@ const serviceSections = ref([
 		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/team-beach.jpg', title: '商务服务', desc: '商务接待协作', action: '咨询', url: '/pages/service/detail', tab: false },
 			{ image: '/static/zy/harbor.jpg', title: '本地资源', desc: '舟山资源对接', action: '查看', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/route-island.jpg', title: '代办服务', desc: '事项代办协助', action: '咨询', url: '/pages/service/detail', tab: false }
+			{ image: '/static/zy/route-island.jpg', title: '代办服务', desc: '事项代办协助', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/team-beach.jpg', title: '商务服务', desc: '商务接待协作', action: '咨询', url: '/pages/service/detail', tab: false }
 		]
 	}
 ])
-
-const currentSection = computed(() => serviceSections.value[activeCategory.value])
-
-function selectCategory(idx: number) {
-	activeCategory.value = idx
-}
 
 function openRoute(url: string, tab: boolean) {
 	if (tab) {
@@ -151,77 +132,63 @@ function openRoute(url: string, tab: boolean) {
 		uni.navigateTo({ url })
 	}
 }
-
 </script>
 
 <style>
 .page {
 	min-height: 100vh;
+	padding: 24rpx 24rpx 40rpx;
 	background: #f5f7fa;
 }
 
-.service-layout {
+.hero-card {
+	margin-bottom: 22rpx;
+	padding: 28rpx 26rpx;
+	border-radius: 20rpx;
+	background: linear-gradient(135deg, #eaf3ff 0%, #ffffff 100%);
+	box-shadow: 0 10rpx 28rpx rgba(30,48,84,0.06);
 	display: flex;
 	flex-direction: row;
-	min-height: 100vh;
+	align-items: center;
 }
 
-.side-nav {
-	width: 166rpx;
-	min-height: 100vh;
-	background: #f7f9fc;
-	padding-top: 22rpx;
-}
-
-.nav-item {
-	position: relative;
-	width: 150rpx;
-	margin: 0 0 18rpx 10rpx;
-	padding: 24rpx 8rpx;
-	border-radius: 0 22rpx 22rpx 0;
+.hero-copy {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	color: #7f8797;
 }
 
-.nav-item.active {
-	background: #eaf3ff;
-	color: #1677ff;
-	box-shadow: 0 10rpx 24rpx rgba(22,119,255,0.10);
+.hero-title {
+	color: #07152d;
+	font-size: 36rpx;
+	font-weight: 900;
 }
 
-.nav-indicator {
-	position: absolute;
-	left: 0;
-	top: 22rpx;
-	width: 6rpx;
-	height: 62rpx;
+.hero-desc {
+	margin-top: 10rpx;
+	color: #647084;
+	font-size: 23rpx;
+	line-height: 32rpx;
+}
+
+.hero-btn {
+	width: 150rpx;
+	height: 56rpx;
+	min-height: 0;
 	border-radius: 999rpx;
 	background: #1677ff;
-}
-
-.nav-icon {
-	font-size: 27rpx;
-	font-weight: 800;
-}
-
-.nav-text {
-	margin-top: 12rpx;
+	color: #ffffff;
 	font-size: 22rpx;
-	font-weight: 700;
-}
-
-.content {
-	flex: 1;
-	min-height: 100vh;
-	padding: 22rpx 20rpx 0 14rpx;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .section-card {
-	margin-bottom: 20rpx;
+	margin-bottom: 22rpx;
 	padding: 24rpx 22rpx;
-	border-radius: 22rpx;
+	border-radius: 20rpx;
 	background: #ffffff;
 	box-shadow: 0 10rpx 28rpx rgba(30,48,84,0.06);
 }
@@ -233,27 +200,31 @@ function openRoute(url: string, tab: boolean) {
 	justify-content: space-between;
 }
 
-.title-row {
+.title-wrap {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
 
+.title-mark {
+	width: 8rpx;
+	height: 30rpx;
+	border-radius: 999rpx;
+	margin-right: 12rpx;
+}
+
 .section-title {
 	color: #07152d;
 	font-size: 30rpx;
-	font-weight: 800;
+	font-weight: 900;
 }
 
 .section-sub {
-	margin-left: 18rpx;
+	max-width: 360rpx;
 	color: #8691a4;
 	font-size: 21rpx;
-}
-
-.more {
-	color: #1677ff;
-	font-size: 21rpx;
+	text-align: right;
+	line-height: 30rpx;
 }
 
 .service-grid {
@@ -261,44 +232,54 @@ function openRoute(url: string, tab: boolean) {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: space-between;
 }
 
 .service-item {
-	width: 25%;
-	margin-bottom: 22rpx;
+	width: 316rpx;
+	margin-bottom: 18rpx;
+	padding: 14rpx;
+	border-radius: 16rpx;
+	background: #f7f9fc;
+	box-sizing: border-box;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
 }
 
 .service-image {
-	width: 136rpx;
-	height: 108rpx;
+	width: 86rpx;
+	height: 86rpx;
 	border-radius: 12rpx;
 	background: #eef3f9;
+	flex: 0 0 86rpx;
+}
+
+.service-copy {
+	flex: 1;
+	min-width: 0;
+	margin-left: 14rpx;
+	display: flex;
+	flex-direction: column;
 }
 
 .service-name {
-	margin-top: 12rpx;
 	color: #111827;
-	font-size: 22rpx;
-	font-weight: 700;
-	text-align: center;
+	font-size: 25rpx;
+	font-weight: 800;
 }
 
 .service-desc {
 	margin-top: 8rpx;
-	width: 128rpx;
 	color: #808b9c;
-	font-size: 18rpx;
-	line-height: 26rpx;
-	text-align: center;
+	font-size: 20rpx;
+	line-height: 28rpx;
 }
 
 .service-action {
-	margin-top: 10rpx;
-	width: 86rpx;
+	width: 70rpx;
 	height: 34rpx;
+	margin-left: 10rpx;
 	border-width: 2rpx;
 	border-style: solid;
 	border-radius: 999rpx;
@@ -315,8 +296,8 @@ function openRoute(url: string, tab: boolean) {
 }
 
 .helper-card {
-	margin-top: 6rpx;
-	padding: 22rpx 20rpx;
+	margin-top: 4rpx;
+	padding: 20rpx;
 	border-radius: 16rpx;
 	display: flex;
 	flex-direction: row;
@@ -324,8 +305,8 @@ function openRoute(url: string, tab: boolean) {
 }
 
 .helper-icon {
-	width: 64rpx;
-	height: 64rpx;
+	width: 62rpx;
+	height: 62rpx;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -334,13 +315,14 @@ function openRoute(url: string, tab: boolean) {
 
 .helper-symbol {
 	color: #ffffff;
-	font-size: 26rpx;
+	font-size: 25rpx;
 	font-weight: 800;
 }
 
 .helper-copy {
 	flex: 1;
-	margin-left: 18rpx;
+	min-width: 0;
+	margin-left: 16rpx;
 	display: flex;
 	flex-direction: column;
 }
@@ -358,8 +340,8 @@ function openRoute(url: string, tab: boolean) {
 }
 
 .helper-btn {
-	width: 168rpx;
-	height: 56rpx;
+	width: 146rpx;
+	height: 52rpx;
 	min-height: 0;
 	box-sizing: border-box;
 	display: flex;
@@ -368,16 +350,12 @@ function openRoute(url: string, tab: boolean) {
 	justify-content: center;
 	line-height: 1;
 	padding: 0;
-	margin-left: 16rpx;
+	margin-left: 14rpx;
 	border-radius: 999rpx;
 	color: #ffffff;
-	font-size: 22rpx;
+	font-size: 21rpx;
 	font-weight: 700;
-	flex: 0 0 168rpx;
+	flex: 0 0 146rpx;
 	overflow: hidden;
-}
-
-.bottom-space {
-	height: 42rpx;
 }
 </style>

@@ -3,6 +3,7 @@
     { "path": "pages/splash/splash", "style": { "navigationStyle": "custom", "navigationBarTitleText": "\u821f\u6e38\u8bb0" } },
     { "path": "pages/index/index", "style": { "navigationBarTitleText": "\u821f\u6e38\u8bb0" } },
     { "path": "pages/service/service", "style": { "navigationBarTitleText": "\u670d\u52a1" } },
+    { "path": "pages/stay/stay", "style": { "navigationBarTitleText": "\u4f4f\u5bbf" } },
     { "path": "pages/mall/mall", "style": { "navigationBarTitleText": "\u5546\u57ce" } },
     { "path": "pages/category/category", "style": { "navigationBarTitleText": "\u5546\u57ce\u5206\u7c7b" } },
     { "path": "pages/activity/activity", "style": { "navigationBarTitleText": "\u6d3b\u52a8" } },
