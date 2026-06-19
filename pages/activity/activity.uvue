@@ -3,19 +3,27 @@
 		<view class="search-row">
 			<view class="search-box">
 				<text class="search-icon">⌕</text>
-				<input class="search-input" placeholder="搜索活动/关键词" placeholder-class="placeholder" />
+				<input class="search-input" placeholder="搜索需求/资源/话题" placeholder-class="placeholder" />
 			</view>
-			<view class="search-btn" @tap="showComing('活动搜索')">
+			<view class="search-btn" @tap="showComing('搜索')">
 				<text class="btn-text">搜索</text>
 			</view>
 		</view>
 
-		<view class="hero">
+		<view class="hero community-hero">
 			<image class="hero-image" src="/static/zy/activity-hero.jpg" mode="aspectFill" />
+			<view class="hero-mask"></view>
+			<view class="hero-copy">
+				<text class="hero-title">山海会</text>
+				<text class="hero-desc">发布需求，连接舟山本地资源</text>
+			</view>
+			<view class="publish-btn" @tap="showComing('发布需求')">
+				<text class="btn-text">发布需求</text>
+			</view>
 		</view>
 
 		<view class="category-card">
-			<view class="activity-category" v-for="(item, idx) in categories" :key="idx" @tap="showComing(item.title)">
+			<view class="activity-category" v-for="(item, idx) in categories" :key="idx" @tap="selectCategory(idx)">
 				<view class="category-icon" :style="'background:' + item.bg">
 					<text class="category-symbol" :style="'color:' + item.color">{{item.icon}}</text>
 				</view>
@@ -25,35 +33,42 @@
 
 		<view class="tab-row">
 			<view class="tabs">
-				<text class="tab active-tab">全部</text>
-				<text class="tab">即将开始</text>
-				<text class="tab">火热进行中</text>
-				<text class="tab">已结束</text>
+				<text class="tab active-tab">推荐</text>
+				<text class="tab">需求</text>
+				<text class="tab">交流</text>
+				<text class="tab">资源</text>
 			</view>
-			<view class="filter-entry" @tap="showComing('筛选')">
-				<text class="filter-text">筛选</text>
-				<text class="filter-icon">♢</text>
+			<view class="filter-entry" @tap="showComing('联系')">
+				<text class="filter-text">消息</text>
+				<text class="filter-icon">✉</text>
 			</view>
 		</view>
 
 		<view class="event-list">
 			<view class="event-card" v-for="(item, idx) in events" :key="idx">
-				<view class="event-image-wrap">
-					<image class="event-image" :src="item.image" mode="aspectFill" />
-					<text :class="'ribbon ' + item.ribbonClass">{{item.status}}</text>
-				</view>
 				<view class="event-info">
-					<text class="event-title">{{item.title}}</text>
-					<view class="tag-row">
+					<view class="user-row">
+						<image class="avatar" :src="item.avatar" mode="aspectFill" />
+						<view class="user-meta">
+							<text class="nickname">{{item.nickname}}</text>
+							<text class="publish-time">{{item.time}}</text>
+						</view>
 						<text :class="'event-tag ' + item.typeClass">{{item.category}}</text>
-						<text class="event-tag soft-tag">{{item.tag}}</text>
 					</view>
-					<text class="event-desc">{{item.desc}}</text>
-					<text class="event-time">{{item.time}}</text>
+					<text class="event-title">{{item.title}}</text>
+					<text class="event-desc">{{item.content}}</text>
+					<image class="event-image" :src="item.image" mode="aspectFill" />
 					<view class="event-bottom">
-						<text class="event-count">已报名 {{item.count}} 人</text>
-						<view class="detail-btn" @tap="goDetail">
-							<text class="btn-text">查看详情</text>
+						<view class="metric">
+							<text class="metric-icon">赞</text>
+							<text class="metric-text">{{item.likes}}</text>
+						</view>
+						<view class="metric">
+							<text class="metric-icon">评</text>
+							<text class="metric-text">{{item.comments}}</text>
+						</view>
+						<view class="detail-btn" @tap="showComing('聊天联系')">
+							<text class="btn-text">联系</text>
 						</view>
 					</view>
 				</view>
@@ -65,34 +80,31 @@
 <script setup lang="uts">
 import { ref } from 'vue'
 
-// TODO: 活动页后续接入活动分类、状态筛选、报名人数与详情接口。
+const activeCategory = ref(0)
+
 const categories = ref([
-	{ title: '旅游活动', icon: '旗', bg: '#fff1e8', color: '#fa8c16' },
-	{ title: '车务活动', icon: '车', bg: '#eaf3ff', color: '#1677ff' },
-	{ title: '住宿优惠', icon: '住', bg: '#edfff2', color: '#52c41a' },
-	{ title: '商城促销', icon: '购', bg: '#fff0e8', color: '#ff6b3b' },
-	{ title: '特产活动', icon: '礼', bg: '#f3efff', color: '#722ed1' },
-	{ title: '全部活动', icon: '全', bg: '#eef6ff', color: '#1677ff' }
+	{ title: '全部', icon: '全', bg: '#eef6ff', color: '#1677ff' },
+	{ title: '找服务', icon: '服', bg: '#eaf3ff', color: '#1677ff' },
+	{ title: '找住宿', icon: '住', bg: '#edfff2', color: '#52c41a' },
+	{ title: '找游玩', icon: '游', bg: '#fff1e8', color: '#fa8c16' },
+	{ title: '本地交流', icon: '聊', bg: '#f3efff', color: '#722ed1' }
 ])
 
 const events = ref([
-	{ image: '/static/zy/tour-lighthouse.jpg', status: '火热进行中', ribbonClass: 'ribbon-red', title: '普陀山祈福之旅 · 2日游', category: '旅游活动', typeClass: 'tag-blue', tag: '精品线路', desc: '普陀山祈福祈愿，感受海天佛国的宁静与美好', time: '2024.05.18 - 2024.05.25', count: 128 },
-	{ image: '/static/zy/car-coast.jpg', status: '即将开始', ribbonClass: 'ribbon-orange', title: '端午专享 · 包车出游特惠', category: '车务活动', typeClass: 'tag-green', tag: '优惠活动', desc: '端午出行，包车更省心！多种车型，专业司机', time: '2024.06.01 - 2024.06.10', count: 86 },
-	{ image: '/static/zy/hotel-seaview.jpg', status: '限时优惠', ribbonClass: 'ribbon-green', title: '海景酒店 · 端午特惠', category: '住宿优惠', typeClass: 'tag-green', tag: '限时特惠', desc: '精选海景酒店，端午特惠7折起', time: '2024.06.01 - 2024.06.10', count: 56 },
-	{ image: '/static/zy/crab.jpg', status: '商城促销', ribbonClass: 'ribbon-orange', title: '海鲜礼盒 · 端午大促', category: '商城促销', typeClass: 'tag-red', tag: '满减优惠', desc: '舟山海鲜礼盒，新鲜直达，满减优惠多多', time: '2024.05.20 - 2024.06.08', count: 218 },
-	{ image: '/static/zy/team-beach.jpg', status: '企业团建', ribbonClass: 'ribbon-blue', title: '企业团建 · 定制活动', category: '旅游活动', typeClass: 'tag-blue', tag: '定制团建', desc: '团建定制方案，拓展活动+海岛体验', time: '2024.06.10 - 2024.06.30', count: 42 }
+	{ avatar: '/static/zy/logo-mark.png', nickname: '舟山阿宁', time: '10分钟前', image: '/static/zy/car-coast.jpg', title: '明早普陀山码头接送，有车源推荐吗？', category: '找服务', typeClass: 'tag-blue', content: '2位成人，早上7点从东港出发到朱家尖码头，希望司机熟悉路线，价格透明。', likes: 18, comments: 6 },
+	{ avatar: '/static/logo.png', nickname: '海边民宿管家', time: '32分钟前', image: '/static/zy/hotel-seaview.jpg', title: '东极方向海景房本周还有少量空房', category: '找住宿', typeClass: 'tag-green', content: '适合2-4人入住，可帮忙对接码头接送和游玩路线，想看房型可以直接联系。', likes: 42, comments: 13 },
+	{ avatar: '/static/zy/logo-mark.png', nickname: '小舟同学', time: '1小时前', image: '/static/zy/tour-lighthouse.jpg', title: '想找一条轻松点的亲子游路线', category: '找游玩', typeClass: 'tag-orange', content: '带老人和孩子，不想太赶，最好有海边、灯塔和吃海鲜的安排，求本地建议。', likes: 35, comments: 19 },
+	{ avatar: '/static/logo.png', nickname: '沈家门老周', time: '2小时前', image: '/static/zy/harbor.jpg', title: '本地资源对接：码头周边停车和搬运', category: '本地交流', typeClass: 'tag-purple', content: '最近有朋友问码头附近停车和行李搬运资源，这里整理了一些经验，欢迎补充。', likes: 56, comments: 24 }
 ])
+
+function selectCategory(idx: number) {
+	activeCategory.value = idx
+}
 
 function showComing(name: string) {
 	uni.showToast({
-		title: name + '详情即将上线',
+		title: name + '功能即将上线',
 		icon: 'none'
-	})
-}
-
-function goDetail() {
-	uni.navigateTo({
-		url: '/pages/activity/detail'
 	})
 }
 </script>
@@ -159,6 +171,7 @@ function goDetail() {
 }
 
 .hero {
+	position: relative;
 	margin-top: 22rpx;
 	height: 264rpx;
 	border-radius: 12rpx;
@@ -169,6 +182,58 @@ function goDetail() {
 .hero-image {
 	width: 100%;
 	height: 264rpx;
+}
+
+.hero-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 264rpx;
+	background: linear-gradient(90deg, rgba(12,68,138,0.68) 0%, rgba(12,88,164,0.18) 100%);
+}
+
+.hero-copy {
+	position: absolute;
+	left: 32rpx;
+	bottom: 34rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.hero-title {
+	color: #ffffff;
+	font-size: 44rpx;
+	line-height: 52rpx;
+	font-weight: 800;
+}
+
+.hero-desc {
+	margin-top: 10rpx;
+	color: rgba(255,255,255,0.92);
+	font-size: 24rpx;
+}
+
+.publish-btn {
+	position: absolute;
+	right: 26rpx;
+	bottom: 34rpx;
+	width: 156rpx;
+	height: 58rpx;
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	border-radius: 999rpx;
+	background: #1677ff;
+	color: #ffffff;
+	font-size: 22rpx;
+	font-weight: 700;
+	box-shadow: 0 10rpx 22rpx rgba(22,119,255,0.28);
 }
 
 .category-card {
@@ -183,15 +248,15 @@ function goDetail() {
 }
 
 .activity-category {
-	width: 16.66%;
+	width: 20%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
 .category-icon {
-	width: 76rpx;
-	height: 76rpx;
+	width: 72rpx;
+	height: 72rpx;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -206,7 +271,7 @@ function goDetail() {
 .category-title {
 	margin-top: 12rpx;
 	color: #172033;
-	font-size: 21rpx;
+	font-size: 20rpx;
 	font-weight: 700;
 }
 
@@ -261,81 +326,75 @@ function goDetail() {
 
 .event-card {
 	margin-bottom: 18rpx;
-	padding: 8rpx;
+	padding: 22rpx;
 	border-radius: 16rpx;
 	background: #ffffff;
 	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
 	display: flex;
-	flex-direction: row;
-}
-
-.event-image-wrap {
-	position: relative;
-	width: 284rpx;
-	height: 172rpx;
-	border-radius: 10rpx;
-	overflow: hidden;
-	flex-shrink: 0;
+	flex-direction: column;
 }
 
 .event-image {
-	width: 284rpx;
-	height: 172rpx;
-}
-
-.ribbon {
-	position: absolute;
-	left: 0;
-	top: 0;
-	padding: 8rpx 14rpx;
-	border-radius: 0 0 10rpx 0;
-	color: #ffffff;
-	font-size: 20rpx;
-	font-weight: 700;
-}
-
-.ribbon-red {
-	background: #ff4d4f;
-}
-
-.ribbon-orange {
-	background: #fa8c16;
-}
-
-.ribbon-green {
-	background: #20b486;
-}
-
-.ribbon-blue {
-	background: #1677ff;
+	margin-top: 16rpx;
+	width: 100%;
+	height: 238rpx;
+	border-radius: 12rpx;
+	background: #eef3f9;
 }
 
 .event-info {
 	flex: 1;
 	min-width: 0;
-	padding: 6rpx 8rpx 4rpx 20rpx;
 	display: flex;
 	flex-direction: column;
 }
 
+.user-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.avatar {
+	width: 64rpx;
+	height: 64rpx;
+	border-radius: 50%;
+	background: #eef3f9;
+}
+
+.user-meta {
+	flex: 1;
+	min-width: 0;
+	margin-left: 16rpx;
+	display: flex;
+	flex-direction: column;
+}
+
+.nickname {
+	color: #101828;
+	font-size: 24rpx;
+	font-weight: 800;
+}
+
+.publish-time {
+	margin-top: 6rpx;
+	color: #8a93a6;
+	font-size: 20rpx;
+}
+
 .event-title {
+	margin-top: 18rpx;
 	color: #07152d;
 	font-size: 27rpx;
 	font-weight: 800;
 	line-height: 34rpx;
 }
 
-.tag-row {
-	margin-top: 10rpx;
-	display: flex;
-	flex-direction: row;
-}
-
 .event-tag {
-	margin-right: 10rpx;
-	padding: 4rpx 8rpx;
-	border-radius: 6rpx;
-	font-size: 18rpx;
+	padding: 6rpx 12rpx;
+	border-radius: 999rpx;
+	font-size: 19rpx;
+	font-weight: 700;
 }
 
 .tag-blue {
@@ -348,14 +407,14 @@ function goDetail() {
 	color: #1b9c55;
 }
 
-.tag-red {
-	background: #fff0ed;
-	color: #ff5d3a;
+.tag-orange {
+	background: #fff3e8;
+	color: #fa8c16;
 }
 
-.soft-tag {
-	background: #f1f3f6;
-	color: #7b8494;
+.tag-purple {
+	background: #f3efff;
+	color: #722ed1;
 }
 
 .event-desc {
@@ -365,22 +424,30 @@ function goDetail() {
 	line-height: 30rpx;
 }
 
-.event-time {
-	margin-top: 10rpx;
-	color: #7b8494;
-	font-size: 22rpx;
-}
-
 .event-bottom {
-	margin-top: 10rpx;
+	margin-top: 16rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
 
-.event-count {
-	color: #858f9f;
+.metric {
+	margin-right: 24rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.metric-icon {
+	color: #647084;
 	font-size: 20rpx;
+	font-weight: 700;
+}
+
+.metric-text {
+	margin-left: 8rpx;
+	color: #858f9f;
+	font-size: 21rpx;
 }
 
 .detail-btn {
