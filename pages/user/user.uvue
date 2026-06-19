@@ -7,7 +7,7 @@
 				<image class="brand-logo" src="/static/zy/logo-mark.png" mode="aspectFit" />
 				<text class="brand-title">舟游记</text>
 				<text class="brand-en">ZHOUYOUJI</text>
-				<text class="brand-slogan">探索舟山之美·记录精彩旅程</text>
+				<text class="brand-slogan">连接舟山本地好服务</text>
 			</view>
 			<view class="login-panel">
 				<text class="panel-title">欢迎登录舟游记</text>
@@ -110,7 +110,7 @@
 						<text class="butler-btn-text">立即联系</text>
 					</view>
 				</view>
-				<image class="butler-image" src="/static/zy/butler.jpg" mode="aspectFill" />
+				<image class="butler-image" src="/static/zy/butler.jpg" mode="aspectFit" />
 			</view>
 
 			<view class="logout-btn" @tap="logout">
@@ -133,10 +133,10 @@ const userName = ref('舟游记用户')
 const userAvatar = ref('/static/logo.png')
 
 const orderItems = ref([
-	{ label: '待付款', icon: '▣', status: 'pending_pay', count: 0 },
-	{ label: '待服务', icon: '▥', status: 'pending_send', count: 0 },
-	{ label: '待评价', icon: '●', status: 'pending_comment', count: 0 },
-	{ label: '售后/退款', icon: '¥', status: 'after_sale', count: 0 }
+	{ label: '待付款', icon: '付', status: 'pending_pay', count: 0 },
+	{ label: '待服务', icon: '服', status: 'pending_send', count: 0 },
+	{ label: '待评价', icon: '评', status: 'pending_comment', count: 0 },
+	{ label: '售后/退款', icon: '退', status: 'after_sale', count: 0 }
 ])
 
 const functionItems = ref([
@@ -197,10 +197,10 @@ async function loadUser() {
 
 function applyCenter(orderCounts, serviceCounts) {
 	orderItems.value = [
-		{ label: '待付款', icon: '▣', status: 'pending_pay', count: orderCounts.pendingPay || 0 },
-		{ label: '待服务', icon: '▥', status: 'pending_send', count: (orderCounts.pendingSend || 0) + (orderCounts.pendingReceive || 0) },
-		{ label: '待评价', icon: '●', status: 'pending_comment', count: orderCounts.pendingComment || 0 },
-		{ label: '售后/退款', icon: '¥', status: 'after_sale', count: orderCounts.afterSale || 0 }
+		{ label: '待付款', icon: '付', status: 'pending_pay', count: orderCounts.pendingPay || 0 },
+		{ label: '待服务', icon: '服', status: 'pending_send', count: (orderCounts.pendingSend || 0) + (orderCounts.pendingReceive || 0) },
+		{ label: '待评价', icon: '评', status: 'pending_comment', count: orderCounts.pendingComment || 0 },
+		{ label: '售后/退款', icon: '退', status: 'after_sale', count: orderCounts.afterSale || 0 }
 	]
 	const counts = serviceCounts || {}
 	functionItems.value = [
@@ -243,7 +243,7 @@ async function login() {
 				uni.navigateTo({ url: '/pages/user/profile' })
 			}, 350)
 		} else {
-			uni.showToast({ title: '登录成功', icon: 'success' })
+			uni.hideToast()
 		}
 	} catch (e) {
 		uni.hideLoading()
@@ -270,7 +270,7 @@ function toggleAgreement() {
 function openProtocol() {
 	uni.showModal({
 		title: '用户服务协议',
-		content: '欢迎使用舟游记。您登录后可使用旅游、车务、住宿、商城和用户中心等服务。请您保证提交信息真实有效，并遵守平台服务规则。',
+		content: '欢迎使用舟游记。您登录后可使用平台提供的本地服务、订单、发布和个人中心等功能。请您保证提交信息真实有效，并遵守平台服务规则。',
 		showCancel: false,
 		confirmText: '我知道了'
 	})
@@ -301,5 +301,6 @@ function openPage(url: string) {
 <style>
 .page{min-height:100vh;background:#eef7ff}.login-page{position:relative;min-height:100vh;overflow:hidden;background:#eef7ff}.hero-bg{position:absolute;left:0;top:0;width:750rpx;height:760rpx}.hero-mask{position:absolute;left:0;top:0;width:750rpx;height:820rpx;background:linear-gradient(180deg,rgba(236,248,255,.1) 0%,rgba(238,247,255,.15) 48%,rgba(238,247,255,.96) 100%)}.brand{position:relative;z-index:2;padding-top:300rpx;display:flex;flex-direction:column;align-items:center}.brand-logo{width:210rpx;height:96rpx}.brand-title{margin-top:8rpx;color:#102d55;font-size:56rpx;font-weight:900;letter-spacing:8rpx}.brand-en{margin-top:8rpx;color:#153763;font-size:24rpx;font-weight:700;letter-spacing:12rpx}.brand-slogan{margin-top:26rpx;color:#24476f;font-size:27rpx;letter-spacing:3rpx}.login-panel{position:relative;z-index:4;margin:124rpx 28rpx 0;min-height:960rpx;padding:100rpx 70rpx 36rpx;box-sizing:border-box;border-radius:28rpx;background:rgba(255,255,255,.96);box-shadow:0 18rpx 50rpx rgba(30,74,120,.12);display:flex;flex-direction:column;align-items:center}.panel-title{color:#102d55;font-size:42rpx;font-weight:900}.title-line{margin-top:24rpx;height:10rpx;display:flex;flex-direction:row;align-items:center;justify-content:center}.line-main{width:46rpx;height:8rpx;border-radius:999rpx;background:#3b8cff}.line-dot{width:8rpx;height:8rpx;margin-left:10rpx;border-radius:50%;background:#63a5ff}.panel-desc{margin-top:36rpx;color:#91a0b5;font-size:28rpx}.wechat-btn{width:548rpx;height:98rpx;margin-top:82rpx;border-radius:999rpx;background:linear-gradient(90deg,#3ecf62 0%,#36c75a 100%);box-shadow:0 16rpx 34rpx rgba(39,188,82,.26);display:flex;flex-direction:row;align-items:center;justify-content:center}.wechat-mark{position:relative;width:62rpx;height:48rpx;margin-right:22rpx}.bubble{position:absolute;border-radius:50%;background:#fff}.bubble-a{left:0;top:0;width:38rpx;height:32rpx}.bubble-b{right:0;bottom:0;width:34rpx;height:28rpx}.wechat-text{color:#fff;font-size:34rpx;font-weight:900}.agreement{margin-top:64rpx;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap}.shield{width:28rpx;height:28rpx;margin-right:14rpx;border-radius:8rpx;border:3rpx solid #a7b2c4;display:flex;align-items:center;justify-content:center}.checked-shield{border-color:#1677ff;background:#1677ff}.shield-text{color:#fff;font-size:18rpx;font-weight:900}.agree-text{color:#8b98ad;font-size:24rpx;line-height:40rpx}.agree-link{color:#1677ff;font-size:24rpx;line-height:40rpx}.island-art{position:relative;width:640rpx;height:250rpx;margin-top:142rpx;opacity:.88}.lighthouse{position:absolute;left:8rpx;bottom:34rpx;width:130rpx;height:182rpx}.light-top{width:42rpx;height:34rpx;margin-left:42rpx;background:#d6eaff;border-radius:8rpx 8rpx 0 0}.light-body{width:74rpx;height:122rpx;margin-left:26rpx;background:#dbeeff}.light-base{width:132rpx;height:30rpx;border-radius:50% 50% 0 0;background:#dbeeff}.mountain{position:absolute;bottom:20rpx;background:#dbeeff;border-radius:120rpx 120rpx 0 0}.mountain-a{left:118rpx;width:220rpx;height:88rpx}.mountain-b{left:280rpx;width:190rpx;height:70rpx}.mountain-c{right:0;width:190rpx;height:78rpx}.boat{position:absolute;bottom:44rpx;width:94rpx;height:26rpx;border-radius:0 0 38rpx 38rpx;background:#cfe6ff}.boat-a{right:112rpx}.boat-b{left:220rpx;width:54rpx;height:16rpx;opacity:.7}.service{margin-top:auto;padding-top:72rpx;display:flex;flex-direction:row;align-items:center;justify-content:center}.service-icon{color:#8795aa;font-size:28rpx;margin-right:10rpx}.service-text{color:#8795aa;font-size:25rpx}
 .logged-page{height:100vh;background:#f5f7fa}.profile-hero{position:relative;height:388rpx;overflow:hidden}.profile-bg{position:absolute;left:0;top:0;width:100%;height:388rpx}.custom-title{position:absolute;left:0;right:0;top:88rpx;display:flex;align-items:center;justify-content:center}.title-text{color:#07152d;font-size:34rpx;font-weight:900}.profile-main{position:absolute;left:30rpx;right:30rpx;bottom:42rpx;display:flex;flex-direction:row;align-items:center}.avatar{width:132rpx;height:132rpx;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12rpx 28rpx rgba(22,119,255,.14);overflow:hidden}.avatar-logo{width:92rpx;height:92rpx;border-radius:50%}.profile-copy{margin-left:26rpx;display:flex;flex-direction:column}.nickname{color:#07152d;font-size:36rpx;font-weight:900}.member-badge{margin-top:20rpx;align-self:flex-start;height:44rpx;padding:0 20rpx;border-radius:999rpx;background:rgba(255,255,255,.78);display:flex;flex-direction:row;align-items:center}.member-icon{color:#1f78ff;font-size:20rpx;margin-right:10rpx}.member-text{color:#26456d;font-size:22rpx;font-weight:800}.member-arrow{margin-left:10rpx;color:#26456d;font-size:28rpx}.home-link{margin-left:auto;padding:14rpx 22rpx;border-radius:999rpx;background:rgba(255,255,255,.72)}.home-link-text{color:#193b69;font-size:24rpx;font-weight:700}.card{margin:0 30rpx 24rpx;padding:28rpx;border-radius:18rpx;background:#fff;box-shadow:0 12rpx 28rpx rgba(30,48,84,.06)}.order-card{margin-top:-6rpx}.section-head{display:flex;flex-direction:row;align-items:center;justify-content:space-between}.section-title{color:#07152d;font-size:30rpx;font-weight:900}.section-more{color:#8a93a6;font-size:23rpx}.order-grid{margin-top:32rpx;display:flex;flex-direction:row;justify-content:space-between}.order-item{width:118rpx;display:flex;flex-direction:column;align-items:center}.order-icon-wrap{position:relative;width:74rpx;height:64rpx;display:flex;align-items:center;justify-content:center}.order-icon{color:#2478ff;font-size:50rpx;font-weight:900}.count-badge{position:absolute;right:-10rpx;top:-8rpx;min-width:28rpx;height:28rpx;padding:0 8rpx;border-radius:999rpx;background:#ff3b30;color:#fff;font-size:18rpx;text-align:center;line-height:28rpx}.order-label{margin-top:14rpx;color:#172033;font-size:24rpx}.function-grid{margin-top:32rpx;display:flex;flex-direction:row;flex-wrap:wrap}.function-item{position:relative;width:33.33%;padding-bottom:34rpx;display:flex;flex-direction:column;align-items:center}.function-icon-wrap{width:66rpx;height:66rpx;border-radius:50%;display:flex;align-items:center;justify-content:center}.function-icon{font-size:40rpx;font-weight:900}.function-label{margin-top:18rpx;color:#172033;font-size:24rpx}.function-count{position:absolute;right:32rpx;top:-8rpx;min-width:26rpx;height:26rpx;padding:0 8rpx;border-radius:999rpx;background:#1677ff;color:#fff;font-size:18rpx;text-align:center;line-height:26rpx}.butler-card{height:182rpx;margin:0 30rpx 24rpx;border-radius:18rpx;background:linear-gradient(90deg,#d9ecff 0%,#eef7ff 100%);overflow:hidden;display:flex;flex-direction:row;box-shadow:0 12rpx 28rpx rgba(30,48,84,.06)}.butler-copy{flex:1;padding:32rpx 0 0 34rpx;display:flex;flex-direction:column}.butler-title{color:#07152d;font-size:32rpx;font-weight:900}.butler-desc{margin-top:14rpx;color:#172033;font-size:23rpx}.butler-btn{margin-top:22rpx;width:126rpx;height:46rpx;border-radius:999rpx;background:#1677ff;display:flex;align-items:center;justify-content:center}.butler-btn-text{color:#fff;font-size:22rpx;font-weight:800}.butler-image{width:214rpx;height:182rpx}.logout-btn{margin:0 30rpx 44rpx;height:72rpx;border-radius:999rpx;background:#eef2f7;display:flex;align-items:center;justify-content:center}.logout-text{color:#667085;font-size:24rpx;font-weight:800}
-.login-page{height:100vh;min-height:0}.hero-bg{height:700rpx}.hero-mask{height:760rpx;background:linear-gradient(180deg,rgba(236,248,255,.08) 0%,rgba(238,247,255,.18) 44%,rgba(238,247,255,.98) 100%)}.brand{padding-top:208rpx}.brand-logo{width:190rpx;height:88rpx}.brand-title{margin-top:6rpx;font-size:52rpx}.brand-en{margin-top:6rpx;font-size:22rpx;letter-spacing:10rpx}.brand-slogan{margin-top:18rpx;font-size:25rpx;letter-spacing:2rpx}.login-panel{margin:72rpx 32rpx 0;height:720rpx;min-height:0;padding:70rpx 58rpx 28rpx;border-radius:26rpx;box-shadow:0 16rpx 44rpx rgba(30,74,120,.12)}.panel-title{font-size:38rpx}.title-line{margin-top:18rpx}.panel-desc{margin-top:28rpx;font-size:26rpx}.wechat-btn{width:520rpx;height:92rpx;margin-top:54rpx}.wechat-text{font-size:32rpx}.agreement{width:100%;margin-top:36rpx}.island-art{width:560rpx;height:150rpx;margin-top:42rpx;opacity:.62}.lighthouse{bottom:20rpx;width:92rpx;height:128rpx}.light-top{width:32rpx;height:24rpx;margin-left:30rpx}.light-body{width:54rpx;height:84rpx;margin-left:18rpx}.light-base{width:94rpx;height:20rpx}.mountain{bottom:14rpx}.mountain-a{left:98rpx;width:190rpx;height:66rpx}.mountain-b{left:244rpx;width:166rpx;height:54rpx}.mountain-c{width:170rpx;height:60rpx}.boat{bottom:30rpx;width:78rpx;height:20rpx}.boat-a{right:94rpx}.boat-b{left:190rpx;width:48rpx;height:14rpx}.service{margin-top:30rpx;padding-top:0}
+.login-page{height:100vh;min-height:0}.hero-bg{height:700rpx}.hero-mask{height:760rpx;background:linear-gradient(180deg,rgba(236,248,255,.08) 0%,rgba(238,247,255,.18) 44%,rgba(238,247,255,.98) 100%)}.brand{padding-top:184rpx}.brand-logo{width:190rpx;height:88rpx}.brand-title{margin-top:6rpx;font-size:52rpx}.brand-en{margin-top:6rpx;font-size:22rpx;letter-spacing:10rpx}.brand-slogan{margin-top:14rpx;font-size:24rpx;letter-spacing:1rpx}.login-panel{margin:56rpx 32rpx 0;height:650rpx;min-height:0;padding:58rpx 58rpx 24rpx;border-radius:26rpx;box-shadow:0 16rpx 44rpx rgba(30,74,120,.12)}.panel-title{font-size:38rpx}.title-line{margin-top:14rpx}.panel-desc{margin-top:22rpx;font-size:26rpx}.wechat-btn{width:520rpx;height:92rpx;margin-top:42rpx}.wechat-text{font-size:32rpx}.agreement{width:100%;margin-top:28rpx}.island-art{width:560rpx;height:122rpx;margin-top:28rpx;opacity:.5}.lighthouse{bottom:20rpx;width:92rpx;height:128rpx}.light-top{width:32rpx;height:24rpx;margin-left:30rpx}.light-body{width:54rpx;height:84rpx;margin-left:18rpx}.light-base{width:94rpx;height:20rpx}.mountain{bottom:14rpx}.mountain-a{left:98rpx;width:190rpx;height:66rpx}.mountain-b{left:244rpx;width:166rpx;height:54rpx}.mountain-c{width:170rpx;height:60rpx}.boat{bottom:30rpx;width:78rpx;height:20rpx}.boat-a{right:94rpx}.boat-b{left:190rpx;width:48rpx;height:14rpx}.service{margin-top:auto;padding:14rpx 24rpx 0}.service-icon{font-size:24rpx}.service-text{font-size:23rpx}
+.profile-main{bottom:36rpx}.profile-copy{margin-left:22rpx;max-width:320rpx}.nickname{font-size:34rpx}.member-badge{margin-top:14rpx;height:42rpx;padding:0 18rpx}.home-link{padding:12rpx 20rpx;background:rgba(255,255,255,.82);box-shadow:0 8rpx 18rpx rgba(30,74,120,.08)}.home-link-text{font-size:23rpx}.order-icon-wrap{width:72rpx;height:72rpx;border-radius:50%;background:#eaf3ff}.order-icon{color:#1677ff;font-size:28rpx;font-weight:900}.butler-card{height:174rpx;overflow:hidden}.butler-copy{padding:30rpx 0 0 32rpx}.butler-desc{max-width:380rpx;line-height:32rpx}.butler-btn{margin-top:18rpx}.butler-image{width:184rpx;height:154rpx;margin:10rpx 16rpx 0 0;border-radius:16rpx}.logout-btn{height:76rpx;margin:0 30rpx 48rpx;border:1rpx solid #d8dee8;background:#fff}.logout-text{color:#4b5565;font-size:25rpx;font-weight:900}
 </style>

@@ -7,7 +7,7 @@
 			<image class="brand-logo" src="/static/zy/logo-mark.png" mode="aspectFit" />
 			<text class="brand-title">&#x821F;&#x6E38;&#x8BB0;</text>
 			<text class="brand-en">ZHOUYOUJI</text>
-			<text class="brand-slogan">&#x63A2;&#x7D22;&#x821F;&#x5C71;&#x4E4B;&#x7F8E;&#x30FB;&#x8BB0;&#x5F55;&#x7CBE;&#x5F69;&#x65C5;&#x7A0B;</text>
+			<text class="brand-slogan">连接舟山本地好服务</text>
 		</view>
 
 		<view class="login-panel">
@@ -133,7 +133,7 @@ function toggleAgreement() {
 function openProtocol() {
 	uni.showModal({
 		title: '\u7528\u6237\u670d\u52a1\u534f\u8bae',
-		content: '\u6b22\u8fce\u4f7f\u7528\u821f\u6e38\u8bb0\u3002\u60a8\u767b\u5f55\u540e\u53ef\u4f7f\u7528\u65c5\u6e38\u3001\u8f66\u52a1\u3001\u4f4f\u5bbf\u3001\u5546\u57ce\u548c\u7528\u6237\u4e2d\u5fc3\u7b49\u670d\u52a1\u3002\u8bf7\u60a8\u4fdd\u8bc1\u63d0\u4ea4\u4fe1\u606f\u771f\u5b9e\u6709\u6548\uff0c\u5e76\u9075\u5b88\u5e73\u53f0\u670d\u52a1\u89c4\u5219\u3002',
+		content: '欢迎使用舟游记。您登录后可使用平台提供的本地服务、订单、发布和个人中心等功能。请您保证提交信息真实有效，并遵守平台服务规则。',
 		showCancel: false,
 		confirmText: '\u6211\u77e5\u9053\u4e86'
 	})
@@ -181,7 +181,7 @@ function openService() {
 .brand {
 	position: relative;
 	z-index: 2;
-	padding-top: 208rpx;
+	padding-top: 184rpx;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -209,18 +209,18 @@ function openService() {
 }
 
 .brand-slogan {
-	margin-top: 18rpx;
+	margin-top: 14rpx;
 	color: #24476f;
-	font-size: 25rpx;
-	letter-spacing: 2rpx;
+	font-size: 24rpx;
+	letter-spacing: 1rpx;
 }
 
 .login-panel {
 	position: relative;
 	z-index: 4;
-	margin: 72rpx 32rpx 0;
-	height: 720rpx;
-	padding: 70rpx 58rpx 28rpx;
+	margin: 56rpx 32rpx 0;
+	height: 650rpx;
+	padding: 58rpx 58rpx 24rpx;
 	box-sizing: border-box;
 	border-radius: 26rpx;
 	background: rgba(255,255,255,0.96);
@@ -237,7 +237,7 @@ function openService() {
 }
 
 .title-line {
-	margin-top: 18rpx;
+	margin-top: 14rpx;
 	height: 10rpx;
 	display: flex;
 	flex-direction: row;
@@ -261,7 +261,7 @@ function openService() {
 }
 
 .panel-desc {
-	margin-top: 28rpx;
+	margin-top: 22rpx;
 	color: #91a0b5;
 	font-size: 26rpx;
 }
@@ -269,7 +269,7 @@ function openService() {
 .wechat-btn {
 	width: 520rpx;
 	height: 92rpx;
-	margin-top: 54rpx;
+	margin-top: 42rpx;
 	border-radius: 999rpx;
 	background: linear-gradient(90deg, #3ecf62 0%, #36c75a 100%);
 	box-shadow: 0 16rpx 34rpx rgba(39,188,82,0.26);
@@ -314,7 +314,7 @@ function openService() {
 
 .agreement {
 	width: 100%;
-	margin-top: 36rpx;
+	margin-top: 28rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -359,9 +359,9 @@ function openService() {
 .island-art {
 	position: relative;
 	width: 560rpx;
-	height: 150rpx;
-	margin-top: 42rpx;
-	opacity: 0.62;
+	height: 122rpx;
+	margin-top: 28rpx;
+	opacity: 0.5;
 }
 
 .lighthouse {
@@ -460,8 +460,8 @@ function openService() {
 }
 
 .service {
-	margin-top: 30rpx;
-	padding-top: 0;
+	margin-top: auto;
+	padding: 14rpx 24rpx 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -470,12 +470,12 @@ function openService() {
 
 .service-icon {
 	color: #8795aa;
-	font-size: 28rpx;
+	font-size: 24rpx;
 	margin-right: 10rpx;
 }
 
 .service-text {
 	color: #8795aa;
-	font-size: 25rpx;
+	font-size: 23rpx;
 }
 </style>
