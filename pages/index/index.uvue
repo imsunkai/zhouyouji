@@ -25,7 +25,6 @@
 					<text class="quick-emoji">{{item.icon}}</text>
 				</view>
 				<text class="quick-title">{{item.title}}</text>
-				<text class="quick-desc">{{item.desc}}</text>
 			</view>
 		</view>
 
@@ -39,7 +38,6 @@
 						<text class="advantage-emoji">{{item.icon}}</text>
 					</view>
 					<text class="advantage-title">{{item.title}}</text>
-					<text class="advantage-desc">{{item.desc}}</text>
 				</view>
 			</view>
 		</view>
@@ -285,15 +283,6 @@ function consult() {
 	font-weight: 700;
 }
 
-.quick-desc {
-	width: 128rpx;
-	margin-top: 8rpx;
-	color: #687386;
-	font-size: 18rpx;
-	line-height: 28rpx;
-	text-align: center;
-}
-
 .card {
 	margin: 18rpx 24rpx 0;
 	padding: 28rpx 26rpx;
@@ -354,15 +343,6 @@ function consult() {
 	color: #14233b;
 	font-size: 24rpx;
 	font-weight: 700;
-}
-
-.advantage-desc {
-	margin-top: 10rpx;
-	color: #737f91;
-	font-size: 21rpx;
-	line-height: 32rpx;
-	text-align: center;
-	white-space: pre-line;
 }
 
 .recommend-card {
