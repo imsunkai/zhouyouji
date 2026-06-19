@@ -55,7 +55,7 @@
     "list": [
       { "pagePath": "pages/index/index", "text": "\u9996\u9875", "iconPath": "static/tabbar/home.png", "selectedIconPath": "static/tabbar/home-active.png" },
       { "pagePath": "pages/service/service", "text": "\u670d\u52a1", "iconPath": "static/tabbar/service.png", "selectedIconPath": "static/tabbar/service-active.png" },
-      { "pagePath": "pages/activity/activity", "text": "\u6d3b\u52a8", "iconPath": "static/tabbar/activity.png", "selectedIconPath": "static/tabbar/activity-active.png" },
+      { "pagePath": "pages/activity/activity", "text": "\u5c71\u6d77\u4f1a", "iconPath": "static/tabbar/activity.png", "selectedIconPath": "static/tabbar/activity-active.png" },
       { "pagePath": "pages/user/user", "text": "\u6211\u7684", "iconPath": "static/tabbar/user.png", "selectedIconPath": "static/tabbar/user-active.png" }
     ]
   },
