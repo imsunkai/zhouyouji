@@ -61,6 +61,7 @@
 							<view class="recommend-bottom">
 								<text class="recommend-price">¥{{item.price}}</text>
 								<text class="recommend-unit">{{item.unit}}</text>
+								<text class="recommend-tag">{{item.tag}}</text>
 							</view>
 						</view>
 					</view>
@@ -363,8 +364,8 @@ function consult() {
 }
 
 .recommend-item {
-	width: 176rpx;
-	margin-right: 12rpx;
+	width: 184rpx;
+	margin-right: 14rpx;
 	background: #ffffff;
 	border-radius: 12rpx;
 	overflow: hidden;
@@ -372,13 +373,13 @@ function consult() {
 }
 
 .recommend-image {
-	width: 176rpx;
-	height: 118rpx;
+	width: 184rpx;
+	height: 138rpx;
 	display: block;
 }
 
 .recommend-info {
-	padding: 12rpx 12rpx 14rpx;
+	padding: 10rpx 12rpx 12rpx;
 	display: flex;
 	flex-direction: column;
 }
@@ -387,13 +388,13 @@ function consult() {
 	color: #111827;
 	font-size: 22rpx;
 	font-weight: 700;
-	line-height: 28rpx;
-	height: 56rpx;
+	line-height: 27rpx;
+	height: 54rpx;
 	overflow: hidden;
 }
 
 .recommend-bottom {
-	margin-top: 10rpx;
+	margin-top: 8rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -410,6 +411,19 @@ function consult() {
 	margin-left: 6rpx;
 	color: #7d8796;
 	font-size: 18rpx;
+}
+
+.recommend-tag {
+	max-width: 54rpx;
+	margin-left: auto;
+	padding: 3rpx 8rpx;
+	border-radius: 999rpx;
+	background: #eef6ff;
+	color: #1677ff;
+	font-size: 17rpx;
+	line-height: 24rpx;
+	overflow: hidden;
+	text-align: center;
 }
 
 .consult-card {
