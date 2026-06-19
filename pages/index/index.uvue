@@ -102,11 +102,10 @@ const serviceObj = createCloudObject('service')
 
 // TODO: 后续接入首页聚合接口，替换本地 mock 数据。
 const serviceEntrances = ref([
-	{ title: '旅游服务', desc: '线路推荐 · 定制游', icon: '岛', color: '#4F8FFF', url: '/pages/service/service', tab: true },
-	{ title: '车务服务', desc: '接送 · 包车 · 租车', icon: '车', color: '#48B982', url: '/pages/service/service', tab: true },
-	{ title: '住宿资源', desc: '酒店 · 民宿 · 公寓', icon: '住', color: '#FA8C16', url: '/pages/service/service', tab: true },
-	{ title: '商城特产', desc: '海鲜特产 · 礼盒', icon: '购', color: '#8E62E8', url: '/pages/mall/mall', tab: false },
-	{ title: '二手车', desc: '车源 · 评估 · 过户', icon: '换', color: '#1677FF', url: '/pages/car/index', tab: false }
+	{ title: '游玩', desc: '线路推荐 · 定制游', icon: '岛', color: '#4F8FFF', url: '/pages/service/service', tab: true },
+	{ title: '住宿', desc: '酒店 · 民宿 · 公寓', icon: '住', color: '#FA8C16', url: '/pages/service/service', tab: true },
+	{ title: '服务', desc: '车服 · 特产 · 本地资源', icon: '服', color: '#48B982', url: '/pages/service/service', tab: true },
+	{ title: '山海会', desc: '活动 · 交流 · 同城', icon: '会', color: '#8E62E8', url: '/pages/activity/activity', tab: true }
 ])
 
 const advantages = ref([
@@ -257,7 +256,7 @@ function consult() {
 }
 
 .quick-item {
-	width: 20%;
+	width: 25%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
