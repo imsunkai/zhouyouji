@@ -15,21 +15,20 @@
 			<view class="hero-mask"></view>
 			<view class="hero-copy">
 				<text class="hero-title">山海会</text>
-				<text class="hero-desc">发布需求，连接舟山本地资源</text>
+				<text class="hero-desc">本地需求与资源交流</text>
 			</view>
 			<view class="publish-btn" @tap="showComing('发布需求')">
 				<text class="btn-text">发布需求</text>
 			</view>
 		</view>
 
-		<view class="category-card">
-			<view class="activity-category" v-for="(item, idx) in categories" :key="idx" @tap="selectCategory(idx)">
-				<view class="category-icon" :style="'background:' + item.bg">
-					<text class="category-symbol" :style="'color:' + item.color">{{item.icon}}</text>
+		<scroll-view class="category-scroll" scroll-x="true">
+			<view class="category-strip">
+				<view :class="idx == activeCategory ? 'filter-chip active-chip' : 'filter-chip'" v-for="(item, idx) in categories" :key="idx" @tap="selectCategory(idx)">
+					<text :class="idx == activeCategory ? 'chip-text active-chip-text' : 'chip-text'">{{item.title}}</text>
 				</view>
-				<text class="category-title">{{item.title}}</text>
 			</view>
-		</view>
+		</scroll-view>
 
 		<view class="tab-row">
 			<view class="tabs">
@@ -38,9 +37,9 @@
 				<text class="tab">交流</text>
 				<text class="tab">资源</text>
 			</view>
-			<view class="filter-entry" @tap="showComing('联系')">
-				<text class="filter-text">消息</text>
+			<view class="message-link" @tap="showComing('联系')">
 				<text class="filter-icon">✉</text>
+				<text class="filter-text">消息</text>
 			</view>
 		</view>
 
@@ -55,8 +54,8 @@
 						</view>
 						<text :class="'event-tag ' + item.typeClass">{{item.category}}</text>
 					</view>
-					<text class="event-title">{{item.title}}</text>
-					<text class="event-desc">{{item.content}}</text>
+					<text class="event-title" lines="2">{{item.title}}</text>
+					<text class="event-desc" lines="2">{{item.content}}</text>
 					<image class="event-image" :src="item.image" mode="aspectFill" />
 					<view class="event-bottom">
 						<view class="metric">
@@ -172,16 +171,16 @@ function showComing(name: string) {
 
 .hero {
 	position: relative;
-	margin-top: 22rpx;
-	height: 264rpx;
+	margin-top: 18rpx;
+	height: 206rpx;
 	border-radius: 12rpx;
 	overflow: hidden;
-	box-shadow: 0 12rpx 26rpx rgba(0,64,130,0.12);
+	box-shadow: 0 8rpx 18rpx rgba(0,64,130,0.09);
 }
 
 .hero-image {
 	width: 100%;
-	height: 264rpx;
+	height: 206rpx;
 }
 
 .hero-mask {
@@ -189,37 +188,37 @@ function showComing(name: string) {
 	left: 0;
 	top: 0;
 	width: 100%;
-	height: 264rpx;
-	background: linear-gradient(90deg, rgba(12,68,138,0.68) 0%, rgba(12,88,164,0.18) 100%);
+	height: 206rpx;
+	background: linear-gradient(90deg, rgba(12,68,138,0.58) 0%, rgba(12,88,164,0.10) 100%);
 }
 
 .hero-copy {
 	position: absolute;
 	left: 32rpx;
-	bottom: 34rpx;
+	bottom: 30rpx;
 	display: flex;
 	flex-direction: column;
 }
 
 .hero-title {
 	color: #ffffff;
-	font-size: 44rpx;
-	line-height: 52rpx;
+	font-size: 40rpx;
+	line-height: 48rpx;
 	font-weight: 800;
 }
 
 .hero-desc {
-	margin-top: 10rpx;
+	margin-top: 6rpx;
 	color: rgba(255,255,255,0.92);
-	font-size: 24rpx;
+	font-size: 23rpx;
 }
 
 .publish-btn {
 	position: absolute;
 	right: 26rpx;
-	bottom: 34rpx;
-	width: 156rpx;
-	height: 58rpx;
+	bottom: 30rpx;
+	width: 148rpx;
+	height: 54rpx;
 	min-height: 0;
 	box-sizing: border-box;
 	display: flex;
@@ -233,50 +232,50 @@ function showComing(name: string) {
 	color: #ffffff;
 	font-size: 22rpx;
 	font-weight: 700;
-	box-shadow: 0 10rpx 22rpx rgba(22,119,255,0.28);
+	box-shadow: 0 8rpx 18rpx rgba(22,119,255,0.20);
 }
 
-.category-card {
+.category-scroll {
 	margin-top: 18rpx;
-	padding: 22rpx 12rpx;
-	background: #ffffff;
-	border-radius: 16rpx;
-	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
+	width: 100%;
+	white-space: nowrap;
+}
+
+.category-strip {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
-}
-
-.activity-category {
-	width: 20%;
-	display: flex;
-	flex-direction: column;
 	align-items: center;
 }
 
-.category-icon {
-	width: 72rpx;
-	height: 72rpx;
-	border-radius: 50%;
+.filter-chip {
+	margin-right: 14rpx;
+	padding: 12rpx 22rpx;
+	border-radius: 999rpx;
+	background: #ffffff;
+	border: 1rpx solid #e7ebf1;
 	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
 
-.category-symbol {
-	font-size: 25rpx;
-	font-weight: 800;
+.active-chip {
+	background: #eaf3ff;
+	border-color: #b8d8ff;
 }
 
-.category-title {
-	margin-top: 12rpx;
+.chip-text {
 	color: #172033;
-	font-size: 20rpx;
+	font-size: 23rpx;
 	font-weight: 700;
 }
 
+.active-chip-text {
+	color: #1677ff;
+}
+
 .tab-row {
-	margin-top: 28rpx;
+	margin-top: 24rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -292,7 +291,7 @@ function showComing(name: string) {
 .tab {
 	color: #7b8494;
 	font-size: 25rpx;
-	padding-bottom: 14rpx;
+	padding-bottom: 12rpx;
 }
 
 .active-tab {
@@ -301,44 +300,47 @@ function showComing(name: string) {
 	border-bottom: 4rpx solid #1677ff;
 }
 
-.filter-entry {
-	margin-left: 22rpx;
+.message-link {
+	margin-left: 18rpx;
+	padding: 8rpx 10rpx;
+	border-radius: 999rpx;
+	background: #edf2f8;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
 
 .filter-text {
-	color: #27364f;
-	font-size: 24rpx;
-	font-weight: 700;
+	margin-left: 6rpx;
+	color: #647084;
+	font-size: 21rpx;
+	font-weight: 600;
 }
 
 .filter-icon {
-	margin-left: 8rpx;
 	color: #647084;
-	font-size: 24rpx;
+	font-size: 20rpx;
 }
 
 .event-list {
-	margin-top: 10rpx;
+	margin-top: 8rpx;
 }
 
 .event-card {
-	margin-bottom: 18rpx;
-	padding: 22rpx;
-	border-radius: 16rpx;
+	margin-bottom: 16rpx;
+	padding: 20rpx;
+	border-radius: 14rpx;
 	background: #ffffff;
-	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.06);
+	box-shadow: 0 6rpx 16rpx rgba(30,48,84,0.045);
 	display: flex;
 	flex-direction: column;
 }
 
 .event-image {
-	margin-top: 16rpx;
+	margin-top: 14rpx;
 	width: 100%;
-	height: 238rpx;
-	border-radius: 12rpx;
+	height: 204rpx;
+	border-radius: 10rpx;
 	background: #eef3f9;
 }
 
@@ -356,8 +358,8 @@ function showComing(name: string) {
 }
 
 .avatar {
-	width: 64rpx;
-	height: 64rpx;
+	width: 58rpx;
+	height: 58rpx;
 	border-radius: 50%;
 	background: #eef3f9;
 }
@@ -372,26 +374,26 @@ function showComing(name: string) {
 
 .nickname {
 	color: #101828;
-	font-size: 24rpx;
+	font-size: 23rpx;
 	font-weight: 800;
 }
 
 .publish-time {
-	margin-top: 6rpx;
+	margin-top: 4rpx;
 	color: #8a93a6;
 	font-size: 20rpx;
 }
 
 .event-title {
-	margin-top: 18rpx;
+	margin-top: 16rpx;
 	color: #07152d;
-	font-size: 27rpx;
-	font-weight: 800;
-	line-height: 34rpx;
+	font-size: 28rpx;
+	font-weight: 900;
+	line-height: 36rpx;
 }
 
 .event-tag {
-	padding: 6rpx 12rpx;
+	padding: 5rpx 10rpx;
 	border-radius: 999rpx;
 	font-size: 19rpx;
 	font-weight: 700;
@@ -418,14 +420,14 @@ function showComing(name: string) {
 }
 
 .event-desc {
-	margin-top: 10rpx;
+	margin-top: 8rpx;
 	color: #687386;
 	font-size: 22rpx;
 	line-height: 30rpx;
 }
 
 .event-bottom {
-	margin-top: 16rpx;
+	margin-top: 14rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -451,8 +453,8 @@ function showComing(name: string) {
 }
 
 .detail-btn {
-	width: 120rpx;
-	height: 46rpx;
+	width: 108rpx;
+	height: 42rpx;
 	min-height: 0;
 	box-sizing: border-box;
 	display: flex;
@@ -462,12 +464,12 @@ function showComing(name: string) {
 	line-height: 1;
 	margin-left: auto;
 	border-radius: 999rpx;
-	background: #1677ff;
-	color: #ffffff;
+	background: #eef6ff;
+	color: #1677ff;
 	font-size: 18rpx;
 	font-weight: 700;
 	padding: 0;
-	flex: 0 0 120rpx;
+	flex: 0 0 108rpx;
 	overflow: hidden;
 }
 </style>
