@@ -22,14 +22,6 @@
 			</view>
 		</view>
 
-		<scroll-view class="category-scroll" scroll-x="true">
-			<view class="category-strip">
-				<view :class="idx == activeCategory ? 'filter-chip active-chip' : 'filter-chip'" v-for="(item, idx) in categories" :key="idx" @tap="selectCategory(idx)">
-					<text :class="idx == activeCategory ? 'chip-text active-chip-text' : 'chip-text'">{{item.title}}</text>
-				</view>
-			</view>
-		</scroll-view>
-
 		<view class="tab-row">
 			<view class="tabs">
 				<text class="tab active-tab">推荐</text>
@@ -79,26 +71,12 @@
 <script setup lang="uts">
 import { ref } from 'vue'
 
-const activeCategory = ref(0)
-
-const categories = ref([
-	{ title: '全部', icon: '全', bg: '#eef6ff', color: '#1677ff' },
-	{ title: '找服务', icon: '服', bg: '#eaf3ff', color: '#1677ff' },
-	{ title: '找住宿', icon: '住', bg: '#edfff2', color: '#52c41a' },
-	{ title: '找游玩', icon: '游', bg: '#fff1e8', color: '#fa8c16' },
-	{ title: '本地交流', icon: '聊', bg: '#f3efff', color: '#722ed1' }
-])
-
 const events = ref([
 	{ avatar: '/static/zy/logo-mark.png', nickname: '舟山阿宁', time: '10分钟前', image: '/static/zy/car-coast.jpg', title: '明早普陀山码头接送，有车源推荐吗？', category: '找服务', typeClass: 'tag-blue', content: '2位成人，早上7点从东港出发到朱家尖码头，希望司机熟悉路线，价格透明。', likes: 18, comments: 6 },
 	{ avatar: '/static/logo.png', nickname: '海边民宿管家', time: '32分钟前', image: '/static/zy/hotel-seaview.jpg', title: '东极方向海景房本周还有少量空房', category: '找住宿', typeClass: 'tag-green', content: '适合2-4人入住，可帮忙对接码头接送和游玩路线，想看房型可以直接联系。', likes: 42, comments: 13 },
 	{ avatar: '/static/zy/logo-mark.png', nickname: '小舟同学', time: '1小时前', image: '/static/zy/tour-lighthouse.jpg', title: '想找一条轻松点的亲子游路线', category: '找游玩', typeClass: 'tag-orange', content: '带老人和孩子，不想太赶，最好有海边、灯塔和吃海鲜的安排，求本地建议。', likes: 35, comments: 19 },
 	{ avatar: '/static/logo.png', nickname: '沈家门老周', time: '2小时前', image: '/static/zy/harbor.jpg', title: '本地资源对接：码头周边停车和搬运', category: '本地交流', typeClass: 'tag-purple', content: '最近有朋友问码头附近停车和行李搬运资源，这里整理了一些经验，欢迎补充。', likes: 56, comments: 24 }
 ])
-
-function selectCategory(idx: number) {
-	activeCategory.value = idx
-}
 
 function showComing(name: string) {
 	uni.showToast({
@@ -233,45 +211,6 @@ function showComing(name: string) {
 	font-size: 22rpx;
 	font-weight: 700;
 	box-shadow: 0 8rpx 18rpx rgba(22,119,255,0.20);
-}
-
-.category-scroll {
-	margin-top: 18rpx;
-	width: 100%;
-	white-space: nowrap;
-}
-
-.category-strip {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.filter-chip {
-	margin-right: 14rpx;
-	padding: 12rpx 22rpx;
-	border-radius: 999rpx;
-	background: #ffffff;
-	border: 1rpx solid #e7ebf1;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
-
-.active-chip {
-	background: #eaf3ff;
-	border-color: #b8d8ff;
-}
-
-.chip-text {
-	color: #172033;
-	font-size: 23rpx;
-	font-weight: 700;
-}
-
-.active-chip-text {
-	color: #1677ff;
 }
 
 .tab-row {
