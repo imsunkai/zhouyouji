@@ -15,33 +15,36 @@
 			</scroll-view>
 
 			<scroll-view class="content" scroll-y show-scrollbar="false">
-				<view class="section-card" v-for="(section, sIdx) in serviceSections" :key="sIdx">
+				<view class="section-card" v-if="currentSection">
 					<view class="section-head">
 						<view class="title-row">
-							<text class="section-title">{{section.title}}</text>
-							<text class="section-sub">{{section.subtitle}}</text>
+							<text class="section-title">{{currentSection.title}}</text>
+							<text class="section-sub">{{currentSection.subtitle}}</text>
 						</view>
 						<text class="more" @tap="openRoute('/pages/service/detail', false)">查看更多 ›</text>
 					</view>
 
 					<view class="service-grid">
-						<view class="service-item" v-for="(item, idx) in section.items" :key="idx" @tap="openRoute(item.url, item.tab)">
+						<view class="service-item" v-for="(item, idx) in currentSection.items" :key="idx" @tap="openRoute(item.url, item.tab)">
 							<image class="service-image" :src="item.image" mode="aspectFill" />
 							<text class="service-name">{{item.title}}</text>
 							<text class="service-desc">{{item.desc}}</text>
+							<view class="service-action" :style="'border-color:' + currentSection.color">
+								<text class="service-action-text" :style="'color:' + currentSection.color">{{item.action}}</text>
+							</view>
 						</view>
 					</view>
 
-					<view class="helper-card" :style="'background:' + section.helperBg">
-						<view class="helper-icon" :style="'background:' + section.color">
-							<text class="helper-symbol">{{section.icon}}</text>
+					<view class="helper-card" :style="'background:' + currentSection.helperBg">
+						<view class="helper-icon" :style="'background:' + currentSection.color">
+							<text class="helper-symbol">{{currentSection.icon}}</text>
 						</view>
 						<view class="helper-copy">
-							<text class="helper-title">{{section.helperTitle}}</text>
-							<text class="helper-desc">{{section.helperDesc}}</text>
+							<text class="helper-title">{{currentSection.helperTitle}}</text>
+							<text class="helper-desc">{{currentSection.helperDesc}}</text>
 						</view>
-						<view class="helper-btn" :style="'background:' + section.color" @tap="openRoute(section.actionUrl, section.actionTab)">
-							<text class="btn-text">{{section.actionText}}</text>
+						<view class="helper-btn" :style="'background:' + currentSection.color" @tap="openRoute(currentSection.actionUrl, currentSection.actionTab)">
+							<text class="btn-text">{{currentSection.actionText}}</text>
 						</view>
 					</view>
 				</view>
@@ -53,15 +56,10 @@
 </template>
 
 <script setup lang="uts">
-import { ref } from 'vue'
-import { createCloudObject } from '/utils/cloud-object.js'
-import { onLoad } from '@dcloudio/uni-app'
-
-const serviceObj = createCloudObject('service')
+import { computed, ref } from 'vue'
 
 const activeCategory = ref(0)
 
-// TODO: 后续接服务聚合 API，按分类返回服务项、顾问信息和跳转配置。
 const serviceSections = ref([
 	{
 		shortTitle: '出行服务',
@@ -76,11 +74,11 @@ const serviceSections = ref([
 		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/car-coast.jpg', title: '接送', desc: '机场码头站点接送', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '包车', desc: '多车型包车出行', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '租车', desc: '自驾租车灵活便捷', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '养车', desc: '保养维修年检代办', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '二手车', desc: '车源评估交易过户', url: '/pages/car/index', tab: false }
+			{ image: '/static/zy/car-coast.jpg', title: '接送', desc: '机场码头站点接送', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '包车', desc: '多车型包车出行', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '租车', desc: '自驾租车灵活便捷', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '养车', desc: '保养维修年检代办', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '二手车', desc: '车源评估交易过户', action: '查看', url: '/pages/car/index', tab: false }
 		]
 	},
 	{
@@ -96,10 +94,10 @@ const serviceSections = ref([
 		actionUrl: '/pages/mall/mall',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/fish.jpg', title: '特产', desc: '舟山地道特产', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/crab.jpg', title: '海鲜', desc: '海鲜水产直供', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/mall-hero.jpg', title: '禅茶', desc: '禅意茶礼资源', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/mall-hero.jpg', title: '文创', desc: '海岛文创礼品', url: '/pages/mall/mall', tab: false }
+			{ image: '/static/zy/crab.jpg', title: '海鲜', desc: '海鲜水产直供', action: '查看', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/fish.jpg', title: '特产', desc: '舟山地道特产', action: '查看', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/mall-hero.jpg', title: '禅茶', desc: '禅意茶礼资源', action: '查看', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/mall-hero.jpg', title: '文创', desc: '海岛文创礼品', action: '查看', url: '/pages/mall/mall', tab: false }
 		]
 	},
 	{
@@ -115,9 +113,9 @@ const serviceSections = ref([
 		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/hotel-room.jpg', title: '地产', desc: '本地房源资源', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/hotel-seaview.jpg', title: '置业', desc: '置业咨询规划', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/homestay.jpg', title: '装修', desc: '装修设计施工', url: '/pages/service/detail', tab: false }
+			{ image: '/static/zy/sea-hero.jpg', title: '地产', desc: '本地房源资源', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/home-hero.jpg', title: '置业', desc: '置业咨询规划', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/harbor.jpg', title: '装修', desc: '装修设计施工', action: '咨询', url: '/pages/service/detail', tab: false }
 		]
 	},
 	{
@@ -133,57 +131,14 @@ const serviceSections = ref([
 		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/harbor.jpg', title: '本地资源', desc: '舟山资源对接', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/route-island.jpg', title: '代办服务', desc: '事项代办协助', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/team-beach.jpg', title: '商务服务', desc: '商务接待协作', url: '/pages/service/detail', tab: false }
+			{ image: '/static/zy/team-beach.jpg', title: '商务服务', desc: '商务接待协作', action: '咨询', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/harbor.jpg', title: '本地资源', desc: '舟山资源对接', action: '查看', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/route-island.jpg', title: '代办服务', desc: '事项代办协助', action: '咨询', url: '/pages/service/detail', tab: false }
 		]
 	}
 ])
 
-onLoad(() => {
-	loadServiceSections()
-})
-
-async function loadServiceSections() {
-	try {
-		const categoryRes = await serviceObj.getCategoryList({})
-		if (categoryRes.errCode != 0 || categoryRes.data.list.length == 0) return
-		const sections = []
-		for (let i = 0; i < categoryRes.data.list.length; i++) {
-			const category = categoryRes.data.list[i]
-			const listRes = await serviceObj.getListByCategory({
-				categoryId: category._id,
-				page: 1,
-				pageSize: 8
-			})
-			const items = listRes.errCode == 0 ? listRes.data.list.map((item) => {
-				return {
-					image: item.cover || '/static/zy/route-island.jpg',
-					title: item.title || '',
-					desc: item.description || item.subtitle || '',
-					url: '/pages/service/detail',
-					tab: false
-				}
-			}) : []
-			sections.push({
-				shortTitle: category.name || '',
-				title: category.name || '',
-				subtitle: category.type || '',
-				icon: category.icon || '服',
-				color: '#1677FF',
-				helperBg: '#edf5ff',
-				helperTitle: (category.name || '') + '咨询',
-				helperDesc: '项目咨询 · 预约提交 · 联系方式',
-				actionText: '立即咨询',
-				actionUrl: '/pages/service/detail',
-				actionTab: false,
-				items
-			})
-		}
-		serviceSections.value = sections
-	} catch (e) {
-	}
-}
+const currentSection = computed(() => serviceSections.value[activeCategory.value])
 
 function selectCategory(idx: number) {
 	activeCategory.value = idx
@@ -338,6 +293,25 @@ function openRoute(url: string, tab: boolean) {
 	font-size: 18rpx;
 	line-height: 26rpx;
 	text-align: center;
+}
+
+.service-action {
+	margin-top: 10rpx;
+	width: 86rpx;
+	height: 34rpx;
+	border-width: 2rpx;
+	border-style: solid;
+	border-radius: 999rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
+
+.service-action-text {
+	font-size: 18rpx;
+	font-weight: 700;
+	line-height: 1;
 }
 
 .helper-card {
