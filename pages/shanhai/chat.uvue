@@ -1,0 +1,67 @@
+<template>
+	<view class="page">
+		<view class="nav-row">
+			<view class="back-btn" @tap="goBack">
+				<text class="back-text">‹ 返回</text>
+			</view>
+		</view>
+		<view class="card">
+			<text class="title">本地交流</text>
+			<text class="placeholder">本地交流内容待开发</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+function goBack() {
+	uni.navigateBack()
+}
+</script>
+
+<style>
+.page {
+	min-height: 100vh;
+	padding: 24rpx 30rpx;
+	background: #f5f7fa;
+}
+
+.nav-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.back-btn {
+	padding: 12rpx 18rpx;
+	border-radius: 999rpx;
+	background: #eef6ff;
+}
+
+.back-text {
+	color: #1677ff;
+	font-size: 24rpx;
+	font-weight: 800;
+}
+
+.card {
+	margin-top: 24rpx;
+	padding: 32rpx;
+	border-radius: 18rpx;
+	background: #ffffff;
+	box-shadow: 0 8rpx 22rpx rgba(30,48,84,0.05);
+	display: flex;
+	flex-direction: column;
+}
+
+.title {
+	color: #07152d;
+	font-size: 36rpx;
+	font-weight: 900;
+}
+
+.placeholder {
+	margin-top: 18rpx;
+	color: #667085;
+	font-size: 25rpx;
+}
+</style>
