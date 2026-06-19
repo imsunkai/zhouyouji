@@ -64,97 +64,78 @@ const activeCategory = ref(0)
 // TODO: 后续接服务聚合 API，按分类返回服务项、顾问信息和跳转配置。
 const serviceSections = ref([
 	{
-		shortTitle: '旅游服务',
-		title: '旅游服务',
-		subtitle: '玩转舟山 发现海岛之美',
-		icon: '岛',
+		shortTitle: '出行服务',
+		title: '出行服务',
+		subtitle: '接送包车 租车养车',
+		icon: '行',
 		color: '#1677FF',
 		helperBg: '#edf5ff',
-		helperTitle: '旅游顾问在线',
-		helperDesc: '行程规划 · 景点推荐 · 预订咨询',
-		actionText: '立即咨询',
+		helperTitle: '出行顾问在线',
+		helperDesc: '接送预约 · 包车租车 · 二手车咨询',
+		actionText: '预约出行',
 		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/route-island.jpg', title: '经典线路', desc: '热门线路推荐', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/yacht.jpg', title: '定制旅行', desc: '专属行程定制', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/harbor.jpg', title: '包船出海', desc: '游艇出海体验', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/tour-lighthouse.jpg', title: '导游服务', desc: '专业讲解服务', url: '/pages/service/detail', tab: false }
+			{ image: '/static/zy/car-coast.jpg', title: '接送', desc: '机场码头站点接送', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '包车', desc: '多车型包车出行', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '租车', desc: '自驾租车灵活便捷', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '养车', desc: '保养维修年检代办', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/car-coast.jpg', title: '二手车', desc: '车源评估交易过户', url: '/pages/car/index', tab: false }
 		]
 	},
 	{
-		shortTitle: '车务服务',
-		title: '车务服务',
-		subtitle: '安全舒适 便捷出行',
-		icon: '车',
-		color: '#2F80ED',
-		helperBg: '#edf5ff',
-		helperTitle: '车辆调度中心',
-		helperDesc: '多种车型可选 · 价格透明 · 服务保障',
-		actionText: '立即预约',
-		actionUrl: '/pages/service/detail',
-		actionTab: false,
-		items: [
-			{ image: '/static/zy/car-coast.jpg', title: '接送服务', desc: '机场/码头/站点接送', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '包车服务', desc: '多种车型 包车出行', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '租车服务', desc: '自驾租车 灵活便捷', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '二手车交易', desc: '精品车源 专业评估', url: '/pages/car/index', tab: false }
-		]
-	},
-	{
-		shortTitle: '住宿资源',
-		title: '住宿资源',
-		subtitle: '精选好房 舒适入住',
-		icon: '住',
-		color: '#52C41A',
-		helperBg: '#f0fbf3',
-		helperTitle: '住宿顾问为您服务',
-		helperDesc: '房源推荐 · 价格咨询 · 预订协助',
-		actionText: '立即咨询',
-		actionUrl: '/pages/service/detail',
-		actionTab: false,
-		items: [
-			{ image: '/static/zy/hotel-room.jpg', title: '酒店推荐', desc: '品质酒店 安心入住', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/homestay.jpg', title: '民宿客栈', desc: '特色民宿 体验当地生活', url: '/pages/service/detail', tab: false },
-			{ image: '/static/zy/hotel-seaview.jpg', title: '公寓短租', desc: '长租短租 灵活选择', url: '/pages/service/detail', tab: false }
-		]
-	},
-	{
-		shortTitle: '商城特产',
-		title: '商城特产',
-		subtitle: '本地好物 品质优选',
-		icon: '购',
+		shortTitle: '生活服务',
+		title: '生活服务',
+		subtitle: '特产海鲜 禅茶文创',
+		icon: '生',
 		color: '#FA8C16',
 		helperBg: '#fff3e8',
-		helperTitle: '精选好物 等你来选',
-		helperDesc: '品质保证 · 产地直供 · 快递发货',
-		actionText: '进入商城',
+		helperTitle: '本地好物资源',
+		helperDesc: '产地直供 · 礼盒定制 · 品质优选',
+		actionText: '查看资源',
 		actionUrl: '/pages/mall/mall',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/crab.jpg', title: '海鲜水产', desc: '新鲜直达', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/fish.jpg', title: '食品特产', desc: '地道美味', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/mall-hero.jpg', title: '文创精品', desc: '岛城记忆', url: '/pages/mall/mall', tab: false },
-			{ image: '/static/zy/abalone.jpg', title: '礼盒专区', desc: '送礼优选', url: '/pages/mall/mall', tab: false }
+			{ image: '/static/zy/fish.jpg', title: '特产', desc: '舟山地道特产', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/crab.jpg', title: '海鲜', desc: '海鲜水产直供', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/mall-hero.jpg', title: '禅茶', desc: '禅意茶礼资源', url: '/pages/mall/mall', tab: false },
+			{ image: '/static/zy/mall-hero.jpg', title: '文创', desc: '海岛文创礼品', url: '/pages/mall/mall', tab: false }
 		]
 	},
 	{
-		shortTitle: '二手车',
-		title: '二手车服务',
-		subtitle: '精品车源 专业交易',
-		icon: '换',
+		shortTitle: '置业服务',
+		title: '置业服务',
+		subtitle: '地产置业 装修配套',
+		icon: '置',
 		color: '#722ED1',
 		helperBg: '#f5efff',
-		helperTitle: '二手车顾问在线',
-		helperDesc: '车源筛选 · 车辆评估 · 过户保险',
-		actionText: '找车源',
-		actionUrl: '/pages/car/index',
+		helperTitle: '置业顾问在线',
+		helperDesc: '房源咨询 · 置业规划 · 装修对接',
+		actionText: '咨询置业',
+		actionUrl: '/pages/service/detail',
 		actionTab: false,
 		items: [
-			{ image: '/static/zy/car-coast.jpg', title: '车辆买卖', desc: '本地车源 快速匹配', url: '/pages/car/index', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '精品车源', desc: '严选检测 透明车况', url: '/pages/car/list', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '车辆评估', desc: '专业估值 合理报价', url: '/pages/car/index', tab: false },
-			{ image: '/static/zy/car-coast.jpg', title: '过户保险', desc: '代办服务 省心交付', url: '/pages/car/index', tab: false }
+			{ image: '/static/zy/hotel-room.jpg', title: '地产', desc: '本地房源资源', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/hotel-seaview.jpg', title: '置业', desc: '置业咨询规划', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/homestay.jpg', title: '装修', desc: '装修设计施工', url: '/pages/service/detail', tab: false }
+		]
+	},
+	{
+		shortTitle: '本地配套',
+		title: '本地配套',
+		subtitle: '资源代办 商务协作',
+		icon: '配',
+		color: '#13A8A8',
+		helperBg: '#e9fbfb',
+		helperTitle: '本地配套服务',
+		helperDesc: '资源对接 · 事项代办 · 商务支持',
+		actionText: '联系顾问',
+		actionUrl: '/pages/service/detail',
+		actionTab: false,
+		items: [
+			{ image: '/static/zy/harbor.jpg', title: '本地资源', desc: '舟山资源对接', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/route-island.jpg', title: '代办服务', desc: '事项代办协助', url: '/pages/service/detail', tab: false },
+			{ image: '/static/zy/team-beach.jpg', title: '商务服务', desc: '商务接待协作', url: '/pages/service/detail', tab: false }
 		]
 	}
 ])
